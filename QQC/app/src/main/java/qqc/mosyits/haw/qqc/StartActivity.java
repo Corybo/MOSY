@@ -1,13 +1,21 @@
 package qqc.mosyits.haw.qqc;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
+import qqc.mosyits.haw.qqc.Database.DatabaseHandler;
+import qqc.mosyits.haw.qqc.Questions.QuestionInserts;
+
+/**
+ * StartActivity before the Games starts
+ * Player can start or join a game
+ */
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
+    private final boolean DEBUG = true;
 
     private Button buttonStart;
     private Button buttonJoin;
@@ -23,6 +31,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         buttonStart.setOnClickListener(this);
         buttonJoin.setOnClickListener(this);
 
+        if (DEBUG) {
+            deleteDatabase(new DatabaseHandler(this).DATABASE_NAME);
+        }
+        new QuestionInserts(this);
     }
 
     @Override
@@ -39,8 +51,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         }
     }
 
-    //leitet zur GameActivity weiter
-    public void toGameActivity(){
+    //goes to GameActivity
+    public void toGameActivity() {
         Intent startToGame = new Intent(this, GameActivity.class);
         startActivity(startToGame);
     }
