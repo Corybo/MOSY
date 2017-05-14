@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="qqc.mosyits.haw.qqc.GameActivity">
+
+    <TextView
+        android:id="@+id/question_field"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Frage"
+        tools:layout_editor_absoluteX="155dp"
+        tools:layout_editor_absoluteY="81dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="62dp" />
+
+    <Button
+        android:id="@+id/answer_a"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/question_field"
+        android:layout_marginTop="126dp"
+        android:layout_toStartOf="@+id/question_field"
+        android:text="a)"
+        android:clickable="true"/>
+
+    <Button
+        android:id="@+id/answer_b"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/answer_a"
+        android:layout_toEndOf="@+id/question_field"
+        android:text="b)"
+        android:clickable="true"/>
+
+    <Button
+        android:id="@+id/answer_c"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/answer_a"
+        android:layout_below="@+id/answer_a"
+        android:layout_marginTop="44dp"
+        android:text="c)"
+        android:clickable="true"/>
+
+    <Button
+        android:id="@+id/answer_d"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/answer_b"
+        android:layout_alignTop="@+id/answer_c"
+        android:text="d)"
+        android:clickable="true"/>
+
+    <Button
+        android:id="@+id/button_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="45dp"
+        android:text="show Result"
+        android:clickable="true"/>
+</RelativeLayout>
