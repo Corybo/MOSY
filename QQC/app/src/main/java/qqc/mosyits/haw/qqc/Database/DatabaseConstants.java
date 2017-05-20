@@ -21,4 +21,5 @@ public class DatabaseConstants {
             ANSWER_1 + " TEXT NOT NULL, " +
             ANSWER_2 + " TEXT NOT NULL, " +
             ANSWER_3 + " TEXT NOT NULL); ";
+    public static final String[] QUESTION_COLUMNS = {QUESTION_ID, QUESTION, RIGHT_ANSWER, ANSWER_1, ANSWER_2, ANSWER_3};
 }

@@ -2,6 +2,7 @@ package qqc.mosyits.haw.qqc.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -44,6 +45,23 @@ public class QuizDataSource {
     }
 
     /**
+     * Get specified question by its id
+     *
+     * @param id from question which will be fetched from database
+     * @return question
+     */
+    public Question getQuestionById(long id) {
+        Cursor cursor = database.query(DatabaseConstants.QUESTION_TABLE, DatabaseConstants.QUESTION_COLUMNS, DatabaseConstants.QUESTION_ID + " = " + String.valueOf(id), null, null, null, null);
+        cursor.moveToFirst();
+        if (cursor.getCount() == 0) {
+            return null;
+        }
+        Question question = setQuestionInformation(cursor);
+        cursor.close();
+        return question;
+    }
+
+    /**
      * gets the attributes of the question which will be inserted into database
      *
      * @param question which will be inserted
@@ -58,5 +76,22 @@ public class QuizDataSource {
         questionValues.put(DatabaseConstants.ANSWER_2, question.getAnswer2());
         questionValues.put(DatabaseConstants.ANSWER_3, question.getAnswer3());
         return questionValues;
+    }
+
+    /**
+     * Insert information from database into a question Object
+     *
+     * @param cursor from query
+     * @return question
+     */
+    private Question setQuestionInformation(Cursor cursor) {
+        Question question = new Question();
+        question.setThisQuestionId(cursor.getLong(0));
+        question.setQuestion(cursor.getString(1));
+        question.setRightAnswer(cursor.getString(2));
+        question.setAnswer1(cursor.getString(3));
+        question.setAnswer2(cursor.getString(4));
+        question.setAnswer3(cursor.getString(5));
+        return question;
     }
 }
