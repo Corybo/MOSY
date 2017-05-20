@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">QQC</string>
     <string name="error_database">Ein Databankfehler ist aufgetreten</string>
+    <string name="correct_answer">Richtige Antwort</string>
+    <string name="wrong_answer">Falsche Antwort</string>
 </resources>
