@@ -135,13 +135,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         for (int i = 0; i < questionCount; i++) {
             idList.add(i);
         }
-
         Collections.shuffle(idList);
-        String debug = "";
-        for (int i = 0; i < questionCount; i++) {
-            debug += (idList.get(i) + " ");
-        }
-        Toast.makeText(this, "Shuffled question array: " + debug, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -176,7 +170,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
      */
     private long generateQuestionId() {
         long questionId = idList.get(idSelect++);
-        Toast.makeText(this, "ArrayValue: " + questionId, Toast.LENGTH_SHORT).show();
         return questionId;
     }
 
