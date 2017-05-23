@@ -8,9 +8,11 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import qqc.mosyits.haw.qqc.Database.QuizDataSource;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 
@@ -23,7 +25,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button answerD;
     private Button buttonResult;
     private Question currentQuestion;
-    private int id = 0;
+    private ArrayList<Integer> idList;
+    private int idSelect = 0;
+    private int amountQuestionsInDatabase;
+    private int maxQuestionsToBeAnswered = 10;
+    private int questionsAsked = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +49,46 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerD.setOnClickListener(this);
         buttonResult.setOnClickListener(this);
 
+        amountQuestionsInDatabase = questionCount();
+        setUpIdList(amountQuestionsInDatabase);
         askNextQuestion();
+    }
+
+    /**
+     * Get questionCount from database
+     *
+     * @return questionCount
+     */
+    private int questionCount() {
+        QuizDataSource dataSource = new QuizDataSource(this);
+        int count = 0;
+        try {
+            dataSource.open();
+            count = dataSource.getQuestionCount();
+            dataSource.close();
+        } catch (Exception ex) {
+            Toast.makeText(this, R.string.error_database, Toast.LENGTH_SHORT).show();
+        }
+        return count;
+    }
+
+    /**
+     * Fill array with values from 0 to how many questions are in the database and shuffle it
+     *
+     * @param questionCount amount of questions in database
+     */
+    private void setUpIdList(int questionCount) {
+        idList = new ArrayList<>();
+        for (int i = 0; i < questionCount; i++) {
+            idList.add(i);
+        }
+
+        Collections.shuffle(idList);
+        String debug = "";
+        for (int i = 0; i < questionCount; i++) {
+            debug += (idList.get(i) + " ");
+        }
+        Toast.makeText(this, "Shuffled question array: " + debug, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -77,9 +122,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
      * @return generated number for choosing question out of database
      */
     private long generateQuestionId() {
-        //TODO: ZUFÄLLTIGE ZAHL je nach dem wie viele database entries es gibt generieren
-
-        return id++;
+        long questionId = idList.get(idSelect++);
+        Toast.makeText(this, "ArrayValue: " + questionId, Toast.LENGTH_SHORT).show();
+        return questionId;
     }
 
     /**
@@ -119,6 +164,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(gameToResult);
                 break;
         }
-        askNextQuestion();
+        if (questionsAsked < maxQuestionsToBeAnswered) {
+            askNextQuestion();
+            questionsAsked++;
+        } else {
+            Toast.makeText(this, "show Result", Toast.LENGTH_SHORT).show();
+            Intent gameToResult = new Intent(this, ResultActivity.class);
+            startActivity(gameToResult);
+        }
     }
 }

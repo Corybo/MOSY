@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import qqc.mosyits.haw.qqc.Questions.Question;
 
@@ -15,6 +16,7 @@ public class QuizDataSource {
     private final Context context;
     private DatabaseHandler dbHandler;
     private SQLiteDatabase database;
+    private Question questionCount;
 
     public QuizDataSource(Context context) {
         dbHandler = new DatabaseHandler(context);
@@ -93,5 +95,16 @@ public class QuizDataSource {
         question.setAnswer2(cursor.getString(4));
         question.setAnswer3(cursor.getString(5));
         return question;
+    }
+
+    /**
+     * Get count of questions in database
+     *
+     * @return count
+     */
+    public int getQuestionCount() {
+        Cursor cursor = database.query(DatabaseConstants.QUESTION_TABLE, DatabaseConstants.QUESTION_COLUMNS, null, null, null, null, null);
+        Toast.makeText(context, "QustionCount: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
+        return cursor.getCount();
     }
 }
