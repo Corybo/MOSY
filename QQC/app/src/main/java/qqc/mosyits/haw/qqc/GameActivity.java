@@ -23,6 +23,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button answerD;
     private Button buttonResult;
     private Question currentQuestion;
+    private int id = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +43,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerD.setOnClickListener(this);
         buttonResult.setOnClickListener(this);
 
-        setQuestion(0);
+        askNextQuestion();
     }
 
     /**
-     * Setting the questions
+     * select next Question
+     */
+    private void askNextQuestion() {
+        //TODO: Time delay 5s
+        setQuestion(generateQuestionId());
+    }
+
+    /**
+     * Setting the questions and their answers randomly on the buttons
      *
      * @param id
      */
@@ -60,6 +69,33 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerB.setText(answers[1]);
         answerC.setText(answers[2]);
         answerD.setText(answers[3]);
+    }
+
+    /**
+     * Generate random number
+     *
+     * @return generated number for choosing question out of database
+     */
+    private long generateQuestionId() {
+        //TODO: ZUFÄLLTIGE ZAHL je nach dem wie viele database entries es gibt generieren
+
+        return id++;
+    }
+
+    /**
+     * Check if answer is right or wrong
+     *
+     * @param answer Button which was clicked
+     * @return true: right answer, false: wrong answer
+     */
+    private boolean checkAnswer(Button answer) {
+        if (answer.getText().equals(currentQuestion.getRightAnswer())) {
+            Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
+            return true;
+        } else {
+            Toast.makeText(this, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
+            return false;
+        }
     }
 
     @Override
@@ -83,13 +119,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(gameToResult);
                 break;
         }
-    }
-
-    private void checkAnswer(Button answer) {
-        if (answer.getText().equals(currentQuestion.getRightAnswer())) {
-            Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
-        }
+        askNextQuestion();
     }
 }
