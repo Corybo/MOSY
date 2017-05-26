@@ -37,6 +37,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int amountQuestionsInDatabase;
     private int maxQuestionsToBeAnswered = 10;
     private int questionsAsked = 1;
+    private MqttAndroidClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +67,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     //outsourced method to connect to the server
     public void connectWithServer(){
         String clientId = MqttClient.generateClientId();
-        MqttAndroidClient client = new MqttAndroidClient(this.getApplicationContext(),
-                                    "tcp://broker.hivemq.com:1883", clientId);
+        client = new MqttAndroidClient(this.getApplicationContext(), "tcp://broker.hivemq.com:1883", clientId);
 
         MqttConnectOptions options = new MqttConnectOptions();
         options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
@@ -89,6 +89,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
                 }
             });
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //method to publish a topic (if the correct answer is selected)
+    public void toPublish(View v){
+        String topic = "haw/dmi/mt/its/ss17/qqc";
+        String message = "test: hallo qqc entwickler: die Antwort ist richtig";
+
+        try {
+            client.publish(topic, message.getBytes(), 0, false);
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -177,6 +189,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
             return true;
+            //toPublish();
         } else {
             Toast.makeText(this, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
             return false;
