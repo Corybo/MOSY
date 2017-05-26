@@ -95,7 +95,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     //method to publish a topic (if the correct answer is selected)
-    public void toPublish(View v){
+    //????wofür toPublish(View v)??? siehe ytvideo
+    public void toPublish(){
         String topic = "haw/dmi/mt/its/ss17/qqc";
         String message = "test: hallo qqc entwickler: die Antwort ist richtig";
 
@@ -188,8 +189,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean checkAnswer(Button answer) {
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
+            toPublish(); //publishs a topic because the answer is right
             return true;
-            //toPublish();
+
         } else {
             Toast.makeText(this, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
             return false;
