@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="qqc.mosyits.haw.qqc">
 
+    <!--add to connect the mqtt server -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -18,6 +24,11 @@
         </activity>
         <activity android:name=".GameActivity" />
         <activity android:name=".ResultActivity"></activity>
+
+        <!--add to connect the mqtt server -->
+        <service android:name="org.eclipse.paho.android.service.MqttService" >
+        </service>
+
     </application>
 
 </manifest>
