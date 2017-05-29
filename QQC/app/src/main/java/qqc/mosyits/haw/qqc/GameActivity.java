@@ -37,6 +37,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int amountQuestionsInDatabase;
     private int maxQuestionsToBeAnswered = 10;
     private int questionsAsked = 1;
+    private int correctAnswers = 0;
     private MqttAndroidClient client;
 
     @Override
@@ -182,6 +183,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean checkAnswer(Button answer) {
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
+            correctAnswers++;
             toPublish(); //publishs a topic because the answer is right
             return true;
 
@@ -218,6 +220,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Toast.makeText(this, "show Result", Toast.LENGTH_SHORT).show();
             Intent gameToResult = new Intent(this, ResultActivity.class);
+            gameToResult.putExtra("AMOUNT_OF_CORRECT_ANSWERS", correctAnswers);
             startActivity(gameToResult);
         }
     }

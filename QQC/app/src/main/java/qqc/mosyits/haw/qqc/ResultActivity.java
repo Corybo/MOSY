@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ResultActivity extends AppCompatActivity implements View.OnClickListener{
@@ -15,7 +16,10 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_result);
+        int amountCorrectAnswers = getIntent().getExtras().getInt("AMOUNT_OF_CORRECT_ANSWERS");
 
+        TextView txtAmountCorrectAnswers = (TextView) findViewById(R.id.amount_correct_answers);
+        txtAmountCorrectAnswers.setText(String.valueOf(amountCorrectAnswers) + " richtige Antworten");
         buttonRestart = (Button) findViewById(R.id.button_restart);
 
         buttonRestart.setOnClickListener(this);
