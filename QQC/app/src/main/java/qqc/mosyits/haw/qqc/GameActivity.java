@@ -23,7 +23,7 @@ import qqc.mosyits.haw.qqc.Database.QuizDataSource;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 
-public class GameActivity extends AppCompatActivity implements View.OnClickListener {
+public class GameActivity extends AppCompatActivity implements View.OnClickListener, IMqttActionListener {
 
     private TextView questionField;
     private Button answerA;
@@ -39,11 +39,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int questionsAsked = 1;
     private int correctAnswers = 0;
     private MqttAndroidClient client;
+    private MqttConnectOptions options;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        connectWithServer();
 
         questionField = (TextView) findViewById(R.id.question_field);
         answerA = (Button) findViewById(R.id.answer_a);
@@ -62,47 +64,41 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setUpIdList(amountQuestionsInDatabase);
         askNextQuestion();
 
-        connectWithServer();
     }
 
     //outsourced method to connect to the server
-    public void connectWithServer(){
+    public void connectWithServer() {
+        Toast.makeText(this, "connectWithServer", Toast.LENGTH_SHORT).show();
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(this.getApplicationContext(), "tcp://broker.hivemq.com:1883", clientId);
 
-        MqttConnectOptions options = new MqttConnectOptions();
+        options = new MqttConnectOptions();
         options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
 
 
         try {
             IMqttToken token = client.connect(options);
-            token.setActionCallback(new IMqttActionListener() {
-                @Override
-                public void onSuccess(IMqttToken asyncActionToken) {
-                    // We are connected
-                    Toast.makeText(GameActivity.this, "connected", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-                    // Something went wrong e.g. connection timeout or firewall problems
-                    Toast.makeText(GameActivity.this, "connection failed", Toast.LENGTH_SHORT).show();
-
-                }
-            });
+            token.setActionCallback(this);
         } catch (MqttException e) {
             e.printStackTrace();
+            Toast.makeText(GameActivity.this, "connection failed (catch)", Toast.LENGTH_SHORT).show();
         }
     }
 
     //method to publish a topic (if the correct answer is selected)
     //????wofür toPublish(View v)??? siehe ytvideo
-    public void toPublish(){
+    public void toPublish(View v) {
         String topic = "haw/dmi/mt/its/ss17/qqc";
-        String message = "test: hallo qqc entwickler: die Antwort ist richtig";
+        String message = "player1";
 
         try {
-            client.publish(topic, message.getBytes(), 0, false);
+            if (!client.isConnected()) {
+                Toast.makeText(this, "not connected", Toast.LENGTH_SHORT).show();
+            }
+            if (client.isConnected()) {
+                client.publish(topic, message.getBytes(), 0, false);
+                Toast.makeText(this, "publish successful", Toast.LENGTH_SHORT).show();
+            }
         } catch (MqttException e) {
             e.printStackTrace();
         }
@@ -184,7 +180,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
             correctAnswers++;
-            toPublish(); //publishs a topic because the answer is right
+            toPublish(answer); //publishs a topic because the answer is right
             return true;
 
         } else {
@@ -223,5 +219,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             gameToResult.putExtra("AMOUNT_OF_CORRECT_ANSWERS", correctAnswers);
             startActivity(gameToResult);
         }
+    }
+
+    @Override
+    public void onSuccess(IMqttToken asyncActionToken) {
+        // We are connected
+        Toast.makeText(GameActivity.this, "connected", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
+        // Something went wrong e.g. connection timeout or firewall problems
+        Toast.makeText(GameActivity.this, "connection failed, Exception: " + exception.toString(), Toast.LENGTH_LONG).show();
     }
 }
