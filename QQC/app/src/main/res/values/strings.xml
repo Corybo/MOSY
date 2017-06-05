@@ -3,4 +3,8 @@
     <string name="error_database">Ein Databankfehler ist aufgetreten</string>
     <string name="correct_answer">Richtige Antwort</string>
     <string name="wrong_answer">Falsche Antwort</string>
+    <string name="start_game">Start Game</string>
+    <string name="join_game">Join Game</string>
+    <string name="send_notification">Send Notification</string>
+    <string name="question_test">Question</string>
 </resources>

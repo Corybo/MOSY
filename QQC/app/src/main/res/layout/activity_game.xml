@@ -14,7 +14,7 @@
         android:layout_marginLeft="40dp"
         android:layout_marginRight="40dp"
         android:layout_marginTop="62dp"
-        android:text="Frage" />
+        android:text="@string/question_test" />
 
     <GridLayout
         android:layout_width="wrap_content"

@@ -11,12 +11,12 @@
     <Button
         android:id="@+id/button_start"
         style="@style/StartActivityButtons"
-        android:text="Start Game" />
+        android:text="@string/start_game" />
 
     <Button
         android:id="@+id/button_join"
         style="@style/StartActivityButtons"
-        android:text="Join Game" />
+        android:text="@string/join_game" />
 
     <EditText
         android:id="@+id/edit_notification"
@@ -27,5 +27,5 @@
     <Button
         android:id="@+id/button_send_notification"
         style="@style/StartActivityButtons"
-        android:text="Send Notification"/>
+        android:text="@string/send_notification"/>
 </LinearLayout>
