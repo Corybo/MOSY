@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import qqc.mosyits.haw.qqc.Database.QuizDataSource;
+import qqc.mosyits.haw.qqc.Questions.ClientHandler;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 
@@ -38,14 +39,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int maxQuestionsToBeAnswered = 10;
     private int questionsAsked = 1;
     private int correctAnswers = 0;
-    private MqttAndroidClient client;
-    private MqttConnectOptions options;
+    private ClientHandler handler;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        connectWithServer();
+        handler = new ClientHandler(this.getApplicationContext(), "player1");
 
         questionField = (TextView) findViewById(R.id.question_field);
         answerA = (Button) findViewById(R.id.answer_a);
@@ -66,43 +67,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    //outsourced method to connect to the server
-    public void connectWithServer() {
-        Toast.makeText(this, "connectWithServer", Toast.LENGTH_SHORT).show();
-        String clientId = MqttClient.generateClientId();
-        client = new MqttAndroidClient(this.getApplicationContext(), "tcp://broker.hivemq.com:1883", clientId);
-
-        options = new MqttConnectOptions();
-        options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
-
-
-        try {
-            IMqttToken token = client.connect(options);
-            token.setActionCallback(this);
-        } catch (MqttException e) {
-            e.printStackTrace();
-            Toast.makeText(GameActivity.this, "connection failed (catch)", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    //method to publish a topic (if the correct answer is selected)
-    //????wofür toPublish(View v)??? siehe ytvideo
-    public void toPublish(View v) {
-        String topic = "haw/dmi/mt/its/ss17/qqc";
-        String message = "player1";
-
-        try {
-            if (!client.isConnected()) {
-                Toast.makeText(this, "not connected", Toast.LENGTH_SHORT).show();
-            }
-            if (client.isConnected()) {
-                client.publish(topic, message.getBytes(), 0, false);
-                Toast.makeText(this, "publish successful", Toast.LENGTH_SHORT).show();
-            }
-        } catch (MqttException e) {
-            e.printStackTrace();
-        }
-    }
 
     /**
      * Get questionCount from database
@@ -180,7 +144,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
             correctAnswers++;
-            toPublish(answer); //publishs a topic because the answer is right
+            handler.toPublish(answer); //publishs a topic because the answer is right
             return true;
 
         } else {
