@@ -1,12 +1,8 @@
 package qqc.mosyits.haw.qqc;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.app.NotificationCompat;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -16,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import qqc.mosyits.haw.qqc.Database.DatabaseHandler;
+import qqc.mosyits.haw.qqc.Networking.ClientHandler;
 import qqc.mosyits.haw.qqc.Questions.QuestionInserts;
 
 /**
@@ -30,6 +27,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     private Button buttonJoin;
     private Button buttonSendNotification;
     private EditText editNotification;
+    private ClientHandler clientHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,33 +44,12 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         buttonSendNotification.setOnClickListener(this);
         editNotification.setOnEditorActionListener(this);
 
+        clientHandler = new ClientHandler(this);
 
         if (DEBUG) {
             deleteDatabase(new DatabaseHandler(this).DATABASE_NAME);
         }
         new QuestionInserts(this);
-    }
-
-
-    /**
-     * creates the notification
-     * @param stringNotification message which will be shown
-     */
-    private void createAndSendNotification(String stringNotification) {
-        //Reaction to notification
-        PendingIntent reply = PendingIntent.getActivity(this, 0, new Intent(this,StartActivity.class),PendingIntent.FLAG_UPDATE_CURRENT);
-        //Builder for notification
-        NotificationCompat.Builder notificationBuilder = (NotificationCompat.Builder) new NotificationCompat.Builder(this)
-                .setPriority(NotificationCompat.PRIORITY_MAX)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText(stringNotification)
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentIntent(reply)
-                .setDefaults(Notification.DEFAULT_VIBRATE);
-        //Show notification
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(StartActivity.this);
-        notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
     }
 
     /**
@@ -88,7 +65,12 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.button_start:
                 Toast.makeText(this, "Start Game", Toast.LENGTH_SHORT).show();
-                toGameActivity();
+                if(clientHandler.startMessageSent()){
+                    clientHandler.toPublish(editNotification, R.string.msg_join_game);
+                }else{
+                    clientHandler.toPublish(editNotification, R.string.msg_start_game);
+                }
+//                toGameActivity();
                 break;
             case R.id.button_join:
                 Toast.makeText(this, "Join Game", Toast.LENGTH_SHORT).show();
@@ -96,7 +78,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.button_send_notification:
                 //TODO: Send notification
-                createAndSendNotification(editNotification.getText().toString());
+                clientHandler.toPublish(editNotification, R.string.msg_start_game);
         }
     }
 

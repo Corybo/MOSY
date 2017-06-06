@@ -8,19 +8,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
 import qqc.mosyits.haw.qqc.Database.QuizDataSource;
-import qqc.mosyits.haw.qqc.Questions.ClientHandler;
+import qqc.mosyits.haw.qqc.Networking.ClientHandler;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 
@@ -46,7 +42,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        handler = new ClientHandler(this.getApplicationContext(), "player1");
+        handler = new ClientHandler(this.getApplicationContext());
 
         questionField = (TextView) findViewById(R.id.question_field);
         answerA = (Button) findViewById(R.id.answer_a);
@@ -144,7 +140,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
             correctAnswers++;
-            handler.toPublish(answer); //publishs a topic because the answer is right
+            handler.toPublish(answer, R.string.msg_start_game); //publishs a topic because the answer is right
             return true;
 
         } else {
