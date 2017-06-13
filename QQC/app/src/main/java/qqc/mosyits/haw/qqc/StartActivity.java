@@ -16,7 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import qqc.mosyits.haw.qqc.Database.DatabaseHandler;
+import qqc.mosyits.haw.qqc.Questions.ClientHandler;
 import qqc.mosyits.haw.qqc.Questions.QuestionInserts;
+import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
 
 /**
  * StartActivity before the Games starts
@@ -30,6 +32,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     private Button buttonJoin;
     private Button buttonSendNotification;
     private EditText editNotification;
+    private ClientHandler handler;
+    public enum GameStartStatus {READY, WAITING, BLOCKED}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,11 +50,13 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         buttonSendNotification.setOnClickListener(this);
         editNotification.setOnEditorActionListener(this);
 
+        handler = new ClientHandler(this.getApplicationContext());
 
         if (DEBUG) {
             deleteDatabase(new DatabaseHandler(this).DATABASE_NAME);
         }
         new QuestionInserts(this);
+        Toast.makeText(this, "Version 3", Toast.LENGTH_SHORT).show();
     }
 
 
@@ -79,8 +85,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
      * goes to GameActivity
      */
     public void toGameActivity() {
-        Intent startToGame = new Intent(this, GameActivity.class);
-        startActivity(startToGame);
+
     }
 
     @Override
@@ -88,7 +93,29 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.button_start:
                 Toast.makeText(this, "Start Game", Toast.LENGTH_SHORT).show();
-                toGameActivity();
+                switch (ClientHandler.getStartStatus()){
+                    //READY = Bereit zu spielen, warten auf Gegenspieler
+                    case READY:
+                        handler.toPublish(editNotification, getString(R.string.pub_waiting));
+                        handler.setPlayer(getString(R.string.player_1));
+                        QuestionSequence questionSequence = new QuestionSequence(this);
+                        Toast.makeText(this, questionSequence.toString(), Toast.LENGTH_SHORT).show();
+                        handler.toPublish(editNotification, questionSequence.toString());
+                        Toast.makeText(this, R.string.local_status_ready, Toast.LENGTH_SHORT).show();
+                        break;
+                    //WAITING = Spieler 1 hat Spiel gestartet, Spieler 2 kann joinen
+                    case WAITING:
+                        handler.toPublish(editNotification, getString(R.string.pub_started));
+                        handler.setPlayer(getString(R.string.player_2));
+                        Toast.makeText(this, R.string.local_status_waiting, Toast.LENGTH_SHORT).show();
+                        break;
+                    //BLOCKED = Fragen anzeigen, Kein weiterer Spieler kann joinen
+                    case BLOCKED:
+                        Toast.makeText(this, R.string.game_blocked, Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
+                }
                 break;
             case R.id.button_join:
                 Toast.makeText(this, "Join Game", Toast.LENGTH_SHORT).show();

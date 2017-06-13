@@ -1,6 +1,8 @@
 package qqc.mosyits.haw.qqc.Questions;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,57 +16,62 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import qqc.mosyits.haw.qqc.GameActivity;
+import qqc.mosyits.haw.qqc.R;
+import qqc.mosyits.haw.qqc.StartActivity;
 
 /**
  * Created by Mona on 05.06.2017.
  */
 
 public class ClientHandler implements MqttCallback {
+    private static final String PLAYER_KEY = "player_key";
 
 //test mit : http://www.hivemq.com/demos/websocket-client/
 
 
     private MqttAndroidClient client;
-    private Context c;
-    private String brokerURL = "tcp://broker.mqttdashboard.com";
-    private String pubMessage;
-
+    private Context context;
+    //    private String brokerURL = "tcp://broker.mqttdashboard.com";
+    private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
     //tcp://broker.hivemq.com:1883
+    private static StartActivity.GameStartStatus startStatus;
+    private String player;
+    public static int[] idList;
+    public static int maxQuestionsToBeAnswered = 10;
 
-    public ClientHandler(Context c, String pubMessage) {
-        //this.getApplicationContext() für c
-        this.c = c;
-        this.pubMessage = pubMessage;
+    public ClientHandler(Context c) {
+        //this.getApplicationContext() für context
+        this.context = c;
         connectWithServer();
+        startStatus = StartActivity.GameStartStatus.READY;
     }
 
     //outsourced method to connect to the server
     public void connectWithServer() {
         String clientId = MqttClient.generateClientId();
-
-
-        client = new MqttAndroidClient(c, brokerURL, clientId);
+        client = new MqttAndroidClient(context, brokerURL, clientId);
         client.setCallback(this);
         try {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setCleanSession(true);
 
             options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
-
-
             client.connect(options, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
                     // We are connected
-                    Toast.makeText(c, "connected", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "connected", Toast.LENGTH_SHORT).show();
                     toSubscribe();
                 }
 
                 @Override
                 public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
                     // Something went wrong e.g. connection timeout or firewall problems
-                    Toast.makeText(c, "connection failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "connection failed", Toast.LENGTH_SHORT).show();
 
                 }
             });
@@ -77,18 +84,18 @@ public class ClientHandler implements MqttCallback {
 
     //method to publish a topic (if the correct answer is selected)
     //????wofür toPublish(View v)??? siehe ytvideo
-    public void toPublish(View v) {
-        Toast.makeText(c, "Publish from Handler", Toast.LENGTH_SHORT).show();
+    public void toPublish(View v, String pubMessage) {
+        Toast.makeText(context, "Publish from Handler", Toast.LENGTH_SHORT).show();
         String topic = "haw/dmi/mt/its/ss17/qqc";
         //String message = "player1"; wird vom konstruktor übergeben
 
         try {
             if (!client.isConnected()) {
-                Toast.makeText(c, "not connected", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "not connected", Toast.LENGTH_SHORT).show();
             }
             if (client.isConnected()) {
                 client.publish(topic, pubMessage.getBytes(), 0, false);
-                Toast.makeText(c, "publish successful", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "publish successful", Toast.LENGTH_SHORT).show();
             }
 
 //        try {
@@ -99,14 +106,14 @@ public class ClientHandler implements MqttCallback {
     }
 
     public void toSubscribe() {
-        Toast.makeText(c, "Subscribe method from handler", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Subscribe method from handler", Toast.LENGTH_SHORT).show();
         //App stürzt ab Lösung: https://stackoverflow.com/questions/43038597/android-studio-mqtt-not-connecting
         //andere verwendung von IMqttActionListener
         try {
             client.subscribe("haw/dmi/mt/its/ss17/qqc", 0);
         } catch (MqttException e) {
             e.printStackTrace();
-            Toast.makeText(c, "Subscribe lässt ab abstürzen", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Subscribe lässt App abstürzen", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -116,20 +123,71 @@ public class ClientHandler implements MqttCallback {
 
     @Override
     public void connectionLost(Throwable cause) {
-        Toast.makeText(c, "ConnectionLost Handler", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "ConnectionLost Handler", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         if (topic.equals("haw/dmi/mt/its/ss17/qqc")) {
             String bodymessage = new String(message.getPayload()); //modymessage inhalt der gepublishten message kann weiterverarbeitetet werden
-            Toast.makeText(c, "Handler arrived Message: " + bodymessage, Toast.LENGTH_SHORT).show();
-
+            Toast.makeText(context, "Handler arrived Message: " + bodymessage, Toast.LENGTH_SHORT).show();
+            //STATUS: READY
+            if (bodymessage.equals(context.getResources().getString(R.string.pub_waiting))) {
+                setStartStatus(StartActivity.GameStartStatus.WAITING);
+                Toast.makeText(context, R.string.waiting_for_player_2, Toast.LENGTH_SHORT).show();
+            }
+            //STATUS: WAITING
+            else if (bodymessage.equals(context.getResources().getString(R.string.pub_started))) {
+                setStartStatus(StartActivity.GameStartStatus.BLOCKED);
+                Toast.makeText(context, R.string.game_started, Toast.LENGTH_SHORT).show();
+                Intent startToGame = new Intent(context, GameActivity.class);
+                //TODO:,Geht nur bei Nougat, Lösung finden für Marshmallow:
+                startToGame.putExtra(PLAYER_KEY, player);
+                context.startActivity(startToGame);
+            }
+            //STATUS: BLOCKED
+            else if (bodymessage.equals(context.getResources().getString(R.string.pub_end_game))) {
+                setStartStatus(StartActivity.GameStartStatus.READY);
+            }
+            //QuestionArray
+            else if (bodymessage.startsWith("#")) {
+                char[] cArray = bodymessage.toCharArray();
+                StringBuilder sb = new StringBuilder();
+                sb.deleteCharAt(0);
+                cArray = sb.toString().toCharArray();
+                int[] intAry = new int[maxQuestionsToBeAnswered];
+                int x = 0;
+                for (int i = 0; i < cArray.length; i++) {
+                    if (cArray[i] == (',')) {
+                    } else {
+                        intAry[x] = (int) cArray[i];
+                        x++;
+                    }
+                }
+                idList = intAry;
+                String str = "";
+                for(int id: idList){
+                    str += String.valueOf(id);
+                }
+                Toast.makeText(context, "ArrayValues: " + str, Toast.LENGTH_LONG).show();
+            }
         }
     }
 
     @Override
     public void deliveryComplete(IMqttDeliveryToken token) {
 
+    }
+
+    public static StartActivity.GameStartStatus getStartStatus() {
+        return ClientHandler.startStatus;
+    }
+
+    public static void setStartStatus(StartActivity.GameStartStatus startStatus) {
+        ClientHandler.startStatus = startStatus;
+    }
+
+    public void setPlayer(String player) {
+        this.player = player;
     }
 }

@@ -8,12 +8,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.eclipse.paho.android.service.MqttAndroidClient;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.eclipse.paho.client.mqttv3.MqttClient;
-import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,6 +22,7 @@ import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener, IMqttActionListener {
 
+    private static final java.lang.String PLAYER_KEY = "player_key";
     private TextView questionField;
     private Button answerA;
     private Button answerB;
@@ -33,20 +30,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button answerD;
     private Button buttonResult;
     private Question currentQuestion;
-    private ArrayList<Integer> idList;
     private int idSelect = 0;
-    private int amountQuestionsInDatabase;
-    private int maxQuestionsToBeAnswered = 10;
     private int questionsAsked = 1;
     private int correctAnswers = 0;
     private ClientHandler handler;
+    private String player;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-        handler = new ClientHandler(this.getApplicationContext(), "player1");
+        handler = new ClientHandler(this.getApplicationContext());
 
         questionField = (TextView) findViewById(R.id.question_field);
         answerA = (Button) findViewById(R.id.answer_a);
@@ -61,44 +56,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerD.setOnClickListener(this);
         buttonResult.setOnClickListener(this);
 
-        amountQuestionsInDatabase = questionCount();
-        setUpIdList(amountQuestionsInDatabase);
         askNextQuestion();
 
+        player = getIntent().getExtras().getString(PLAYER_KEY);
+
     }
-
-
-    /**
-     * Get questionCount from database
-     *
-     * @return questionCount
-     */
-    private int questionCount() {
-        QuizDataSource dataSource = new QuizDataSource(this);
-        int count = 0;
-        try {
-            dataSource.open();
-            count = dataSource.getQuestionCount();
-            dataSource.close();
-        } catch (Exception ex) {
-            Toast.makeText(this, R.string.error_database, Toast.LENGTH_SHORT).show();
-        }
-        return count;
-    }
-
-    /**
-     * Fill array with values from 0 to how many questions are in the database and shuffle it
-     *
-     * @param questionCount amount of questions in database
-     */
-    private void setUpIdList(int questionCount) {
-        idList = new ArrayList<>();
-        for (int i = 0; i < questionCount; i++) {
-            idList.add(i);
-        }
-        Collections.shuffle(idList);
-    }
-
     /**
      * select next Question
      */
@@ -130,7 +92,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
      * @return generated number for choosing question out of database
      */
     private long generateQuestionId() {
-        long questionId = idList.get(idSelect++);
+        long questionId = ClientHandler.idList[idSelect++];
         return questionId;
     }
 
@@ -144,7 +106,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
             correctAnswers++;
-            handler.toPublish(answer); //publishs a topic because the answer is right
+            handler.toPublish(answer, player); //publishs a topic because the answer is right
             return true;
 
         } else {
@@ -174,7 +136,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(gameToResult);
                 break;
         }
-        if (questionsAsked < maxQuestionsToBeAnswered) {
+        if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
             askNextQuestion();
             questionsAsked++;
         } else {
