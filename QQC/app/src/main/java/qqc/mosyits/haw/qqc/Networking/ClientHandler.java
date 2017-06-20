@@ -87,7 +87,7 @@ public class ClientHandler implements MqttCallback {
     //method to publish a topic (if the correct answer is selected)
     //????wofür toPublish(View v)??? siehe ytvideo
     public void toPublish(View v, String pubMessage) {
-        Toast.makeText(context, "Publish from Handler", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "Publish from Handler", Toast.LENGTH_SHORT).show();
         String topic = "haw/dmi/mt/its/ss17/qqc";
         //String message = "player1"; wird vom konstruktor übergeben
 
@@ -97,7 +97,7 @@ public class ClientHandler implements MqttCallback {
             }
             if (client.isConnected()) {
                 client.publish(topic, pubMessage.getBytes(), 0, false);
-                Toast.makeText(context, "publish successful", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "publish successful", Toast.LENGTH_SHORT).show();
             }
 
 //        try {
@@ -154,25 +154,9 @@ public class ClientHandler implements MqttCallback {
             }
             //QuestionArray
             else if (bodymessage.startsWith("#")) {
-                char[] cArray = bodymessage.toCharArray();
-                StringBuilder sb = new StringBuilder();
-                sb.deleteCharAt(0);
-                cArray = sb.toString().toCharArray();
-                int[] intAry = new int[maxQuestionsToBeAnswered];
-                int x = 0;
-                for (int i = 0; i < cArray.length; i++) {
-                    if (cArray[i] == (',')) {
-                    } else {
-                        intAry[x] = (int) cArray[i];
-                        x++;
-                    }
-                }
-                idList = intAry;
-                String str = "";
-                for(int id: idList){
-                    str += String.valueOf(id);
-                }
-                Toast.makeText(context, "ArrayValues: " + str, Toast.LENGTH_LONG).show();
+                String strId = bodymessage.substring(1,2);
+                Toast.makeText(context, "ohne Hashtag: " + strId, Toast.LENGTH_SHORT).show();
+                int id = Integer.valueOf(strId);
             }
         }
     }

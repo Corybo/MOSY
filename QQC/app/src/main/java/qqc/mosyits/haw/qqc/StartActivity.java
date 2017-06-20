@@ -77,9 +77,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                         handler.toPublish(editNotification, getString(R.string.pub_waiting));
                         handler.setPlayer(getString(R.string.player_1));
                         QuestionSequence questionSequence = new QuestionSequence(this);
-                        Toast.makeText(this, questionSequence.toString(), Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(this, questionSequence.toString(), Toast.LENGTH_SHORT).show();
                         handler.toPublish(editNotification, questionSequence.toString());
-                        Toast.makeText(this, R.string.local_status_ready, Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(this, R.string.local_status_ready, Toast.LENGTH_SHORT).show();
                         break;
                     //WAITING = Spieler 1 hat Spiel gestartet, Spieler 2 kann joinen
                     case WAITING:
