@@ -22,6 +22,7 @@ import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener, IMqttActionListener {
 
+    private static final java.lang.String PLAYER_KEY = "player_key";
     private TextView questionField;
     private Button answerA;
     private Button answerB;
@@ -29,13 +30,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button answerD;
     private Button buttonResult;
     private Question currentQuestion;
-    private ArrayList<Integer> idList;
     private int idSelect = 0;
-    private int amountQuestionsInDatabase;
-    private int maxQuestionsToBeAnswered = 10;
     private int questionsAsked = 1;
     private int correctAnswers = 0;
     private ClientHandler handler;
+    private String player;
+    private int i=0;
 
 
     @Override
@@ -57,50 +57,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerD.setOnClickListener(this);
         buttonResult.setOnClickListener(this);
 
-        amountQuestionsInDatabase = questionCount();
-        setUpIdList(amountQuestionsInDatabase);
         askNextQuestion();
 
+        player = getIntent().getExtras().getString(PLAYER_KEY);
+
     }
-
-
-    /**
-     * Get questionCount from database
-     *
-     * @return questionCount
-     */
-    private int questionCount() {
-        QuizDataSource dataSource = new QuizDataSource(this);
-        int count = 0;
-        try {
-            dataSource.open();
-            count = dataSource.getQuestionCount();
-            dataSource.close();
-        } catch (Exception ex) {
-            Toast.makeText(this, R.string.error_database, Toast.LENGTH_SHORT).show();
-        }
-        return count;
-    }
-
-    /**
-     * Fill array with values from 0 to how many questions are in the database and shuffle it
-     *
-     * @param questionCount amount of questions in database
-     */
-    private void setUpIdList(int questionCount) {
-        idList = new ArrayList<>();
-        for (int i = 0; i < questionCount; i++) {
-            idList.add(i);
-        }
-        Collections.shuffle(idList);
-    }
-
     /**
      * select next Question
      */
     private void askNextQuestion() {
         //TODO: Time delay 5s
-        setQuestion(generateQuestionId());
+        int[] id = {1,2,3,4,5,6,7,8,9,10};
+        setQuestion(id[i++]);
     }
 
     /**
@@ -126,7 +94,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
      * @return generated number for choosing question out of database
      */
     private long generateQuestionId() {
-        long questionId = idList.get(idSelect++);
+        long questionId = ClientHandler.idList[idSelect++];
         return questionId;
     }
 
@@ -140,7 +108,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
             correctAnswers++;
-            handler.toPublish(answer, R.string.msg_start_game); //publishs a topic because the answer is right
+            handler.toPublish(answer, player); //publishs a topic because the answer is right
             return true;
 
         } else {
@@ -170,7 +138,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 startActivity(gameToResult);
                 break;
         }
-        if (questionsAsked < maxQuestionsToBeAnswered) {
+        if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
             askNextQuestion();
             questionsAsked++;
         } else {

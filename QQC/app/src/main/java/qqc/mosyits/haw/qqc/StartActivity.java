@@ -1,7 +1,9 @@
 package qqc.mosyits.haw.qqc;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -14,11 +16,13 @@ import android.widget.Toast;
 import qqc.mosyits.haw.qqc.Database.DatabaseHandler;
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
 import qqc.mosyits.haw.qqc.Questions.QuestionInserts;
+import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
 
 /**
  * StartActivity before the Games starts
  * Player can start or join a game
  */
+@RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class StartActivity extends AppCompatActivity implements View.OnClickListener, TextView.OnEditorActionListener {
     private static final int NOTIFICATION_ID = 42;
     private final boolean DEBUG = true;
@@ -27,7 +31,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     private Button buttonJoin;
     private Button buttonSendNotification;
     private EditText editNotification;
-    private ClientHandler clientHandler;
+    private ClientHandler handler;
+    public enum GameStartStatus {READY, WAITING, BLOCKED}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,20 +49,21 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         buttonSendNotification.setOnClickListener(this);
         editNotification.setOnEditorActionListener(this);
 
-        clientHandler = new ClientHandler(this);
+        handler = new ClientHandler(this.getApplicationContext());
+
 
         if (DEBUG) {
             deleteDatabase(new DatabaseHandler(this).DATABASE_NAME);
         }
         new QuestionInserts(this);
+        Toast.makeText(this, "Version 3", Toast.LENGTH_SHORT).show();
     }
 
     /**
      * goes to GameActivity
      */
     public void toGameActivity() {
-        Intent startToGame = new Intent(this, GameActivity.class);
-        startActivity(startToGame);
+
     }
 
     @Override
@@ -65,12 +71,29 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.button_start:
                 Toast.makeText(this, "Start Game", Toast.LENGTH_SHORT).show();
-                if(clientHandler.startMessageSent()){
-                    clientHandler.toPublish(editNotification, R.string.msg_join_game);
-                }else{
-                    clientHandler.toPublish(editNotification, R.string.msg_start_game);
+                switch (ClientHandler.getStartStatus()){
+                    //READY = Bereit zu spielen, warten auf Gegenspieler
+                    case READY:
+                        handler.toPublish(editNotification, getString(R.string.pub_waiting));
+                        handler.setPlayer(getString(R.string.player_1));
+                        QuestionSequence questionSequence = new QuestionSequence(this);
+                        Toast.makeText(this, questionSequence.toString(), Toast.LENGTH_SHORT).show();
+                        handler.toPublish(editNotification, questionSequence.toString());
+                        Toast.makeText(this, R.string.local_status_ready, Toast.LENGTH_SHORT).show();
+                        break;
+                    //WAITING = Spieler 1 hat Spiel gestartet, Spieler 2 kann joinen
+                    case WAITING:
+                        handler.toPublish(editNotification, getString(R.string.pub_started));
+                        handler.setPlayer(getString(R.string.player_2));
+                        Toast.makeText(this, R.string.local_status_waiting, Toast.LENGTH_SHORT).show();
+                        break;
+                    //BLOCKED = Fragen anzeigen, Kein weiterer Spieler kann joinen
+                    case BLOCKED:
+                        Toast.makeText(this, R.string.game_blocked, Toast.LENGTH_SHORT).show();
+                        break;
+                    default:
+                        break;
                 }
-//                toGameActivity();
                 break;
             case R.id.button_join:
                 Toast.makeText(this, "Join Game", Toast.LENGTH_SHORT).show();
@@ -78,7 +101,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.button_send_notification:
                 //TODO: Send notification
-                clientHandler.toPublish(editNotification, R.string.msg_start_game);
+                handler.toPublish(editNotification, getString(R.string.msg_start_game));
         }
     }
 

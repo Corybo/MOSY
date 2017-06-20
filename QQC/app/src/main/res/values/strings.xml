@@ -10,4 +10,15 @@
     <string name="topic">haw/dmi/mt/its/ss17/qqc</string>
     <string name="msg_start_game">start</string>
     <string name="msg_join_game">join</string>
+    <string name="game_blocked">Neues Spiel momentan nicht verfügbar.</string>
+    <string name="game_started">Spiel hat begonnen</string>
+    <string name="waiting_for_player_2">Bitte auf Spieler 2 warten</string>
+    <string name="ready">Bereit, das Spiel zu starten</string>
+    <string name="pub_waiting">pub_waiting</string>
+    <string name="pub_started">pub_started</string>
+    <string name="pub_end_game">pub_end_game</string>
+    <string name="local_status_ready">Local Status Ready</string>
+    <string name="local_status_waiting">Local Status Waiting</string>
+    <string name="player_1">Player1</string>
+    <string name="player_2">Player2</string>
 </resources>
