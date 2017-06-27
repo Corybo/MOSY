@@ -15,6 +15,8 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.util.ArrayList;
+
 import qqc.mosyits.haw.qqc.GameActivity;
 import qqc.mosyits.haw.qqc.R;
 import qqc.mosyits.haw.qqc.StartActivity;
@@ -38,6 +40,10 @@ public class ClientHandler implements MqttCallback {
     private StartActivity.Player player;
     public static int[] idList;
     public static int maxQuestionsToBeAnswered = 10;
+    private ArrayList<Integer> questionSequence;
+    private int questionId;
+    private boolean isFirstQuestion = true;
+    private GameActivity gameActivity;
 
     public ClientHandler(Context c) {
         //this.getApplicationContext() für context
@@ -129,18 +135,13 @@ public class ClientHandler implements MqttCallback {
             String bodymessage = new String(message.getPayload()); //modymessage inhalt der gepublishten message kann weiterverarbeitetet werden
             Toast.makeText(context, "Handler arrived Message: " + bodymessage, Toast.LENGTH_SHORT).show();
             //STATUS: READY
-            if (bodymessage.equals(context.getResources().getString(R.string.pub_waiting))) {
+            if (bodymessage.equals(context.getResources().getString(R.string.pub_waiting_start))) {
                 setStartStatus(StartActivity.GameStartStatus.WAITING);
                 Toast.makeText(context, R.string.waiting_for_player_2, Toast.LENGTH_SHORT).show();
             }
             //STATUS: WAITING
-            else if (bodymessage.equals(context.getResources().getString(R.string.pub_started))) {
-                setStartStatus(StartActivity.GameStartStatus.BLOCKED);
-                Toast.makeText(context, R.string.game_started, Toast.LENGTH_SHORT).show();
-                Intent startToGame = new Intent(context, GameActivity.class);
-                //TODO:Geht nur bei Nougat, Lösung finden für Marshmallow:
-                startToGame.putExtra(PLAYER_KEY, player);
-                context.startActivity(startToGame);
+            else if (bodymessage.equals(context.getResources().getString(R.string.pub_started_join))) {
+                startGame();
             }
             //STATUS: BLOCKED
             else if (bodymessage.equals(context.getResources().getString(R.string.pub_end_game))) {
@@ -148,11 +149,40 @@ public class ClientHandler implements MqttCallback {
             }
             //QuestionArray
             else if (bodymessage.startsWith("#")) {
-                String strId = bodymessage.substring(1,2);
+                String strId = bodymessage.substring(1);
                 Toast.makeText(context, "ohne Hashtag: " + strId, Toast.LENGTH_SHORT).show();
-                int id = Integer.valueOf(strId);
+                questionId = Integer.valueOf(strId);
+            }
+            //Start next question
+            else if(bodymessage.equalsIgnoreCase(context.getResources().getString(R.string.msg_go))){
+                if(isFirstQuestion){
+                    startGame();
+                    isFirstQuestion = false;
+                }else {
+                    nextQuestion();
+                }
             }
         }
+    }
+
+    /**
+     * start game -> first question is displayed
+     */
+    private void startGame() {
+        setStartStatus(StartActivity.GameStartStatus.BLOCKED);
+        Toast.makeText(context, R.string.game_started, Toast.LENGTH_SHORT).show();
+        //TODO: gameActivity nicht als object, sondern iwie per Listener benachrichtigen, dass "go" gesendet wurde
+        gameActivity = new GameActivity();
+        nextQuestion();
+        Intent startToGame = new Intent(context, gameActivity.getClass());
+        //TODO:Geht nur bei Nougat, Lösung finden für Marshmallow:
+        startToGame.putExtra(PLAYER_KEY, player);
+        context.startActivity(startToGame);
+    }
+
+    //TODO: überarbeiten per Listener schauen, dass GameAcitivty neue Frage anzeigt
+    private void nextQuestion() {
+        gameActivity.askNextQuestion(questionId);
     }
 
     @Override
@@ -170,5 +200,15 @@ public class ClientHandler implements MqttCallback {
 
     public void setPlayer(StartActivity.Player player) {
         this.player = player;
+    }
+
+    public void setQuestionSequence(ArrayList<Integer> questionSequence) {
+        this.questionSequence = questionSequence;
+    }
+
+    public void sendQuestionNumber(int id) {
+        //Question value as String
+        String s = "#" + String.valueOf(questionSequence.get(id));
+        toPublish(null, s);
     }
 }

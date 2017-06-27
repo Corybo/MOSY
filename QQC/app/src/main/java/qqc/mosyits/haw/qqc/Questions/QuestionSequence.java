@@ -21,7 +21,7 @@ public class QuestionSequence {
     public QuestionSequence(Context context){
         this.context = context;
         amountQuestionsInDatabase = questionCount();
-        setUpIdList(amountQuestionsInDatabase);
+        idList = setUpIdList(amountQuestionsInDatabase);
     }
 
     /**
@@ -29,12 +29,13 @@ public class QuestionSequence {
      *
      * @param questionCount amount of questions in database
      */
-    private void setUpIdList(int questionCount) {
+    private ArrayList<Integer> setUpIdList(int questionCount) {
         idList = new ArrayList<>();
         for (int i = 0; i < questionCount; i++) {
             idList.add(i);
         }
         Collections.shuffle(idList);
+        return idList;
     }
     /**
      * Get questionCount from database
@@ -54,14 +55,8 @@ public class QuestionSequence {
         return count;
     }
 
-    @Override
-    public String toString() {
-        String s= "";
-        for (int i:idList) {
-            s += (String.valueOf(i) + ",");
-        }
-        //String arrayAsString = "{" + s + "}";
-       // int[] strAry = {"1","2","3"};
-        return "#" + s; // arrayAsString;
+
+    public ArrayList<Integer> getArrayList() {
+        return idList;
     }
 }

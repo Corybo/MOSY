@@ -1,6 +1,5 @@
 package qqc.mosyits.haw.qqc;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -76,19 +75,23 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 switch (ClientHandler.getStartStatus()){
                     //READY = Bereit zu spielen, warten auf Gegenspieler
                     case READY:
+                        //set PLAYER_1
                         player = Player.PLAYER_1;
-                        handler.toPublish(editNotification, getString(R.string.pub_waiting));
                         handler.setPlayer(player);
+                        //publish start
+                        handler.toPublish(editNotification, getString(R.string.pub_waiting_start));
+                        //generate questionSequence and set it in ClientHandler
                         QuestionSequence questionSequence = new QuestionSequence(this);
-//                        Toast.makeText(this, questionSequence.toString(), Toast.LENGTH_SHORT).show();
-                        handler.toPublish(editNotification, questionSequence.toString());
-//                        Toast.makeText(this, R.string.local_status_ready, Toast.LENGTH_SHORT).show();
+                        handler.setQuestionSequence(questionSequence.getArrayList());
+                        handler.sendQuestionNumber(0);
                         break;
                     //WAITING = Spieler 1 hat Spiel gestartet, Spieler 2 kann joinen
                     case WAITING:
                         player = Player.PLAYER_2;
-                        handler.toPublish(editNotification, getString(R.string.pub_started));
                         handler.setPlayer(player);
+                        handler.toPublish(editNotification, getString(R.string.pub_started_join));
+                        //Todo: "go" zum testen, wird letztendelich vom Raspberry geschickt
+                        handler.toPublish(null, getString(R.string.msg_go));
                         Toast.makeText(this, R.string.local_status_waiting, Toast.LENGTH_SHORT).show();
                         break;
                     //BLOCKED = Fragen anzeigen, Kein weiterer Spieler kann joinen

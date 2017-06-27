@@ -11,11 +11,9 @@ import android.widget.Toast;
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
-import qqc.mosyits.haw.qqc.Database.QuizDataSource;
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
@@ -57,18 +55,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerD.setOnClickListener(this);
         buttonResult.setOnClickListener(this);
 
-        askNextQuestion();
 
         player = getIntent().getExtras().getString(PLAYER_KEY);
 
     }
     /**
      * select next Question
+     * @param questionId
      */
-    private void askNextQuestion() {
+    public void askNextQuestion(int questionId) {
         //TODO: Time delay 5s
-        int[] id = {1,2,3,4,5,6,7,8,9,10};
-        setQuestion(id[i++]);
+        if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
+            setQuestion(questionId);
+        } else {
+            Toast.makeText(this, "show Result", Toast.LENGTH_SHORT).show();
+            Intent gameToResult = new Intent(this, ResultActivity.class);
+            gameToResult.putExtra("AMOUNT_OF_CORRECT_ANSWERS", correctAnswers);
+            startActivity(gameToResult);
+        }
+
     }
 
     /**
@@ -109,6 +114,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
             correctAnswers++;
             handler.toPublish(answer, player); //publishs a topic because the answer is right
+            handler.toPublish(null, getString(R.string.msg_go));
             return true;
 
         } else {
@@ -137,15 +143,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 Intent gameToResult = new Intent(this, ResultActivity.class);
                 startActivity(gameToResult);
                 break;
-        }
-        if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
-            askNextQuestion();
-            questionsAsked++;
-        } else {
-            Toast.makeText(this, "show Result", Toast.LENGTH_SHORT).show();
-            Intent gameToResult = new Intent(this, ResultActivity.class);
-            gameToResult.putExtra("AMOUNT_OF_CORRECT_ANSWERS", correctAnswers);
-            startActivity(gameToResult);
         }
     }
 
