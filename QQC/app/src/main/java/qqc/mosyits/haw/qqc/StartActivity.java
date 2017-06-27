@@ -32,7 +32,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     private Button buttonSendNotification;
     private EditText editNotification;
     private ClientHandler handler;
+    public Player player;
     public enum GameStartStatus {READY, WAITING, BLOCKED}
+    public enum Player{PLAYER_1, PLAYER_2}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +76,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 switch (ClientHandler.getStartStatus()){
                     //READY = Bereit zu spielen, warten auf Gegenspieler
                     case READY:
+                        player = Player.PLAYER_1;
                         handler.toPublish(editNotification, getString(R.string.pub_waiting));
-                        handler.setPlayer(getString(R.string.player_1));
+                        handler.setPlayer(player);
                         QuestionSequence questionSequence = new QuestionSequence(this);
 //                        Toast.makeText(this, questionSequence.toString(), Toast.LENGTH_SHORT).show();
                         handler.toPublish(editNotification, questionSequence.toString());
@@ -83,8 +86,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                         break;
                     //WAITING = Spieler 1 hat Spiel gestartet, Spieler 2 kann joinen
                     case WAITING:
+                        player = Player.PLAYER_2;
                         handler.toPublish(editNotification, getString(R.string.pub_started));
-                        handler.setPlayer(getString(R.string.player_2));
+                        handler.setPlayer(player);
                         Toast.makeText(this, R.string.local_status_waiting, Toast.LENGTH_SHORT).show();
                         break;
                     //BLOCKED = Fragen anzeigen, Kein weiterer Spieler kann joinen

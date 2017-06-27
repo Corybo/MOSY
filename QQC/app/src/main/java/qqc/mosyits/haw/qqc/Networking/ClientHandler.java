@@ -1,10 +1,7 @@
 package qqc.mosyits.haw.qqc.Networking;
 
-import android.app.Notification;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
@@ -17,9 +14,6 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import qqc.mosyits.haw.qqc.GameActivity;
 import qqc.mosyits.haw.qqc.R;
@@ -41,7 +35,7 @@ public class ClientHandler implements MqttCallback {
     private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
     //tcp://broker.hivemq.com:1883
     private static StartActivity.GameStartStatus startStatus;
-    private String player;
+    private StartActivity.Player player;
     public static int[] idList;
     public static int maxQuestionsToBeAnswered = 10;
 
@@ -174,7 +168,7 @@ public class ClientHandler implements MqttCallback {
         ClientHandler.startStatus = startStatus;
     }
 
-    public void setPlayer(String player) {
+    public void setPlayer(StartActivity.Player player) {
         this.player = player;
     }
 }
