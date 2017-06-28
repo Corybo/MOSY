@@ -28,8 +28,9 @@ import qqc.mosyits.haw.qqc.StartActivity;
 public class ClientHandler implements MqttCallback {
     private static final String PLAYER_KEY = "player_key";
 
-//    http://www.hivemq.com/demos/websocket-client/
+    //    http://www.hivemq.com/demos/websocket-client/
     private static final int NOTIFICATION_ID = 42;
+    private static ArrayList<MessageObserver> observerList = new ArrayList<>();
 
     private MqttAndroidClient client;
     private Context context;
@@ -41,7 +42,6 @@ public class ClientHandler implements MqttCallback {
     public static int[] idList;
     public static int maxQuestionsToBeAnswered = 10;
     private ArrayList<Integer> questionSequence;
-    private int questionId;
     private boolean isFirstQuestion = true;
     private GameActivity gameActivity;
 
@@ -149,18 +149,15 @@ public class ClientHandler implements MqttCallback {
             }
             //QuestionArray
             else if (bodymessage.startsWith("#")) {
-                String strId = bodymessage.substring(1);
-                Toast.makeText(context, "ohne Hashtag: " + strId, Toast.LENGTH_SHORT).show();
-                questionId = Integer.valueOf(strId);
+                notifyMessageObserver(bodymessage);
             }
             //Start next question
-            else if(bodymessage.equalsIgnoreCase(context.getResources().getString(R.string.msg_go))){
-                if(isFirstQuestion){
+            else if (bodymessage.equalsIgnoreCase(context.getResources().getString(R.string.msg_go))) {
+                if (isFirstQuestion) {
                     startGame();
                     isFirstQuestion = false;
-                }else {
-                    nextQuestion();
                 }
+                notifyMessageObserver(bodymessage);
             }
         }
     }
@@ -171,18 +168,10 @@ public class ClientHandler implements MqttCallback {
     private void startGame() {
         setStartStatus(StartActivity.GameStartStatus.BLOCKED);
         Toast.makeText(context, R.string.game_started, Toast.LENGTH_SHORT).show();
-        //TODO: gameActivity nicht als object, sondern iwie per Listener benachrichtigen, dass "go" gesendet wurde
-        gameActivity = new GameActivity();
-        nextQuestion();
-        Intent startToGame = new Intent(context, gameActivity.getClass());
+        Intent startToGame = new Intent(context, GameActivity.class);
         //TODO:Geht nur bei Nougat, Lösung finden für Marshmallow:
         startToGame.putExtra(PLAYER_KEY, player);
         context.startActivity(startToGame);
-    }
-
-    //TODO: überarbeiten per Listener schauen, dass GameAcitivty neue Frage anzeigt
-    private void nextQuestion() {
-        gameActivity.askNextQuestion(questionId);
     }
 
     @Override
@@ -210,5 +199,26 @@ public class ClientHandler implements MqttCallback {
         //Question value as String
         String s = "#" + String.valueOf(questionSequence.get(id));
         toPublish(null, s);
+    }
+
+    /*** OBSERVER **********************************************************************************/
+    /**
+     * Add new observer to list
+     *
+     * @param observer new MESSAGE_OBSERVER
+     */
+    public static void addMessageObserver(MessageObserver observer) {
+        observerList.add(observer);
+    }
+
+    /**
+     * Notify all messageObservers when new message came in
+     *
+     * @param msg new message
+     */
+    public static void notifyMessageObserver(String msg) {
+        for (MessageObserver observer : observerList) {
+            observer.updateMessage(msg);
+        }
     }
 }

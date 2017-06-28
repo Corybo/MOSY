@@ -15,10 +15,11 @@ import java.util.Arrays;
 import java.util.Collections;
 
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
+import qqc.mosyits.haw.qqc.Networking.MessageObserver;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 
-public class GameActivity extends AppCompatActivity implements View.OnClickListener, IMqttActionListener {
+public class GameActivity extends AppCompatActivity implements View.OnClickListener, IMqttActionListener, MessageObserver {
 
     private static final java.lang.String PLAYER_KEY = "player_key";
     private TextView questionField;
@@ -33,13 +34,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int correctAnswers = 0;
     private ClientHandler handler;
     private String player;
-    private int i=0;
+    private int questionId;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+        //add this class as observer
+        ClientHandler.addMessageObserver(this);
+
         handler = new ClientHandler(this.getApplicationContext());
 
         questionField = (TextView) findViewById(R.id.question_field);
@@ -55,15 +59,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerD.setOnClickListener(this);
         buttonResult.setOnClickListener(this);
 
-
         player = getIntent().getExtras().getString(PLAYER_KEY);
-
     }
+
+
     /**
      * select next Question
-     * @param questionId
+     *
      */
-    public void askNextQuestion(int questionId) {
+    private void askNextQuestion() {
         //TODO: Time delay 5s
         if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
             setQuestion(questionId);
@@ -156,5 +160,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
         // Something went wrong e.g. connection timeout or firewall problems
         Toast.makeText(GameActivity.this, "connection failed, Exception: " + exception.toString(), Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void updateMessage(String msg) {
+        if (msg.startsWith("#")) {
+            String strId = msg.substring(1);
+            Toast.makeText(this, "ohne Hashtag: " + strId, Toast.LENGTH_SHORT).show();
+            questionId = Integer.valueOf(strId);
+        }
+        else if(msg.equalsIgnoreCase(getString(R.string.msg_go))){
+            askNextQuestion();
+        }
     }
 }
