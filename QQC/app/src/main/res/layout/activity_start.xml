@@ -12,20 +12,4 @@
         android:id="@+id/button_start"
         style="@style/StartActivityButtons"
         android:text="@string/btn_start_game" />
-
-    <Button
-        android:id="@+id/button_join"
-        style="@style/StartActivityButtons"
-        android:text="@string/join_game" />
-
-    <EditText
-        android:id="@+id/edit_notification"
-        style="@style/StartActivityButtons"
-        android:inputType="text"
-        android:maxLines="1"
-        android:imeOptions="actionGo"/>
-    <Button
-        android:id="@+id/button_send_notification"
-        style="@style/StartActivityButtons"
-        android:text="@string/send_notification"/>
 </LinearLayout>

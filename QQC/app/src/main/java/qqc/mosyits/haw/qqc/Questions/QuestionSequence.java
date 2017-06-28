@@ -15,13 +15,11 @@ import qqc.mosyits.haw.qqc.R;
 
 public class QuestionSequence {
     private final Context context;
-    private int amountQuestionsInDatabase;
     private ArrayList<Integer> idList;
 
     public QuestionSequence(Context context){
         this.context = context;
-        amountQuestionsInDatabase = questionCount();
-        idList = setUpIdList(amountQuestionsInDatabase);
+        idList = setUpIdList(questionCountDatabase());
     }
 
     /**
@@ -38,11 +36,11 @@ public class QuestionSequence {
         return idList;
     }
     /**
-     * Get questionCount from database
+     * Get questionCountDatabase from database
      *
-     * @return questionCount
+     * @return questionCountDatabase
      */
-    private int questionCount() {
+    private int questionCountDatabase() {
         QuizDataSource dataSource = new QuizDataSource(context);
         int count = 0;
         try {
@@ -54,7 +52,6 @@ public class QuestionSequence {
         }
         return count;
     }
-
 
     public ArrayList<Integer> getArrayList() {
         return idList;

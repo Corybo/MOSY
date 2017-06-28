@@ -4,12 +4,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.view.KeyEvent;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import qqc.mosyits.haw.qqc.Database.DatabaseHandler;
@@ -22,49 +18,31 @@ import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
  * Player can start or join a game
  */
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-public class StartActivity extends AppCompatActivity implements View.OnClickListener, TextView.OnEditorActionListener {
+public class StartActivity extends AppCompatActivity implements View.OnClickListener{
     private static final int NOTIFICATION_ID = 42;
     private final boolean DEBUG = true;
 
-    private Button buttonStart;
-    private Button buttonJoin;
-    private Button buttonSendNotification;
-    private EditText editNotification;
     private ClientHandler handler;
     public Player player;
+
     public enum GameStartStatus {READY, WAITING, BLOCKED}
-    public enum Player{PLAYER_1, PLAYER_2}
+
+    public enum Player {PLAYER_1, PLAYER_2}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        buttonStart = (Button) findViewById(R.id.button_start);
-        buttonJoin = (Button) findViewById(R.id.button_join);
-        buttonSendNotification = (Button) findViewById(R.id.button_send_notification);
-        editNotification = (EditText) findViewById(R.id.edit_notification);
-
+        Button buttonStart = (Button) findViewById(R.id.button_start);
         buttonStart.setOnClickListener(this);
-        buttonJoin.setOnClickListener(this);
-        buttonSendNotification.setOnClickListener(this);
-        editNotification.setOnEditorActionListener(this);
 
-        handler = new ClientHandler(this.getApplicationContext());
-
+        handler = new ClientHandler(this);
 
         if (DEBUG) {
             deleteDatabase(new DatabaseHandler(this).DATABASE_NAME);
         }
         new QuestionInserts(this);
-        Toast.makeText(this, "Version 3", Toast.LENGTH_SHORT).show();
-    }
-
-    /**
-     * goes to GameActivity
-     */
-    public void toGameActivity() {
-
     }
 
     @Override
@@ -72,14 +50,14 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         switch (v.getId()) {
             case R.id.button_start:
                 Toast.makeText(this, "Start Game", Toast.LENGTH_SHORT).show();
-                switch (ClientHandler.getStartStatus()){
+                switch (ClientHandler.getStartStatus()) {
                     //READY = Bereit zu spielen, warten auf Gegenspieler
                     case READY:
                         //set PLAYER_1
                         player = Player.PLAYER_1;
                         handler.setPlayer(player);
                         //publish start
-                        handler.toPublish(editNotification, getString(R.string.pub_waiting_start));
+                        handler.toPublish(null, getString(R.string.pub_waiting_start));
                         //generate questionSequence and set it in ClientHandler
                         QuestionSequence questionSequence = new QuestionSequence(this);
                         handler.setQuestionSequence(questionSequence.getArrayList());
@@ -89,7 +67,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     case WAITING:
                         player = Player.PLAYER_2;
                         handler.setPlayer(player);
-                        handler.toPublish(editNotification, getString(R.string.pub_started_join));
+                        handler.toPublish(null, getString(R.string.pub_started_join));
                         //Todo: "go" zum testen, wird letztendelich vom Raspberry geschickt
                         handler.toPublish(null, getString(R.string.msg_go));
                         Toast.makeText(this, R.string.local_status_waiting, Toast.LENGTH_SHORT).show();
@@ -101,24 +79,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     default:
                         break;
                 }
-                break;
-            case R.id.button_join:
-                Toast.makeText(this, "Join Game", Toast.LENGTH_SHORT).show();
-                toGameActivity();
-                break;
-            case R.id.button_send_notification:
-                //TODO: Send notification
-                handler.toPublish(editNotification, getString(R.string.msg_start_game));
         }
-    }
-
-    //performs a click on button_send_notification
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if(actionId == EditorInfo.IME_ACTION_GO){
-            buttonSendNotification.performClick();
-            return true;
-        }
-        return false;
     }
 }

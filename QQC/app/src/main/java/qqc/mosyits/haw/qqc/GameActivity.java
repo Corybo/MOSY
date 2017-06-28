@@ -27,9 +27,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button answerB;
     private Button answerC;
     private Button answerD;
-    private Button buttonResult;
     private Question currentQuestion;
-    private int idSelect = 0;
     private int questionsAsked = 1;
     private int correctAnswers = 0;
     private ClientHandler handler;
@@ -51,26 +49,25 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerB = (Button) findViewById(R.id.answer_b);
         answerC = (Button) findViewById(R.id.answer_c);
         answerD = (Button) findViewById(R.id.answer_d);
-        buttonResult = (Button) findViewById(R.id.button_result);
 
         answerA.setOnClickListener(this);
         answerB.setOnClickListener(this);
         answerC.setOnClickListener(this);
         answerD.setOnClickListener(this);
-        buttonResult.setOnClickListener(this);
 
+        //TODO: schauen, ob das so passt, das Player nicht als String übergeben sondern enum PLAYER in StartActivity
         player = getIntent().getExtras().getString(PLAYER_KEY);
     }
 
 
     /**
      * select next Question
-     *
      */
     private void askNextQuestion() {
         //TODO: Time delay 5s
         if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
             setQuestion(questionId);
+            questionsAsked++;
         } else {
             Toast.makeText(this, "show Result", Toast.LENGTH_SHORT).show();
             Intent gameToResult = new Intent(this, ResultActivity.class);
@@ -98,16 +95,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     /**
-     * Generate random number
-     *
-     * @return generated number for choosing question out of database
-     */
-    private long generateQuestionId() {
-        long questionId = ClientHandler.idList[idSelect++];
-        return questionId;
-    }
-
-    /**
      * Check if answer is right or wrong
      *
      * @param answer Button which was clicked
@@ -118,6 +105,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
             correctAnswers++;
             handler.toPublish(answer, player); //publishs a topic because the answer is right
+            //TODO: nur für Testzwecke, go wird letztendlich vom Raspberry gesendet
             handler.toPublish(null, getString(R.string.msg_go));
             return true;
 
@@ -142,11 +130,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.answer_d:
                 checkAnswer(answerD);
                 break;
-            case R.id.button_result:
-                Toast.makeText(this, "show Result", Toast.LENGTH_SHORT).show();
-                Intent gameToResult = new Intent(this, ResultActivity.class);
-                startActivity(gameToResult);
-                break;
         }
     }
 
@@ -162,14 +145,21 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(GameActivity.this, "connection failed, Exception: " + exception.toString(), Toast.LENGTH_LONG).show();
     }
 
+    /**
+     * get messages from ClientHandler when they arrive
+     *
+     * @param msg message that is lately arrived
+     */
     @Override
     public void updateMessage(String msg) {
+        //if message starts with #, it is the number for the next question and saved as questionId
         if (msg.startsWith("#")) {
             String strId = msg.substring(1);
             Toast.makeText(this, "ohne Hashtag: " + strId, Toast.LENGTH_SHORT).show();
             questionId = Integer.valueOf(strId);
         }
-        else if(msg.equalsIgnoreCase(getString(R.string.msg_go))){
+        //if message is go, then the next question is displayed
+        else if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
             askNextQuestion();
         }
     }

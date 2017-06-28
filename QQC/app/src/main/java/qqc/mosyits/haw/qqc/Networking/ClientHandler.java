@@ -22,7 +22,7 @@ import qqc.mosyits.haw.qqc.R;
 import qqc.mosyits.haw.qqc.StartActivity;
 
 /**
- * Created by Mona on 05.06.2017.
+ * Handles all network interaction, publishing and subscribing
  */
 
 public class ClientHandler implements MqttCallback {
@@ -43,16 +43,16 @@ public class ClientHandler implements MqttCallback {
     public static int maxQuestionsToBeAnswered = 10;
     private ArrayList<Integer> questionSequence;
     private boolean isFirstQuestion = true;
-    private GameActivity gameActivity;
 
     public ClientHandler(Context c) {
-        //this.getApplicationContext() für context
         this.context = c;
         connectWithServer();
         startStatus = StartActivity.GameStartStatus.READY;
     }
 
-    //outsourced method to connect to the server
+    /**
+     * connect to server
+     */
     public void connectWithServer() {
         String clientId = MqttClient.generateClientId();
         client = new MqttAndroidClient(context, brokerURL, clientId);
@@ -60,7 +60,6 @@ public class ClientHandler implements MqttCallback {
         try {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setCleanSession(true);
-
             options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
             client.connect(options, null, new IMqttActionListener() {
                 @Override
@@ -84,12 +83,12 @@ public class ClientHandler implements MqttCallback {
 
     }
 
-    //method to publish a topic (if the correct answer is selected)
-    //????wofür toPublish(View v)??? siehe ytvideo
+    /**
+     * method to publish a topic (if the correct answer is selected)
+     */
+    //TODO:wofür toPublish(View v)??? siehe ytvideo
     public void toPublish(View v, String pubMessage) {
-//        Toast.makeText(context, "Publish from Handler", Toast.LENGTH_SHORT).show();
-        String topic = "haw/dmi/mt/its/ss17/qqc";
-        //String message = "player1"; wird vom konstruktor übergeben
+        String topic = context.getString(R.string.topic);
 
         try {
             if (!client.isConnected()) {
@@ -99,18 +98,18 @@ public class ClientHandler implements MqttCallback {
                 client.publish(topic, pubMessage.getBytes(), 0, false);
 //                Toast.makeText(context, "publish successful", Toast.LENGTH_SHORT).show();
             }
-
-//        try {
-//            client.publish(topic, message.getBytes(), 0, false);
         } catch (MqttException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * method to subscribe a topic
+     */
     public void toSubscribe() {
         Toast.makeText(context, "Subscribe method from handler", Toast.LENGTH_SHORT).show();
-        //App stürzt ab Lösung: https://stackoverflow.com/questions/43038597/android-studio-mqtt-not-connecting
-        //andere verwendung von IMqttActionListener
+        //TODO: App stürzt ab Lösung: https://stackoverflow.com/questions/43038597/android-studio-mqtt-not-connecting
+        //TODO: andere verwendung von IMqttActionListener
         try {
             String topic = context.getString(R.string.topic);
             client.subscribe(topic, 0);
@@ -120,6 +119,7 @@ public class ClientHandler implements MqttCallback {
         }
     }
 
+    //TODO: client schließen nach jedem Spiel
     public void toClose() {
         client.close();
     }
@@ -129,6 +129,13 @@ public class ClientHandler implements MqttCallback {
         Toast.makeText(context, "ConnectionLost Handler", Toast.LENGTH_SHORT).show();
     }
 
+    /**
+     * when message arrived in subscribed topic
+     *
+     * @param topic
+     * @param message
+     * @throws Exception
+     */
     @Override
     public void messageArrived(String topic, MqttMessage message) throws Exception {
         if (topic.equals(context.getString(R.string.topic))) {
@@ -159,6 +166,7 @@ public class ClientHandler implements MqttCallback {
                 }
                 notifyMessageObserver(bodymessage);
             }
+            //TODO: PLAYER Messages
         }
     }
 
@@ -179,22 +187,47 @@ public class ClientHandler implements MqttCallback {
 
     }
 
+    /**
+     * @return startStatus: READY, WAITING, BLOCKED
+     */
     public static StartActivity.GameStartStatus getStartStatus() {
         return ClientHandler.startStatus;
     }
 
+    /**
+     * sets startStatus in ClientHandler
+     *
+     * @param startStatus READY, WAITING, BLOCKED
+     */
     public static void setStartStatus(StartActivity.GameStartStatus startStatus) {
         ClientHandler.startStatus = startStatus;
     }
 
+    /**
+     * Sets the player in ClientHandler
+     *
+     * @param player PLAYER_1, PLAYER_2
+     */
     public void setPlayer(StartActivity.Player player) {
         this.player = player;
     }
 
+    /**
+     * sets the questionSequence
+     *
+     * @param questionSequence generated sequence with which question order is determinated
+     */
     public void setQuestionSequence(ArrayList<Integer> questionSequence) {
         this.questionSequence = questionSequence;
     }
 
+    //TODO: Methode aufrufen, wenn die nächste Nummer geschickt werden soll
+
+    /**
+     * send the QuestionNumber at time
+     *
+     * @param id
+     */
     public void sendQuestionNumber(int id) {
         //Question value as String
         String s = "#" + String.valueOf(questionSequence.get(id));

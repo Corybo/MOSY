@@ -16,6 +16,7 @@
         android:layout_marginTop="62dp"
         android:text="@string/question_test" />
 
+    <!--TODO: in Linear Layout ändern, damit die Felder gleich angezeigt werden-->
     <GridLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,15 +42,4 @@
             android:id="@+id/answer_d"
             style="@style/QuizAnswerButtons" />
     </GridLayout>
-
-    <Button
-        android:id="@+id/button_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="45dp"
-        android:clickable="true"
-        android:text="show Result" />
-
 </RelativeLayout>
