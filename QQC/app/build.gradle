@@ -22,7 +22,8 @@ android {
 //Install the Paho Android Service (needed to connect mqtt server)
 repositories {
     maven {
-        url "https://repo.eclipse.org/content/repositories/paho-releases/"
+//        url "https://repo.eclipse.org/content/repositories/paho-releases/"
+        url "https://repo.eclipse.org/content/repositories/paho-snapshots/"
     }
 }
 
@@ -35,7 +36,9 @@ dependencies {
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
     //Install the Paho Android Service (needed to connect mqtt server)
-    compile('org.eclipse.paho:org.eclipse.paho.android.service:1.0.2') {
-        exclude module: 'support-v4'
-    }
+    compile 'org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.1.0'
+    compile('org.eclipse.paho:org.eclipse.paho.android.service:1.1.1')
+//            {
+//                exclude module: 'support-v4'
+//            }
 }
