@@ -6,10 +6,12 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import qqc.mosyits.haw.qqc.Database.DatabaseHandler;
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
+import qqc.mosyits.haw.qqc.Networking.TimeHandler;
 import qqc.mosyits.haw.qqc.Questions.QuestionInserts;
 import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
 
@@ -24,10 +26,13 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     private ClientHandler handler;
     public static Player player;
+    private TimeHandler.MyCountDownTimer cdt;
 
     public enum GameStartStatus {READY, WAITING, BLOCKED}
 
     public enum Player {PLAYER_1, PLAYER_2}
+
+    TimeHandler timeHandler = new TimeHandler(this); //TODO TEST
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +41,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         Button buttonStart = (Button) findViewById(R.id.button_start);
         buttonStart.setOnClickListener(this);
+
+        Button btnTestTimer = (Button) findViewById(R.id.button_timer_test);
+        btnTestTimer.setOnClickListener(this);
 
         handler = new ClientHandler(this);
 
@@ -48,10 +56,16 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.button_timer_test: //TODO TEST
+                Toast.makeText(this, String.valueOf(cdt.stop()), Toast.LENGTH_SHORT).show();
+                break;
             case R.id.button_start:
                 switch (ClientHandler.getStartStatus()) {
                     //READY = Bereit zu spielen, warten auf Gegenspieler
                     case READY:
+                        //TODO: TEST
+                        cdt = timeHandler.startTimer((TextView) findViewById(R.id.tv_timer));
+
                         Toast.makeText(this, "Start Game", Toast.LENGTH_SHORT).show();
                         //set PLAYER_1
                         player = Player.PLAYER_1;
@@ -76,6 +90,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     default:
                         break;
                 }
+                break;
         }
     }
 }

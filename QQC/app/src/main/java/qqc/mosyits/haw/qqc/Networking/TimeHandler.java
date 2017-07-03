@@ -1,6 +1,8 @@
 package qqc.mosyits.haw.qqc.Networking;
 
 import android.content.Context;
+import android.os.CountDownTimer;
+import android.widget.TextView;
 
 import qqc.mosyits.haw.qqc.R;
 import qqc.mosyits.haw.qqc.StartActivity;
@@ -10,6 +12,7 @@ import qqc.mosyits.haw.qqc.StartActivity;
  */
 
 public class TimeHandler implements MessageObserver {
+    private static final int MAX_TIME_IN_SECONDS = 20;
     private Context context;
     private int timePlayer1 = 0;
     private int timePlayer2 = 0;
@@ -74,4 +77,45 @@ public class TimeHandler implements MessageObserver {
             return null;
         }
     }
+
+    //TODO: TEST
+    public MyCountDownTimer startTimer(final TextView timerTextView) {
+        MyCountDownTimer cdt = new MyCountDownTimer(MAX_TIME_IN_SECONDS * 1000, 1000, timerTextView);
+        cdt = (MyCountDownTimer) cdt.start();
+        return cdt;
+    }
+    public class MyCountDownTimer extends CountDownTimer{
+
+        private final TextView timerTextView;
+        private long millisUntilFinished;
+
+        /**
+         * @param millisInFuture    The number of millis in the future from the call
+         *                          to {@link #start()} until the countdown is done and {@link #onFinish()}
+         *                          is called.
+         * @param countDownInterval The interval along the way to receive
+         *                          {@link #onTick(long)} callbacks.
+         */
+        public MyCountDownTimer(long millisInFuture, long countDownInterval, TextView timerTextView) {
+            super(millisInFuture, countDownInterval);
+            this.timerTextView = timerTextView;
+        }
+
+        public void onTick(long millisUntilFinished) {
+                this.millisUntilFinished = millisUntilFinished;
+                timerTextView.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public long stop(){
+                long stoppedMillis = millisUntilFinished;
+                cancel();
+                return stoppedMillis;
+            }
+
+
+            public void onFinish() {
+                timerTextView.setText("done!");
+            }
+        }
+
 }
