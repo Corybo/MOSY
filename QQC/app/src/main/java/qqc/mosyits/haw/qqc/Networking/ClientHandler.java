@@ -26,11 +26,13 @@ import qqc.mosyits.haw.qqc.StartActivity;
  */
 
 public class ClientHandler implements MqttCallback {
-    private static final String PLAYER_KEY = "player_key";
+    public static final String PLAYER_KEY = "player_key";
+    public static final String QUESTION_KEY = "question_key";
 
     //    http://www.hivemq.com/demos/websocket-client/
     private static final int NOTIFICATION_ID = 42;
     private static ArrayList<MessageObserver> observerList = new ArrayList<>();
+    private static String questionIdString;
 
     private MqttAndroidClient client;
     private Context context;
@@ -38,7 +40,6 @@ public class ClientHandler implements MqttCallback {
     private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
     //tcp://broker.hivemq.com:1883
     private static StartActivity.GameStartStatus startStatus;
-    private StartActivity.Player player;
     public static int[] idList;
     public static int maxQuestionsToBeAnswered = 10;
     private ArrayList<Integer> questionSequence;
@@ -178,7 +179,7 @@ public class ClientHandler implements MqttCallback {
         Toast.makeText(context, R.string.game_started, Toast.LENGTH_SHORT).show();
         Intent startToGame = new Intent(context, GameActivity.class);
         //TODO:Geht nur bei Nougat, Lösung finden für Marshmallow:
-        startToGame.putExtra(PLAYER_KEY, player);
+        startToGame.putExtra(QUESTION_KEY, questionIdString);
         context.startActivity(startToGame);
     }
 
@@ -201,15 +202,6 @@ public class ClientHandler implements MqttCallback {
      */
     public static void setStartStatus(StartActivity.GameStartStatus startStatus) {
         ClientHandler.startStatus = startStatus;
-    }
-
-    /**
-     * Sets the player in ClientHandler
-     *
-     * @param player PLAYER_1, PLAYER_2
-     */
-    public void setPlayer(StartActivity.Player player) {
-        this.player = player;
     }
 
     /**
@@ -250,6 +242,7 @@ public class ClientHandler implements MqttCallback {
      * @param msg new message
      */
     public static void notifyMessageObserver(String msg) {
+        questionIdString = msg;
         for (MessageObserver observer : observerList) {
             observer.updateMessage(msg);
         }

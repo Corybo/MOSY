@@ -19,9 +19,11 @@ import qqc.mosyits.haw.qqc.Networking.MessageObserver;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 
+import static qqc.mosyits.haw.qqc.Networking.ClientHandler.PLAYER_KEY;
+import static qqc.mosyits.haw.qqc.Networking.ClientHandler.QUESTION_KEY;
+
 public class GameActivity extends AppCompatActivity implements View.OnClickListener, IMqttActionListener, MessageObserver {
 
-    private static final java.lang.String PLAYER_KEY = "player_key";
     private TextView questionField;
     private Button answerA;
     private Button answerB;
@@ -56,7 +58,14 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerD.setOnClickListener(this);
 
         //TODO: schauen, ob das so passt, das Player nicht als String übergeben sondern enum PLAYER in StartActivity
-        player = getIntent().getExtras().getString(PLAYER_KEY);
+        if(StartActivity.player.equals(StartActivity.Player.PLAYER_1)){
+            player = getString(R.string.player_1);
+        }else if(StartActivity.player.equals(StartActivity.Player.PLAYER_2)){
+            player = getString(R.string.player_2);
+        }
+        //TODO: TEST updateMessage
+        updateMessage(getIntent().getExtras().getString(QUESTION_KEY));
+        updateMessage(getString(R.string.msg_go));
     }
 
 

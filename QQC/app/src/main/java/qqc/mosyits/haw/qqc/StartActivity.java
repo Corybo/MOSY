@@ -23,7 +23,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     private final boolean DEBUG = true;
 
     private ClientHandler handler;
-    public Player player;
+    public static Player player;
 
     public enum GameStartStatus {READY, WAITING, BLOCKED}
 
@@ -55,7 +55,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     case READY:
                         //set PLAYER_1
                         player = Player.PLAYER_1;
-                        handler.setPlayer(player);
                         //publish start
                         handler.toPublish(null, getString(R.string.pub_waiting_start));
                         //generate questionSequence and set it in ClientHandler
@@ -66,7 +65,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     //WAITING = Spieler 1 hat Spiel gestartet, Spieler 2 kann joinen
                     case WAITING:
                         player = Player.PLAYER_2;
-                        handler.setPlayer(player);
                         handler.toPublish(null, getString(R.string.pub_started_join));
                         //Todo: "go" zum testen, wird letztendelich vom Raspberry geschickt
                         handler.toPublish(null, getString(R.string.msg_go));
