@@ -80,6 +80,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private void askNextQuestion() {
         //TODO: Time delay 5s
         if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
+            //TODO: Start timer
             setQuestion(questionId);
             questionsAsked++;
         } else {
@@ -117,16 +118,24 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean checkAnswer(Button answer) {
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
             correctAnswers++;
-            handler.toPublish(answer, player); //publishs a topic because the answer is right
-            //TODO: nur für Testzwecke, go wird letztendlich vom Raspberry gesendet
+            //TODO: publish message
+//            int requiredTime = /*TODO: Zeit Abfragen*/;
+//            String timeMessage = getString(R.string.time);
+//            if (StartActivity.player == StartActivity.Player.PLAYER_1) {
+//                handler.toPublish(null, timeMessage + "_1_" + requiredTime);
+//            } else {
+//                handler.toPublish(null, timeMessage + "_2_" + requiredTime);
+//            }
             return true;
         } else {
+            //TODO: set time to 3600000 ms
             return false;
         }
     }
 
     @Override
     public void onClick(View v) {
+        //TODO: stop timer
         switch (v.getId()) {
             case R.id.answer_a:
                 checkAnswer(answerA);
@@ -141,6 +150,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 checkAnswer(answerD);
                 break;
         }
+        //TODO: go eigentlich vom Raspberry
         handler.toPublish(null, getString(R.string.msg_go));
     }
 
