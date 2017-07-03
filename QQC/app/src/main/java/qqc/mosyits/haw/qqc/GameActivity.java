@@ -20,7 +20,6 @@ import qqc.mosyits.haw.qqc.Networking.TimeHandler;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 
-import static qqc.mosyits.haw.qqc.Networking.ClientHandler.PLAYER_KEY;
 import static qqc.mosyits.haw.qqc.Networking.ClientHandler.QUESTION_KEY;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener, IMqttActionListener, MessageObserver {
@@ -37,6 +36,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private String player;
     private int questionId;
     private TimeHandler timeHandler;
+    private TimeHandler.QQCCountDownTimer cdt;
 
 
     @Override
@@ -80,9 +80,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private void askNextQuestion() {
         //TODO: Time delay 5s
         if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
-            //TODO: Start timer
             setQuestion(questionId);
             questionsAsked++;
+            //Start timer
+            cdt = timeHandler.startTimer((TextView) findViewById(R.id.tv_timer));
         } else {
             handler.toClose();
             Intent gameToResult = new Intent(this, ResultActivity.class);
@@ -91,6 +92,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
     }
+
 
     /**
      * Setting the questions and their answers randomly on the buttons
@@ -112,42 +114,46 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * Check if answer is right or wrong
      *
-     * @param answer Button which was clicked
+     * @param answer       Button which was clicked
+     * @param requiredTime
      * @return true: right answer, false: wrong answer
      */
-    private boolean checkAnswer(Button answer) {
+    private void checkAnswer(Button answer, long requiredTime) {
+        //ANSWER CORRECT
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
             correctAnswers++;
-            //TODO: publish message
-//            int requiredTime = /*TODO: Zeit Abfragen*/;
-//            String timeMessage = getString(R.string.time);
-//            if (StartActivity.player == StartActivity.Player.PLAYER_1) {
-//                handler.toPublish(null, timeMessage + "_1_" + requiredTime);
-//            } else {
-//                handler.toPublish(null, timeMessage + "_2_" + requiredTime);
-//            }
-            return true;
+        }
+        //ANSWER FALSE
+        else {
+            //Wrong answer = Badest Time
+            requiredTime = 0;
+        }
+        //publish message with required time
+        String timeMessage = getString(R.string.time);
+        if (StartActivity.player == StartActivity.Player.PLAYER_1) {
+            handler.toPublish(null, timeMessage + "_1_" + requiredTime);
         } else {
-            //TODO: set time to 3600000 ms
-            return false;
+            handler.toPublish(null, timeMessage + "_2_" + requiredTime);
         }
     }
 
     @Override
     public void onClick(View v) {
-        //TODO: stop timer
+        //stop timer and get required Time
+        long requiredTime = cdt.stop();
+        Toast.makeText(this, String.valueOf(requiredTime), Toast.LENGTH_SHORT).show();
         switch (v.getId()) {
             case R.id.answer_a:
-                checkAnswer(answerA);
+                checkAnswer(answerA, requiredTime);
                 break;
             case R.id.answer_b:
-                checkAnswer(answerB);
+                checkAnswer(answerB, requiredTime);
                 break;
             case R.id.answer_c:
-                checkAnswer(answerC);
+                checkAnswer(answerC, requiredTime);
                 break;
             case R.id.answer_d:
-                checkAnswer(answerD);
+                checkAnswer(answerD, requiredTime);
                 break;
         }
         //TODO: go eigentlich vom Raspberry

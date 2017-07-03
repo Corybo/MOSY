@@ -6,6 +6,15 @@
     tools:context="qqc.mosyits.haw.qqc.GameActivity">
 
     <TextView
+        android:id="@+id/tv_timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:textSize="20sp"
+        android:text="20"
+        android:textColor="@color/colorAccent"/>
+    <TextView
         android:id="@+id/question_field"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

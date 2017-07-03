@@ -26,7 +26,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     private ClientHandler handler;
     public static Player player;
-    private TimeHandler.MyCountDownTimer cdt;
+    private TimeHandler.QQCCountDownTimer cdt;
 
     public enum GameStartStatus {READY, WAITING, BLOCKED}
 

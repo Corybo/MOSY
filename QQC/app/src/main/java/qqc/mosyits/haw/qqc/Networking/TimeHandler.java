@@ -63,28 +63,38 @@ public class TimeHandler implements MessageObserver {
 
     /**
      * compares time the player needed to click the correct answer
+     * time which is higher wins because it's a countdown
      *
      * @param timePlayer1 time in ms of player 1
      * @param timePlayer2 time in ms of player 2
      * @return PLAYER1 if he was faster, Player 2 if he was faster, null if they had the same time
      */
     private StartActivity.Player compareTime(int timePlayer1, int timePlayer2) {
-        if (timePlayer1 < timePlayer2) {
+        if (timePlayer1 > timePlayer2) {
             return StartActivity.Player.PLAYER_1;
-        } else if (timePlayer2 < timePlayer1) {
+        } else if (timePlayer2 > timePlayer1) {
             return StartActivity.Player.PLAYER_2;
         } else {
             return null;
         }
     }
 
-    //TODO: TEST
-    public MyCountDownTimer startTimer(final TextView timerTextView) {
-        MyCountDownTimer cdt = new MyCountDownTimer(MAX_TIME_IN_SECONDS * 1000, 1000, timerTextView);
-        cdt = (MyCountDownTimer) cdt.start();
+    /**
+     * method to start countdown
+     *
+     * @param timerTextView textView which displays the countdown
+     * @return started instance of QQCCountDownTimer
+     */
+    public QQCCountDownTimer startTimer(final TextView timerTextView) {
+        QQCCountDownTimer cdt = new QQCCountDownTimer(MAX_TIME_IN_SECONDS * 1000, 1000, timerTextView);
+        cdt = (QQCCountDownTimer) cdt.start();
         return cdt;
     }
-    public class MyCountDownTimer extends CountDownTimer{
+
+    /**
+     * Class QQCCountDownTimer extended from CountdownTimer to implement stop() method
+     */
+    public class QQCCountDownTimer extends CountDownTimer {
 
         private final TextView timerTextView;
         private long millisUntilFinished;
@@ -96,26 +106,30 @@ public class TimeHandler implements MessageObserver {
          * @param countDownInterval The interval along the way to receive
          *                          {@link #onTick(long)} callbacks.
          */
-        public MyCountDownTimer(long millisInFuture, long countDownInterval, TextView timerTextView) {
+        public QQCCountDownTimer(long millisInFuture, long countDownInterval, TextView timerTextView) {
             super(millisInFuture, countDownInterval);
             this.timerTextView = timerTextView;
         }
 
         public void onTick(long millisUntilFinished) {
-                this.millisUntilFinished = millisUntilFinished;
-                timerTextView.setText("seconds remaining: " + millisUntilFinished / 1000);
-            }
-
-            public long stop(){
-                long stoppedMillis = millisUntilFinished;
-                cancel();
-                return stoppedMillis;
-            }
-
-
-            public void onFinish() {
-                timerTextView.setText("done!");
-            }
+            this.millisUntilFinished = millisUntilFinished;
+            timerTextView.setText("seconds remaining: " + millisUntilFinished / 1000);
         }
+
+        /**
+         * stops the countdown
+         * @return millis
+         */
+        public long stop() {
+            long stoppedMillis = millisUntilFinished;
+            cancel();
+            return stoppedMillis;
+        }
+
+
+        public void onFinish() {
+            timerTextView.setText("done!");
+        }
+    }
 
 }
