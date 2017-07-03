@@ -97,7 +97,6 @@ public class ClientHandler implements MqttCallback {
             }
             if (client.isConnected()) {
                 client.publish(topic, pubMessage.getBytes(), 0, false);
-//                Toast.makeText(context, "publish successful", Toast.LENGTH_SHORT).show();
             }
         } catch (MqttException e) {
             e.printStackTrace();
@@ -108,7 +107,6 @@ public class ClientHandler implements MqttCallback {
      * method to subscribe a topic
      */
     public void toSubscribe() {
-        Toast.makeText(context, "Subscribe method from handler", Toast.LENGTH_SHORT).show();
         //TODO: App stürzt ab Lösung: https://stackoverflow.com/questions/43038597/android-studio-mqtt-not-connecting
         //TODO: andere verwendung von IMqttActionListener
         try {
@@ -145,7 +143,7 @@ public class ClientHandler implements MqttCallback {
             //STATUS: READY
             if (bodymessage.equals(context.getResources().getString(R.string.pub_waiting_start))) {
                 setStartStatus(StartActivity.GameStartStatus.WAITING);
-                Toast.makeText(context, R.string.waiting_for_player_2, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, context.getString(R.string.local_status_waiting), Toast.LENGTH_SHORT).show();
             }
             //STATUS: WAITING
             else if (bodymessage.equals(context.getResources().getString(R.string.pub_started_join))) {
@@ -176,7 +174,6 @@ public class ClientHandler implements MqttCallback {
      */
     private void startGame() {
         setStartStatus(StartActivity.GameStartStatus.BLOCKED);
-        Toast.makeText(context, R.string.game_started, Toast.LENGTH_SHORT).show();
         Intent startToGame = new Intent(context, GameActivity.class);
         //TODO:Geht nur bei Nougat, Lösung finden für Marshmallow:
         startToGame.putExtra(QUESTION_KEY, questionIdString);

@@ -58,9 +58,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerD.setOnClickListener(this);
 
         //TODO: schauen, ob das so passt, das Player nicht als String übergeben sondern enum PLAYER in StartActivity
-        if(StartActivity.player.equals(StartActivity.Player.PLAYER_1)){
+        if (StartActivity.player.equals(StartActivity.Player.PLAYER_1)) {
             player = getString(R.string.player_1);
-        }else if(StartActivity.player.equals(StartActivity.Player.PLAYER_2)){
+        } else if (StartActivity.player.equals(StartActivity.Player.PLAYER_2)) {
             player = getString(R.string.player_2);
         }
         //TODO: TEST updateMessage
@@ -78,7 +78,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             setQuestion(questionId);
             questionsAsked++;
         } else {
-            Toast.makeText(this, "show Result", Toast.LENGTH_SHORT).show();
+            handler.toClose();
             Intent gameToResult = new Intent(this, ResultActivity.class);
             gameToResult.putExtra("AMOUNT_OF_CORRECT_ANSWERS", correctAnswers);
             startActivity(gameToResult);
@@ -111,15 +111,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
      */
     private boolean checkAnswer(Button answer) {
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
-            Toast.makeText(this, R.string.correct_answer, Toast.LENGTH_SHORT).show();
             correctAnswers++;
             handler.toPublish(answer, player); //publishs a topic because the answer is right
             //TODO: nur für Testzwecke, go wird letztendlich vom Raspberry gesendet
-            handler.toPublish(null, getString(R.string.msg_go));
             return true;
-
         } else {
-            Toast.makeText(this, R.string.wrong_answer, Toast.LENGTH_SHORT).show();
             return false;
         }
     }
@@ -140,18 +136,19 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 checkAnswer(answerD);
                 break;
         }
+        handler.toPublish(null, getString(R.string.msg_go));
     }
 
     @Override
     public void onSuccess(IMqttToken asyncActionToken) {
         // We are connected
-        Toast.makeText(GameActivity.this, "connected", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(GameActivity.this, "connected", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
         // Something went wrong e.g. connection timeout or firewall problems
-        Toast.makeText(GameActivity.this, "connection failed, Exception: " + exception.toString(), Toast.LENGTH_LONG).show();
+//        Toast.makeText(GameActivity.this, "connection failed, Exception: " + exception.toString(), Toast.LENGTH_LONG).show();
     }
 
     /**
@@ -164,7 +161,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         //if message starts with #, it is the number for the next question and saved as questionId
         if (msg.startsWith("#")) {
             String strId = msg.substring(1);
-            Toast.makeText(this, "ohne Hashtag: " + strId, Toast.LENGTH_SHORT).show();
             questionId = Integer.valueOf(strId);
         }
         //if message is go, then the next question is displayed

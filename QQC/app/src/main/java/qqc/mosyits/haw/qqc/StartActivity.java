@@ -18,7 +18,7 @@ import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
  * Player can start or join a game
  */
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-public class StartActivity extends AppCompatActivity implements View.OnClickListener{
+public class StartActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int NOTIFICATION_ID = 42;
     private final boolean DEBUG = true;
 
@@ -49,10 +49,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.button_start:
-                Toast.makeText(this, "Start Game", Toast.LENGTH_SHORT).show();
                 switch (ClientHandler.getStartStatus()) {
                     //READY = Bereit zu spielen, warten auf Gegenspieler
                     case READY:
+                        Toast.makeText(this, "Start Game", Toast.LENGTH_SHORT).show();
                         //set PLAYER_1
                         player = Player.PLAYER_1;
                         //publish start
@@ -68,7 +68,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                         handler.toPublish(null, getString(R.string.pub_started_join));
                         //Todo: "go" zum testen, wird letztendelich vom Raspberry geschickt
                         handler.toPublish(null, getString(R.string.msg_go));
-                        Toast.makeText(this, R.string.local_status_waiting, Toast.LENGTH_SHORT).show();
                         break;
                     //BLOCKED = Fragen anzeigen, Kein weiterer Spieler kann joinen
                     case BLOCKED:
