@@ -165,6 +165,12 @@ public class ClientHandler implements MqttCallback {
                 }
                 notifyMessageObserver(bodymessage);
             }
+            else if(bodymessage.startsWith(context.getString(R.string.time))){
+                notifyMessageObserver(bodymessage);
+            }
+            else if(bodymessage.equals(context.getString(R.string.msg_tie))){
+                Toast.makeText(context, R.string.txt_tie, Toast.LENGTH_SHORT).show();
+            }
             //TODO: PLAYER Messages
         }
     }

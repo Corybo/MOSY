@@ -16,6 +16,7 @@ import java.util.Collections;
 
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
 import qqc.mosyits.haw.qqc.Networking.MessageObserver;
+import qqc.mosyits.haw.qqc.Networking.TimeHandler;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 
@@ -35,6 +36,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private ClientHandler handler;
     private String player;
     private int questionId;
+    private TimeHandler timeHandler;
 
 
     @Override
@@ -57,12 +59,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerC.setOnClickListener(this);
         answerD.setOnClickListener(this);
 
-        //TODO: schauen, ob das so passt, das Player nicht als String übergeben sondern enum PLAYER in StartActivity
+        //Player1 or Player2 as string
         if (StartActivity.player.equals(StartActivity.Player.PLAYER_1)) {
             player = getString(R.string.player_1);
         } else if (StartActivity.player.equals(StartActivity.Player.PLAYER_2)) {
             player = getString(R.string.player_2);
         }
+
+        timeHandler = new TimeHandler(this);
+
         //TODO: TEST updateMessage
         updateMessage(getIntent().getExtras().getString(QUESTION_KEY));
         updateMessage(getString(R.string.msg_go));
