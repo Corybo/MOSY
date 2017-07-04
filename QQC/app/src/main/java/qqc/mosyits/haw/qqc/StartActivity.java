@@ -1,5 +1,7 @@
 package qqc.mosyits.haw.qqc;
 
+import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -7,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -30,6 +33,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     public static Player player;
     private TimeHandler.QQCCountDownTimer cdt;
 
+    private ProgressBar progressSpinner;
+    private boolean progress = true;
+
     public enum GameStartStatus {READY, WAITING, BLOCKED}
     public enum Player {PLAYER_1, PLAYER_2}
 
@@ -46,6 +52,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
         Button btnTestTimer = (Button) findViewById(R.id.button_timer_test);
         btnTestTimer.setOnClickListener(this);
+
+        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner);
 
         handler = new ClientHandler(this);
 
@@ -69,6 +77,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     //READY = Bereit zu spielen, warten auf Gegenspieler
                     case READY:
                         Log.i(TAG, "onClick: button_start: READY");
+                        new ProgressTask().execute();
                         //TODO: TEST
                         cdt = timeHandler.startTimer((TextView) findViewById(R.id.tv_timer));
 
@@ -85,6 +94,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     //WAITING = Spieler 1 hat Spiel gestartet, Spieler 2 kann joinen
                     case WAITING:
                         Log.i(TAG, "onClick: button_start: WAITING");
+                        progress = false;
                         player = Player.PLAYER_2;
                         handler.toPublish(null, getString(R.string.pub_started_join));
                         //Todo: "go" zum testen, wird letztendelich vom Raspberry geschickt
@@ -108,4 +118,42 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         super.onDestroy();
         handler.toClose();
     }
+
+    public class ProgressTask extends AsyncTask<Void, Void, String> {
+
+        private String tag = getClass().getSimpleName();
+
+        public ProgressTask(){
+            Toast.makeText(StartActivity.this, "Task startet", Toast.LENGTH_SHORT).show();
+           // onPreExecute();
+        }
+
+        @Override
+        protected void onPreExecute() {
+            Toast.makeText(StartActivity.this, "Task PreExe", Toast.LENGTH_SHORT).show();
+            super.onPreExecute();
+            progressSpinner.setVisibility(View.VISIBLE);
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+           // Toast.makeText(StartActivity.this, "Task InBackground", Toast.LENGTH_SHORT).show();
+            Log.i(tag, "in Background");
+            int i= 0;
+            while(progress){
+
+                i++;
+            }
+
+            return "Progress beendet";
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(StartActivity.this, "Task Post", Toast.LENGTH_SHORT).show();
+            super.onPostExecute(s);
+            progressSpinner.setVisibility(View.INVISIBLE);
+        }
+    }
+
 }
