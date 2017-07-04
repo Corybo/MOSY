@@ -31,12 +31,12 @@ public class TimeHandler implements MessageObserver {
             if (msg.startsWith(context.getString(R.string.time))) {
                 String timeMessage = msg.substring(5);
                 //Time Player 1
-                if (timeMessage.equals("1")) {
-                    timePlayer1 = Integer.valueOf(timeMessage.substring(7));
+                if (timeMessage.startsWith("1")) {
+                    timePlayer1 = Integer.valueOf(timeMessage.substring(2));
                 }
                 //Time Player 2
-                else if (timeMessage.equals("2")) {
-                    timePlayer2 = Integer.valueOf(timeMessage.substring(7));
+                else if (timeMessage.startsWith("2")) {
+                    timePlayer2 = Integer.valueOf(timeMessage.substring(2));
                 }
                 sendMessageFasterPlayer();
             }

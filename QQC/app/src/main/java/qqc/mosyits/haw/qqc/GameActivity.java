@@ -102,13 +102,18 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private void setQuestion(long id) {
         QuestionHandler questionHandler = new QuestionHandler(this);
         currentQuestion = questionHandler.getQuestionFromDb(id);
-        questionField.setText(currentQuestion.getQuestion());
-        String[] answers = {currentQuestion.getRightAnswer(), currentQuestion.getAnswer1(), currentQuestion.getAnswer2(), currentQuestion.getAnswer3()};
-        Collections.shuffle(Arrays.asList(answers));
-        answerA.setText(answers[0]);
-        answerB.setText(answers[1]);
-        answerC.setText(answers[2]);
-        answerD.setText(answers[3]);
+        if(currentQuestion != null) {
+            questionField.setText(currentQuestion.getQuestion());
+            String[] answers = {currentQuestion.getRightAnswer(), currentQuestion.getAnswer1(), currentQuestion.getAnswer2(), currentQuestion.getAnswer3()};
+            Collections.shuffle(Arrays.asList(answers));
+            answerA.setText(answers[0]);
+            answerB.setText(answers[1]);
+            answerC.setText(answers[2]);
+            answerD.setText(answers[3]);
+        }else{
+            //TODO: Fehler beheben, wenn currentQuestion = null
+            Toast.makeText(this, "currentQuestion = null", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
