@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
     private static final int NOTIFICATION_ID = 42;
+    private final String TAG = getClass().getSimpleName();
     private final boolean DEBUG = true;
 
     private ClientHandler handler;
@@ -29,14 +31,14 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     private TimeHandler.QQCCountDownTimer cdt;
 
     public enum GameStartStatus {READY, WAITING, BLOCKED}
-
     public enum Player {PLAYER_1, PLAYER_2}
 
-    TimeHandler timeHandler = new TimeHandler(this); //TODO TEST
+    private TimeHandler timeHandler = new TimeHandler(this); //TODO TEST
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_start);
 
         Button buttonStart = (Button) findViewById(R.id.button_start);
@@ -55,14 +57,18 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onClick(View v) {
+        Log.i(TAG, "onClick");
         switch (v.getId()) {
             case R.id.button_timer_test: //TODO TEST
+                Log.i(TAG, "onClick: button_timer_test");
                 Toast.makeText(this, String.valueOf(cdt.stop()), Toast.LENGTH_SHORT).show();
                 break;
             case R.id.button_start:
+                Log.i(TAG, "onClick: button_start");
                 switch (ClientHandler.getStartStatus()) {
                     //READY = Bereit zu spielen, warten auf Gegenspieler
                     case READY:
+                        Log.i(TAG, "onClick: button_start: READY");
                         //TODO: TEST
                         cdt = timeHandler.startTimer((TextView) findViewById(R.id.tv_timer));
 
@@ -78,6 +84,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                         break;
                     //WAITING = Spieler 1 hat Spiel gestartet, Spieler 2 kann joinen
                     case WAITING:
+                        Log.i(TAG, "onClick: button_start: WAITING");
                         player = Player.PLAYER_2;
                         handler.toPublish(null, getString(R.string.pub_started_join));
                         //Todo: "go" zum testen, wird letztendelich vom Raspberry geschickt
@@ -85,6 +92,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                         break;
                     //BLOCKED = Fragen anzeigen, Kein weiterer Spieler kann joinen
                     case BLOCKED:
+                        Log.i(TAG, "onClick: button_start: BLOCKED");
                         Toast.makeText(this, R.string.game_blocked, Toast.LENGTH_SHORT).show();
                         break;
                     default:
@@ -96,6 +104,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     protected void onDestroy() {
+        Log.i(TAG, "onDestroy");
         super.onDestroy();
         handler.toClose();
     }
