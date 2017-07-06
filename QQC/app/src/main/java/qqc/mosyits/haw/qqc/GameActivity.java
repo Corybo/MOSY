@@ -100,7 +100,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             setQuestion(questionId);
             questionsAsked++;
             //Start timer
-            cdt = timeHandler.startTimer((TextView) findViewById(R.id.tv_timer));
+            cdt = timeHandler.startTimer((TextView) findViewById(R.id.tv_timer), handler);
         } else {
             Log.i(TAG, "askNextQuestion: maxQuestions erreicht");
             handler.toClose();
@@ -157,14 +157,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             requiredTime = 0;
         }
         //publish message with required time
-        String timeMessage = getString(R.string.time);
-        if (StartActivity.player == StartActivity.Player.PLAYER_1) {
-            Log.i(TAG, "checkAnswer: publish Time for Player 1");
-            handler.toPublish(null, timeMessage + "_1_" + requiredTime);
-        } else {
-            Log.i(TAG, "checkAnswer: publish Time for Player 2");
-            handler.toPublish(null, timeMessage + "_2_" + requiredTime);
-        }
+        TimeHandler.publishRequiredTime(requiredTime, this, handler);
     }
 
     @Override
