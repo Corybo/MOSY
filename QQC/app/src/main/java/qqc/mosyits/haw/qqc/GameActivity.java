@@ -107,9 +107,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     //set activityColor for each player
     private void setPlayerColor(int colorRes) {
+        timer.setTextColor(colorRes);
         ColorDrawable colDraw = new ColorDrawable(Color.parseColor(getString(colorRes)));
         getSupportActionBar().setBackgroundDrawable(colDraw);
-        timer.setTextColor(colorRes);
     }
 
 
