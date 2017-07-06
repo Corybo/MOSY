@@ -4,7 +4,8 @@
     android:id="@+id/gameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="qqc.mosyits.haw.qqc.GameActivity">
+    tools:context="qqc.mosyits.haw.qqc.GameActivity"
+    android:background="@color/colorBackground">
 
     <TextView
         android:id="@+id/tv_timer"
@@ -13,7 +14,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp"
         android:text="20"
-        android:textColor="@color/colorAccents"
+        android:textColor="@color/colorDefaultPlayer"
         android:textSize="20sp" />
 
     <TextView

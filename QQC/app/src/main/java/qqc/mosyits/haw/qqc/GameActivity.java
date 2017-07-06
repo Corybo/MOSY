@@ -1,6 +1,8 @@
 package qqc.mosyits.haw.qqc;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -47,6 +49,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressBar progressSpinner;
     private ProgressTask progressTask;
     private boolean firstTime = true;
+    private int colorRes;
 
 
     @Override
@@ -55,10 +58,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_game);
 
-        //   LinearLayout bgElement = (LinearLayout) findViewById(R.id.startLayout);
-//        bgElement.setBackgroundColor(R.color.colorQuizButton);
-        RelativeLayout rl = (RelativeLayout)findViewById(R.id.gameLayout);
-        rl.setBackgroundResource(R.color.colorPlayer1);
 
         //add this class as observer
         ClientHandler.addMessageObserver(this);
@@ -86,14 +85,26 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (StartActivity.player.equals(StartActivity.Player.PLAYER_1)) {
             player = getString(R.string.player_1);
 
+            colorRes = R.color.colorPlayer1;
+            setPlayerColor(colorRes);
+
+
         } else if (StartActivity.player.equals(StartActivity.Player.PLAYER_2)) {
             player = getString(R.string.player_2);
+
+            colorRes = R.color.colorPlayer2;
+            setPlayerColor(colorRes);
         }
 
 
         //TODO: TEST updateMessage
         updateMessage(getIntent().getExtras().getString(QUESTION_KEY), handler);
         updateMessage(getString(R.string.msg_go), handler);
+    }
+
+    //set activityColor for each player
+    private void setPlayerColor(int colorRes) {
+        ColorDrawable colDraw = new ColorDrawable(Color.parseColor(getString(colorRes)));
     }
 
 
@@ -152,6 +163,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
      * @return true: right answer, false: wrong answer
      */
     private void checkAnswer(Button answer, long requiredTime) {
+        answer.setBackgroundResource(colorRes);
+
         //ANSWER CORRECT
         Log.i(TAG, "checkAnswer");
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
@@ -192,6 +205,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 checkAnswer(answerD, requiredTime);
                 break;
         }
+
+        //buttons unclickable
+        setAllButtonsClickable(false);
+
+
+
         //TODO: FEHLERBEHEBUNG PROGRESS SPINNER
         //start Task to show progressSpinner
 //        if (progressTask.isCancelled()) {
@@ -201,6 +220,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 //            Log.i(TAG, "onClick: Progresstask not cancelled");
 //            progressTask.setTaskProgress(true);
 //        }
+    }
+
+    private void setAllButtonsClickable(boolean b) {
+        answerA.setClickable(b);
+        answerB.setClickable(b);
+        answerC.setClickable(b);
+        answerD.setClickable(b);
     }
 
     @Override
@@ -236,6 +262,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         //if message is go, then the next question is displayed
         else if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
+            setAllButtonsClickable(true);
             Log.i(TAG, "updateMessage, message=" + msg);
             if(!firstTime) {
                 progressTask.setTaskProgress(false);

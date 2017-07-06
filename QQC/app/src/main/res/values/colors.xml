@@ -4,6 +4,9 @@
     <color name="colorPrimaryDark">#8B0000</color>
     <color name="colorPlayer2">#FF4081</color>
     <color name="colorPlayer1">#00CDCD</color>
-    <color name="colorAccents">#CD0000</color>
-    <color name="colorQuizButton">#FFF5EE</color>
+    <color name="colorDefaultPlayer">#CD0000</color>
+    <color name="colorQuizButton">#CDC1C5</color>
+    <color name="colorText">#A3A3A3</color>
+    <color name="colorBackground">#F7F7F7</color>
+
 </resources>
