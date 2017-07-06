@@ -88,10 +88,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         //TODO: stürzt manchmal ab weil StartActivity.player = null
         if (StartActivity.player.equals(StartActivity.Player.PLAYER_1)) {
             player = getString(R.string.player_1);
-            setPlayerColor(R.color.colorPlayer1);
+            colorRes = R.color.colorPlayer1;
+            setPlayerColor(colorRes);
         } else if (StartActivity.player.equals(StartActivity.Player.PLAYER_2)) {
             player = getString(R.string.player_2);
-            setPlayerColor(R.color.colorPlayer2);
+            colorRes = R.color.colorPlayer2;
+            setPlayerColor(colorRes);
         }
 
         //TODO: TEST updateMessage
@@ -261,7 +263,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         //if message is go, then the next question is displayed
         else if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
-            clickedButton.setBackgroundResource(R.color.colorQuizButton);
+            if(clickedButton !=null) {
+                clickedButton.setBackgroundResource(R.color.colorQuizButton);
+            }
             setAllButtonsClickable(true);
             Log.i(TAG, "updateMessage, message=" + msg);
             if(!firstTime) {
