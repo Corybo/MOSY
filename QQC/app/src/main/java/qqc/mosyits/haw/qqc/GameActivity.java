@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
+import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -45,6 +46,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private String player;
     private int questionId;
     private TimeHandler timeHandler;
+    private TextView timer;
     private TimeHandler.QQCCountDownTimer cdt;
     private ProgressBar progressSpinner;
     private ProgressTask progressTask;
@@ -58,7 +60,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_game);
 
-
         //add this class as observer
         ClientHandler.addMessageObserver(this);
 
@@ -71,6 +72,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerB = (Button) findViewById(R.id.answer_b);
         answerC = (Button) findViewById(R.id.answer_c);
         answerD = (Button) findViewById(R.id.answer_d);
+
+        timer = (TextView) findViewById(R.id.tv_timer);
 
         progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner_game);
         progressTask = new ProgressTask(this, progressSpinner);
@@ -105,6 +108,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     //set activityColor for each player
     private void setPlayerColor(int colorRes) {
         ColorDrawable colDraw = new ColorDrawable(Color.parseColor(getString(colorRes)));
+        getSupportActionBar().setBackgroundDrawable(colDraw);
+        timer.setTextColor(colorRes);
     }
 
 
