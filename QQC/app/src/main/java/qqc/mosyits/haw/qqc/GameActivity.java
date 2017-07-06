@@ -87,18 +87,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         //TODO: stürzt manchmal ab weil StartActivity.player = null
         if (StartActivity.player.equals(StartActivity.Player.PLAYER_1)) {
             player = getString(R.string.player_1);
-
-            colorRes = R.color.colorPlayer1;
-            setPlayerColor(colorRes);
-
-
+            setPlayerColor(R.color.colorPlayer1);
         } else if (StartActivity.player.equals(StartActivity.Player.PLAYER_2)) {
             player = getString(R.string.player_2);
-
-            colorRes = R.color.colorPlayer2;
-            setPlayerColor(colorRes);
+            setPlayerColor(R.color.colorPlayer2);
         }
-
 
         //TODO: TEST updateMessage
         updateMessage(getIntent().getExtras().getString(QUESTION_KEY), handler);
@@ -111,7 +104,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         getSupportActionBar().setBackgroundDrawable(colDraw);
         timer.setTextColor(colorRes);
     }
-
 
     /**
      * select next Question

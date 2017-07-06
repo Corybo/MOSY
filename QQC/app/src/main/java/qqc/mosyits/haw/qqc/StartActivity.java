@@ -86,7 +86,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     //WAITING = Spieler 1 hat Spiel gestartet, Spieler 2 kann joinen
                     case WAITING:
                         Log.i(TAG, "onClick: button_start: WAITING");
-                        setPlayer(player, R.string.player_2, R.color.colorPlayer2, R.color.colorPlayer1);
+                        setPlayer(Player.PLAYER_2, R.string.player_2, R.color.colorPlayer2, R.color.colorPlayer1);
                         handler.toPublish(null, getString(R.string.pub_started_join));
                         break;
                     //BLOCKED = Fragen anzeigen, Kein weiterer Spieler kann joinen
