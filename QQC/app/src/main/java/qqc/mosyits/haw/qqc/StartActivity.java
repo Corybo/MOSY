@@ -1,9 +1,13 @@
 package qqc.mosyits.haw.qqc;
 
 
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -33,6 +37,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     private ProgressBar progressSpinner;
     private ProgressTask progressTask;
+    private Button buttonStart;
 
     public enum GameStartStatus {READY, WAITING, BLOCKED}
 
@@ -45,7 +50,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_start);
 
-        Button buttonStart = (Button) findViewById(R.id.button_start);
+        buttonStart = (Button) findViewById(R.id.button_start);
         buttonStart.setOnClickListener(this);
 
         progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner_start);
@@ -70,10 +75,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     //READY = Bereit zu spielen, warten auf Gegenspieler
                     case READY:
                         Log.i(TAG, "onClick: button_start: READY");
-                        progressTask.execute();
-                        Toast.makeText(this, "Start Game", Toast.LENGTH_SHORT).show();
-                        //set PLAYER_1
-                        player = Player.PLAYER_1;
+                        setPlayer(Player.PLAYER_1, R.string.player_1, R.color.colorPlayer1, R.color.colorPlayer2);
                         //publish start
                         handler.toPublish(null, getString(R.string.pub_waiting_start));
                         //generate questionSequence and set it in ClientHandler
@@ -84,11 +86,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     //WAITING = Spieler 1 hat Spiel gestartet, Spieler 2 kann joinen
                     case WAITING:
                         Log.i(TAG, "onClick: button_start: WAITING");
-                        progressTask.execute();
-                        player = Player.PLAYER_2;
+                        setPlayer(player, R.string.player_2, R.color.colorPlayer2, R.color.colorPlayer1);
                         handler.toPublish(null, getString(R.string.pub_started_join));
-                        //TODO: go eigentlich vom Raspberry
-//                        handler.toPublish(null, getString(R.string.msg_go));
                         break;
                     //BLOCKED = Fragen anzeigen, Kein weiterer Spieler kann joinen
                     case BLOCKED:
@@ -101,6 +100,26 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                 break;
         }
     }
+
+    /**
+     * sets player attributes
+     * @param player Player_1 or Player_2
+     * @param playerStringRes stringResource for each player
+     * @param colorPlayerRes
+     * @param colorSpinnerRes
+     */
+    private void setPlayer(Player player, int playerStringRes, int colorPlayerRes, int colorSpinnerRes) {
+        getSupportActionBar().setTitle(playerStringRes);
+        ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor(getString(colorPlayerRes)));
+        getSupportActionBar().setBackgroundDrawable(colorDrawable);
+        buttonStart.setBackgroundResource(colorPlayerRes);
+        buttonStart.setClickable(false);
+        progressSpinner.getIndeterminateDrawable()
+                .setColorFilter(ContextCompat.getColor(this, colorSpinnerRes), PorterDuff.Mode.SRC_IN );
+        progressTask.execute();
+        this.player = player;
+    }
+
 
     @Override
     protected void onStop() {
