@@ -27,22 +27,17 @@ import qqc.mosyits.haw.qqc.StartActivity;
  */
 
 public class ClientHandler implements MqttCallback {
-    public static final String PLAYER_KEY = "player_key";
     public static final String QUESTION_KEY = "question_key";
+    private static ClientHandler staticClientHandler;
     private final String TAG = getClass().getSimpleName();
 
-    //    http://www.hivemq.com/demos/websocket-client/
-    private static final int NOTIFICATION_ID = 42;
     private static ArrayList<MessageObserver> observerList = new ArrayList<>();
     private static String questionIdString;
 
     private MqttAndroidClient client;
     private Context context;
-    //    private String brokerURL = "tcp://broker.mqttdashboard.com";
     private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
-    //tcp://broker.hivemq.com:1883
     private static StartActivity.GameStartStatus startStatus;
-    public static int[] idList;
     public static int maxQuestionsToBeAnswered = 10;
     private ArrayList<Integer> questionSequence;
     private boolean isFirstQuestion = true;
@@ -53,6 +48,16 @@ public class ClientHandler implements MqttCallback {
         this.context = c;
         connectWithServer();
         startStatus = StartActivity.GameStartStatus.READY;
+    }
+
+    public static ClientHandler getClientHandler(){
+        Log.i("ClientHandler", "getClientHandler: " + staticClientHandler.toString());
+        return staticClientHandler;
+    }
+
+    public static void setClientHandler(ClientHandler clientHandler){
+        Log.i("ClientHandler", "setClientHandler: " + clientHandler.toString());
+        staticClientHandler = clientHandler;
     }
 
     /**

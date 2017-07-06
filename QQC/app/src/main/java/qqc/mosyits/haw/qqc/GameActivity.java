@@ -46,6 +46,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private TimeHandler.QQCCountDownTimer cdt;
     private ProgressBar progressSpinner;
     private ProgressTask progressTask;
+    private boolean firstTime = true;
 
 
     @Override
@@ -62,7 +63,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         //add this class as observer
         ClientHandler.addMessageObserver(this);
 
-        handler = new ClientHandler(this.getApplicationContext());
+//        handler = new ClientHandler(this.getApplicationContext());
+        handler = ClientHandler.getClientHandler();
         timeHandler = new TimeHandler(this);
 
         questionField = (TextView) findViewById(R.id.question_field);
@@ -71,7 +73,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerC = (Button) findViewById(R.id.answer_c);
         answerD = (Button) findViewById(R.id.answer_d);
 
-        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner);
+        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner_game);
         progressTask = new ProgressTask(this, progressSpinner);
 
         answerA.setOnClickListener(this);
@@ -83,6 +85,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         //TODO: stürzt manchmal ab weil StartActivity.player = null
         if (StartActivity.player.equals(StartActivity.Player.PLAYER_1)) {
             player = getString(R.string.player_1);
+
         } else if (StartActivity.player.equals(StartActivity.Player.PLAYER_2)) {
             player = getString(R.string.player_2);
         }
@@ -196,8 +199,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 checkAnswer(answerD, requiredTime);
                 break;
         }
+        //TODO: FEHLERBEHEBUNG PROGRESS SPINNER
         //start Task to show progressSpinner
-        progressTask.execute();
+//        if (progressTask.isCancelled()) {
+//            Log.i(TAG, "onClick: Progresstask cancelled");
+//            progressTask.execute();
+//        }else{
+//            Log.i(TAG, "onClick: Progresstask not cancelled");
+//            progressTask.setTaskProgress(true);
+//        }
     }
 
     @Override
@@ -219,7 +229,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     /**
      * get messages from ClientHandler when they arrive
      *
-     * @param msg message that is lately arrived
+     * @param msg           message that is lately arrived
      * @param clientHandler
      */
     @Override
@@ -233,8 +243,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         //if message is go, then the next question is displayed
         else if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
-            progressTask.setTaskProgress(false);
             Log.i(TAG, "updateMessage, message=" + msg);
+            if(!firstTime) {
+                progressTask.setTaskProgress(false);
+            }else{
+                firstTime = false;
+            }
             askNextQuestion();
         }
     }

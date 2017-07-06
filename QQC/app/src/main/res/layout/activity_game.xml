@@ -28,7 +28,7 @@
         android:text="@string/question_test" />
 
     <ProgressBar
-        android:id="@+id/progress_spinner"
+        android:id="@+id/progress_spinner_game"
         style="?android:attr/progressBarStyleLarge"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
