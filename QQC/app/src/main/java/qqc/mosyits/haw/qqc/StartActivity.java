@@ -1,6 +1,5 @@
 package qqc.mosyits.haw.qqc;
 
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -9,7 +8,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import qqc.mosyits.haw.qqc.Database.DatabaseHandler;
@@ -34,9 +32,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     private ProgressBar progressSpinner;
     private ProgressTask progressTask;
-    // private boolean progress = true;
 
     public enum GameStartStatus {READY, WAITING, BLOCKED}
+
     public enum Player {PLAYER_1, PLAYER_2}
 
 
@@ -49,10 +47,11 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         Button buttonStart = (Button) findViewById(R.id.button_start);
         buttonStart.setOnClickListener(this);
 
-        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner);
+        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner_start);
         progressTask = new ProgressTask(this, progressSpinner);
 
         handler = new ClientHandler(this);
+        ClientHandler.setClientHandler(handler);
 
         if (DEBUG) {
             deleteDatabase(new DatabaseHandler(this).DATABASE_NAME);
@@ -103,13 +102,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     }
 
     @Override
-    protected void onDestroy() {
-        Log.i(TAG, "onDestroy");
-        super.onDestroy();
+    protected void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
         handler.toClose();
         progressTask.setTaskProgress(false);
     }
-
-
-
 }

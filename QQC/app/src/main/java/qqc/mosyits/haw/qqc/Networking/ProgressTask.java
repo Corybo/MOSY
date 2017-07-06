@@ -10,55 +10,61 @@ import android.widget.Toast;
 import qqc.mosyits.haw.qqc.StartActivity;
 
 /**
- * Created by Mona on 04.07.2017.
+ * Class to execute ProgressSpinner
  */
 public class ProgressTask extends AsyncTask<Void, Void, String> {
 
     private final String TAG = getClass().getSimpleName();
     private Context context;
     private ProgressBar progressSpinner;
-    private Boolean progress;
+    private boolean progress = true;
 
 
     public ProgressTask(Context context, ProgressBar progressSpinner) {
-        Log.i(TAG, "ProgressTask: constructor");
+        Log.i(TAG, "ProgressTask: constructor" + ", Progresstask=" + this.toString());
         this.context = context;
         this.progressSpinner = progressSpinner;
-        progress = true;
-
-        Toast.makeText(context, "Task startet", Toast.LENGTH_SHORT).show();
-
     }
 
     @Override
     protected void onPreExecute() {
-        Log.i(TAG, "onPreExecute");
-        Toast.makeText(context, "Task PreExe", Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "onPreExecute" + ", Progresstask=" + this.toString());
         super.onPreExecute();
+        progress = true;
         progressSpinner.setVisibility(View.VISIBLE);
     }
 
     @Override
     protected String doInBackground(Void... params) {
-        Log.i(TAG, "doInBackground");
-        while (progress) {}
+        Log.i(TAG, "doInBackground: progress = " + progress + ", Progresstask=" + this.toString());
+        int i=0;
+        while (progress) {
+            i++;
+            if(i%10000000==0) {
+                Log.i(TAG, "doInBackground: while true");
+            }
+        }
+        Log.i(TAG, "doInBackground: progress stopped");
         return "Progress beendet";
     }
 
     @Override
     protected void onPostExecute(String s) {
-        Log.i(TAG, "onPostExecute");
+        Log.i(TAG, "onPostExecute: String s=" + s + ", Progresstask=" + this.toString());
         Toast.makeText(context, "Task Post", Toast.LENGTH_SHORT).show();
         super.onPostExecute(s);
         progressSpinner.setVisibility(View.INVISIBLE);
+        cancel(true);
     }
 
 
-    public Boolean getTaskProgress() {
+
+    public boolean getTaskProgress() {
         return progress;
     }
 
-    public void setTaskProgress(Boolean progress) {
+    public void setTaskProgress(boolean progress) {
+        Log.i(TAG, "setTaskProgress: " + progress + ", Progresstask=" + this.toString());
         this.progress = progress;
     }
 }
