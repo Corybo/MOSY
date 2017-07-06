@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ import java.util.Collections;
 
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
 import qqc.mosyits.haw.qqc.Networking.MessageObserver;
+import qqc.mosyits.haw.qqc.Networking.ProgressTask;
 import qqc.mosyits.haw.qqc.Networking.TimeHandler;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
@@ -40,6 +42,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int questionId;
     private TimeHandler timeHandler;
     private TimeHandler.QQCCountDownTimer cdt;
+    private ProgressBar progressSpinner;
+    private ProgressTask progressTask;
 
 
     @Override
@@ -58,6 +62,9 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerB = (Button) findViewById(R.id.answer_b);
         answerC = (Button) findViewById(R.id.answer_c);
         answerD = (Button) findViewById(R.id.answer_d);
+
+        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner);
+        progressTask = new ProgressTask(this, progressSpinner);
 
         answerA.setOnClickListener(this);
         answerB.setOnClickListener(this);
@@ -181,6 +188,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 checkAnswer(answerD, requiredTime);
                 break;
         }
+        //start Task to show progressSpinner
+        progressTask.execute();
     }
 
     @Override
@@ -216,6 +225,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         //if message is go, then the next question is displayed
         else if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
+            progressTask.setTaskProgress(false);
             Log.i(TAG, "updateMessage, message=" + msg);
             askNextQuestion();
         }

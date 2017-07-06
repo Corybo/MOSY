@@ -25,6 +25,15 @@
         android:layout_marginTop="62dp"
         android:text="@string/question_test" />
 
+    <ProgressBar
+        android:id="@+id/progress_spinner"
+        style="?android:attr/progressBarStyleLarge"
+        android:visibility="invisible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
     <!--TODO: in Linear Layout ändern, damit die Felder gleich angezeigt werden-->
     <GridLayout
         android:layout_width="wrap_content"
