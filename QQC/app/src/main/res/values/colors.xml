@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimaryDark">#8B0000</color>
+    <color name="colorPlayer2">#FF4081</color>
+    <color name="colorPlayer1">#00CDCD</color>
+    <color name="colorAccents">#CD0000</color>
+    <color name="colorQuizButton">#FFF5EE</color>
 </resources>

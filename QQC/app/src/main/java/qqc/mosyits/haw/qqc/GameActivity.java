@@ -1,12 +1,14 @@
 package qqc.mosyits.haw.qqc;
 
 import android.content.Intent;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,6 +53,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_game);
+
+        //   LinearLayout bgElement = (LinearLayout) findViewById(R.id.startLayout);
+//        bgElement.setBackgroundColor(R.color.colorQuizButton);
+        RelativeLayout rl = (RelativeLayout)findViewById(R.id.gameLayout);
+        rl.setBackgroundResource(R.color.colorPlayer1);
+
         //add this class as observer
         ClientHandler.addMessageObserver(this);
 
