@@ -52,6 +52,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private ProgressTask progressTask;
     private boolean firstTime = true;
     private int colorRes;
+    private Button clickedButton;
 
 
     @Override
@@ -168,7 +169,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
      * @return true: right answer, false: wrong answer
      */
     private void checkAnswer(Button answer, long requiredTime) {
-        answer.setBackgroundResource(colorRes);
+        clickedButton = answer;
+        clickedButton.setBackgroundResource(colorRes);
 
         //ANSWER CORRECT
         Log.i(TAG, "checkAnswer");
@@ -267,6 +269,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         //if message is go, then the next question is displayed
         else if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
+            clickedButton.setBackgroundResource(R.color.colorQuizButton);
             setAllButtonsClickable(true);
             Log.i(TAG, "updateMessage, message=" + msg);
             if(!firstTime) {
