@@ -46,6 +46,7 @@ public class ClientHandler implements MqttCallback {
     public static int maxQuestionsToBeAnswered = 10;
     private ArrayList<Integer> questionSequence;
     private boolean isFirstQuestion = true;
+    private int i = 0;
 
     public ClientHandler(Context c) {
         Log.i(TAG, "ClientHandler: constructor");
@@ -162,7 +163,7 @@ public class ClientHandler implements MqttCallback {
             //STATUS: WAITING
             else if (bodymessage.equals(context.getResources().getString(R.string.pub_started_join))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                startGame();
+//                startGame();
             }
             //STATUS: BLOCKED
             else if (bodymessage.equals(context.getResources().getString(R.string.pub_end_game))) {
@@ -172,7 +173,7 @@ public class ClientHandler implements MqttCallback {
             //QuestionArray
             else if (bodymessage.startsWith("#")) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                notifyMessageObserver(bodymessage);
+                notifyMessageObserver(bodymessage, this);
             }
             //Start next question
             else if (bodymessage.equalsIgnoreCase(context.getResources().getString(R.string.msg_go))) {
@@ -182,20 +183,22 @@ public class ClientHandler implements MqttCallback {
                     startGame();
                     isFirstQuestion = false;
                 } else {
-                    notifyMessageObserver(bodymessage);
+                    notifyMessageObserver(bodymessage, this);
                 }
             } else if (bodymessage.startsWith(context.getString(R.string.time))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                notifyMessageObserver(bodymessage);
+                notifyMessageObserver(bodymessage, this);
             } else if (bodymessage.equals(context.getString(R.string.msg_tie))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
                 Toast.makeText(context, R.string.txt_tie, Toast.LENGTH_SHORT).show();
             }
             else if(bodymessage.equals(context.getString(R.string.player_1))){
                 Log.i(TAG, "messageArrived: " + bodymessage);
+                sendQuestionNumber(++i);
             }
             else if(bodymessage.equals(context.getString(R.string.player_2))){
                 Log.i(TAG, "messageArrived: " + bodymessage);
+                sendQuestionNumber(++i);
             }
         }
     }
@@ -270,16 +273,23 @@ public class ClientHandler implements MqttCallback {
         observerList.add(observer);
     }
 
+    public static void removeMessageObserver(MessageObserver observer) {
+        Log.i("ClientHandler", "removeMessageObserver: observer=" + observer.toString());
+        observerList.remove(observer);
+    }
     /**
      * Notify all messageObservers when new message came in
      *
      * @param msg new message
+     * @param clientHandler
      */
-    public static void notifyMessageObserver(String msg) {
+    public static void notifyMessageObserver(String msg, ClientHandler clientHandler) {
         Log.i("ClientHandler", "notifyMessageObserver");
         questionIdString = msg;
         for (MessageObserver observer : observerList) {
-            observer.updateMessage(msg);
+            Log.i("ClientHandler", "notifyMessageObserver: observer=" + observer.toString() + ", clienthandler=" + clientHandler.toString());
+            observer.updateMessage(msg, clientHandler);
         }
     }
+
 }

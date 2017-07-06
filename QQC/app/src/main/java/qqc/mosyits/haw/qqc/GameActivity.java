@@ -51,6 +51,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         ClientHandler.addMessageObserver(this);
 
         handler = new ClientHandler(this.getApplicationContext());
+        timeHandler = new TimeHandler(this);
 
         questionField = (TextView) findViewById(R.id.question_field);
         answerA = (Button) findViewById(R.id.answer_a);
@@ -64,17 +65,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         answerD.setOnClickListener(this);
 
         //Player1 or Player2 as string
+        //TODO: stürzt manchmal ab weil StartActivity.player = null
         if (StartActivity.player.equals(StartActivity.Player.PLAYER_1)) {
             player = getString(R.string.player_1);
         } else if (StartActivity.player.equals(StartActivity.Player.PLAYER_2)) {
             player = getString(R.string.player_2);
         }
 
-        timeHandler = new TimeHandler(this);
 
         //TODO: TEST updateMessage
-        updateMessage(getIntent().getExtras().getString(QUESTION_KEY));
-        updateMessage(getString(R.string.msg_go));
+        updateMessage(getIntent().getExtras().getString(QUESTION_KEY), handler);
+        updateMessage(getString(R.string.msg_go), handler);
     }
 
 
@@ -180,8 +181,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 checkAnswer(answerD, requiredTime);
                 break;
         }
-        //TODO: go eigentlich vom Raspberry
-        handler.toPublish(null, getString(R.string.msg_go));
     }
 
     @Override
@@ -204,9 +203,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
      * get messages from ClientHandler when they arrive
      *
      * @param msg message that is lately arrived
+     * @param clientHandler
      */
     @Override
-    public void updateMessage(String msg) {
+    public void updateMessage(String msg, ClientHandler clientHandler) {
         Log.i(TAG, "updateMessage");
         //if message starts with #, it is the number for the next question and saved as questionId
         if (msg.startsWith("#")) {

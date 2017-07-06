@@ -8,23 +8,10 @@
     android:gravity="center"
     tools:context="qqc.mosyits.haw.qqc.StartActivity">
 
-    <TextView
-        android:id="@+id/tv_timer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:textSize="20sp"
-        android:text="20"
-        android:textColor="@color/colorAccent"/>
     <Button
         android:id="@+id/button_start"
         style="@style/StartActivityButtons"
         android:text="@string/btn_start_game" />
-    <Button
-        android:id="@+id/button_timer_test"
-        style="@style/StartActivityButtons"
-        android:text="Stop Timer"/>
 
     <ProgressBar
         android:id="@+id/progress_spinner"

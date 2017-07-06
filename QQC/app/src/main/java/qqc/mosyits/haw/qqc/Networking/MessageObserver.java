@@ -5,5 +5,5 @@ package qqc.mosyits.haw.qqc.Networking;
  */
 
 public interface MessageObserver {
-    void updateMessage(String msg);
+    void updateMessage(String msg, ClientHandler clientHandler);
 }

@@ -16,8 +16,8 @@ public class TimeHandler implements MessageObserver {
     private final String TAG = getClass().getSimpleName();
     private static final int MAX_TIME_IN_SECONDS = 20;
     private Context context;
-    private int timePlayer1 = 0;
-    private int timePlayer2 = 0;
+    private int timePlayer1 = -1;
+    private int timePlayer2 = -1;
     private ClientHandler clientHandler;
 
     public TimeHandler(Context context) {
@@ -27,7 +27,7 @@ public class TimeHandler implements MessageObserver {
     }
 
     @Override
-    public void updateMessage(String msg) {
+    public void updateMessage(String msg, ClientHandler clientHandler) {
         Log.i(TAG, "updateMessage: msg=" + msg);
         //only Player1 compares the time
         if (StartActivity.player == StartActivity.Player.PLAYER_1) {
@@ -46,17 +46,18 @@ public class TimeHandler implements MessageObserver {
                     Log.i(TAG, "updateMessage: timeMessage player2");
                     timePlayer2 = Integer.valueOf(timeMessage.substring(2));
                 }
-                sendMessageFasterPlayer();
+                sendMessageFasterPlayer(clientHandler);
             }
         }
     }
 
     /**
      * publishes Player1 or Player2 according to the faster one
+     * @param clientHandler
      */
-    private void sendMessageFasterPlayer() {
+    private void sendMessageFasterPlayer(ClientHandler clientHandler) {
         Log.i(TAG, "sendMessageFasterPlayer");
-        if (timePlayer1 != 0 && timePlayer2 != 0) {
+        if (((timePlayer1 > 0) && (timePlayer2 > 0))||((timePlayer1==0) && (timePlayer2>0))||((timePlayer1>0) && (timePlayer2==0))) {
             Log.i(TAG, "sendMessageFasterPlayer: timePlayer1=" + timePlayer1 + ", timePlayer2=" + timePlayer2);
             StartActivity.Player fasterPlayer = compareTime(timePlayer1, timePlayer2);
             if (fasterPlayer != null) {
@@ -71,7 +72,7 @@ public class TimeHandler implements MessageObserver {
                 Log.i(TAG, "sendMessageFasterPlayer: publish Gleichstand gleiche Punkte");
                 clientHandler.toPublish(null, context.getString(R.string.msg_tie));
             }
-        } else {
+        } else if((timePlayer1==0) && (timePlayer2==0)){
             Log.i(TAG, "sendMessageFasterPlayer: publish Gleichstand beide 0");
             clientHandler.toPublish(null, context.getString(R.string.msg_tie));
         }
@@ -153,6 +154,7 @@ public class TimeHandler implements MessageObserver {
 
         public void onFinish() {
             timerTextView.setText("done!");
+            millisUntilFinished = 0;
         }
     }
 
