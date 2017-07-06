@@ -168,7 +168,7 @@ public class ClientHandler implements MqttCallback {
             //STATUS: WAITING
             else if (bodymessage.equals(context.getResources().getString(R.string.pub_started_join))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-//                startGame();
+                notifyMessageObserver(bodymessage, this);
             }
             //STATUS: BLOCKED
             else if (bodymessage.equals(context.getResources().getString(R.string.pub_end_game))) {
@@ -196,14 +196,15 @@ public class ClientHandler implements MqttCallback {
             } else if (bodymessage.equals(context.getString(R.string.msg_tie))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
                 Toast.makeText(context, R.string.txt_tie, Toast.LENGTH_SHORT).show();
+                if(StartActivity.player == StartActivity.Player.PLAYER_1)sendQuestionNumber(++i);
             }
             else if(bodymessage.equals(context.getString(R.string.player_1))){
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                sendQuestionNumber(++i);
+                if(StartActivity.player == StartActivity.Player.PLAYER_1)sendQuestionNumber(++i);
             }
             else if(bodymessage.equals(context.getString(R.string.player_2))){
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                sendQuestionNumber(++i);
+                if(StartActivity.player == StartActivity.Player.PLAYER_1)sendQuestionNumber(++i);
             }
         }
     }

@@ -18,7 +18,6 @@ public class TimeHandler implements MessageObserver {
     private Context context;
     private int timePlayer1 = -1;
     private int timePlayer2 = -1;
-    private ClientHandler clientHandler;
 
     public TimeHandler(Context context) {
         Log.i(TAG, "TimeHandler: constructor");
@@ -53,11 +52,13 @@ public class TimeHandler implements MessageObserver {
 
     /**
      * publishes Player1 or Player2 according to the faster one
+     *
      * @param clientHandler
      */
     private void sendMessageFasterPlayer(ClientHandler clientHandler) {
         Log.i(TAG, "sendMessageFasterPlayer");
-        if (((timePlayer1 > 0) && (timePlayer2 > 0))||((timePlayer1==0) && (timePlayer2>0))||((timePlayer1>0) && (timePlayer2==0))) {
+        //Both players selected right answer or one of them
+        if (((timePlayer1 > 0) && (timePlayer2 > 0)) || ((timePlayer1 == 0) && (timePlayer2 > 0)) || ((timePlayer1 > 0) && (timePlayer2 == 0))) {
             Log.i(TAG, "sendMessageFasterPlayer: timePlayer1=" + timePlayer1 + ", timePlayer2=" + timePlayer2);
             StartActivity.Player fasterPlayer = compareTime(timePlayer1, timePlayer2);
             if (fasterPlayer != null) {
@@ -72,10 +73,27 @@ public class TimeHandler implements MessageObserver {
                 Log.i(TAG, "sendMessageFasterPlayer: publish Gleichstand gleiche Punkte");
                 clientHandler.toPublish(null, context.getString(R.string.msg_tie));
             }
-        } else if((timePlayer1==0) && (timePlayer2==0)){
+            resetTime();
+        }
+        //Both players selected wrong answer or answered too slow
+        else if ((timePlayer1 == 0) && (timePlayer2 == 0)) {
             Log.i(TAG, "sendMessageFasterPlayer: publish Gleichstand beide 0");
             clientHandler.toPublish(null, context.getString(R.string.msg_tie));
+            resetTime();
         }
+        //one player has not selected yet
+        else {
+            //do nothing
+        }
+    }
+
+    /**
+     * After each comparison the times of both players is reset to -1
+     */
+    private void resetTime() {
+        Log.i(TAG, "resetTime");
+        timePlayer1 = -1;
+        timePlayer2 = -1;
     }
 
     /**
@@ -104,11 +122,12 @@ public class TimeHandler implements MessageObserver {
      * method to start countdown
      *
      * @param timerTextView textView which displays the countdown
+     * @param clientHandler clientHandler from GameActivity
      * @return started instance of QQCCountDownTimer
      */
-    public QQCCountDownTimer startTimer(final TextView timerTextView) {
+    public QQCCountDownTimer startTimer(final TextView timerTextView, ClientHandler clientHandler) {
         Log.i(TAG, "startTimer");
-        QQCCountDownTimer cdt = new QQCCountDownTimer(MAX_TIME_IN_SECONDS * 1000, 1000, timerTextView);
+        QQCCountDownTimer cdt = new QQCCountDownTimer(MAX_TIME_IN_SECONDS * 1000, 1000, timerTextView, clientHandler);
         cdt = (QQCCountDownTimer) cdt.start();
         return cdt;
     }
@@ -119,6 +138,7 @@ public class TimeHandler implements MessageObserver {
     public class QQCCountDownTimer extends CountDownTimer {
 
         private final TextView timerTextView;
+        private final ClientHandler clientHandler;
         private long millisUntilFinished;
 
         /**
@@ -127,11 +147,14 @@ public class TimeHandler implements MessageObserver {
          *                          is called.
          * @param countDownInterval The interval along the way to receive
          *                          {@link #onTick(long)} callbacks.
+         * @param timerTextView
+         * @param clientHandler
          */
-        public QQCCountDownTimer(long millisInFuture, long countDownInterval, TextView timerTextView) {
+        public QQCCountDownTimer(long millisInFuture, long countDownInterval, TextView timerTextView, ClientHandler clientHandler) {
             super(millisInFuture, countDownInterval);
             Log.i(TAG, "QQCCountDownTimer: constructor");
             this.timerTextView = timerTextView;
+            this.clientHandler = clientHandler;
         }
 
         public void onTick(long millisUntilFinished) {
@@ -155,6 +178,26 @@ public class TimeHandler implements MessageObserver {
         public void onFinish() {
             timerTextView.setText("done!");
             millisUntilFinished = 0;
+            publishRequiredTime(millisUntilFinished, context, clientHandler);
+        }
+    }
+
+    /**
+     * publishes the time the current needed to answer the correct question
+     *
+     * @param requiredTime
+     * @param context
+     * @param clientHandler
+     */
+    public static void publishRequiredTime(long requiredTime, Context context, ClientHandler clientHandler) {
+        Log.i("TimeHandler", "publishRequiredTime");
+        String timeMessage = context.getString(R.string.time);
+        if (StartActivity.player == StartActivity.Player.PLAYER_1) {
+            Log.i("TimeHandler", "checkAnswer: publish Time for Player 1");
+            clientHandler.toPublish(null, timeMessage + "_1_" + requiredTime);
+        } else {
+            Log.i("TimeHandler", "checkAnswer: publish Time for Player 2");
+            clientHandler.toPublish(null, timeMessage + "_2_" + requiredTime);
         }
     }
 
