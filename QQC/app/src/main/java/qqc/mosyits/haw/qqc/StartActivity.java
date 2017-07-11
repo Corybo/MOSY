@@ -3,6 +3,7 @@ package qqc.mosyits.haw.qqc;
 
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -11,7 +12,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -43,6 +46,9 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     public enum Player {PLAYER_1, PLAYER_2}
 
+    private ImageView imageView;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,11 +56,17 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_start);
 
+        imageView = (ImageView)findViewById(R.id.imageView);
+       // imageView.setMaxHeight(imageView.getWidth());
+      // imageView.setLayoutParams(new ViewGroup.MarginLayoutParams(imageView.getWidth(), ViewGroup.LayoutParams.MATCH_PARENT));
+        if(imageView == null) throw new AssertionError();
+        imageView.setBackgroundResource(R.drawable.propeller_01);
+
         buttonStart = (Button) findViewById(R.id.button_start);
         buttonStart.setOnClickListener(this);
 
         progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner_start);
-        progressTask = new ProgressTask(this, progressSpinner);
+        progressTask = new ProgressTask(this, progressSpinner, imageView);
 
         handler = new ClientHandler(this);
         ClientHandler.setClientHandler(handler);
@@ -112,7 +124,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setTitle(playerStringRes);
         ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor(getString(colorPlayerRes)));
         getSupportActionBar().setBackgroundDrawable(colorDrawable);
-        buttonStart.setBackgroundResource(colorPlayerRes);
+       // buttonStart.setBackgroundResource(colorPlayerRes);
         buttonStart.setClickable(false);
         progressSpinner.getIndeterminateDrawable()
                 .setColorFilter(ContextCompat.getColor(this, colorSpinnerRes), PorterDuff.Mode.SRC_IN );
@@ -128,4 +140,5 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         handler.toClose();
         progressTask.setTaskProgress(false);
     }
+
 }

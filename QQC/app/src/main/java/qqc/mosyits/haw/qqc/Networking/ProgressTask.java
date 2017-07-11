@@ -1,12 +1,15 @@
 package qqc.mosyits.haw.qqc.Networking;
 
 import android.content.Context;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import qqc.mosyits.haw.qqc.R;
 import qqc.mosyits.haw.qqc.StartActivity;
 
 /**
@@ -18,7 +21,16 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
     private Context context;
     private ProgressBar progressSpinner;
     private boolean progress = true;
+    private ImageView imageView;
+    private AnimationDrawable animation;
 
+
+    public ProgressTask(Context context, ProgressBar progressSpinner, ImageView imageView) {
+        Log.i(TAG, "ProgressTask: constructor" + ", Progresstask=" + this.toString());
+        this.context = context;
+        this.progressSpinner = progressSpinner;
+        this.imageView = imageView;
+    }
 
     public ProgressTask(Context context, ProgressBar progressSpinner) {
         Log.i(TAG, "ProgressTask: constructor" + ", Progresstask=" + this.toString());
@@ -31,7 +43,8 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
         Log.i(TAG, "onPreExecute" + ", Progresstask=" + this.toString());
         super.onPreExecute();
         progress = true;
-        progressSpinner.setVisibility(View.VISIBLE);
+        playAnimation();
+       // progressSpinner.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -57,8 +70,6 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
         cancel(true);
     }
 
-
-
     public boolean getTaskProgress() {
         return progress;
     }
@@ -66,6 +77,12 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
     public void setTaskProgress(boolean progress) {
         Log.i(TAG, "setTaskProgress: " + progress + ", Progresstask=" + this.toString());
         this.progress = progress;
+    }
+
+    public void playAnimation(){
+        imageView.setBackgroundResource(R.drawable.animation_propeller);
+        animation = (AnimationDrawable) imageView.getBackground();
+        animation.start();
     }
 }
 

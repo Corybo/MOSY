@@ -1,26 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/startLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center"
     android:background="@color/colorBackground"
+    android:gravity="center"
+    android:orientation="vertical"
     tools:context="qqc.mosyits.haw.qqc.StartActivity">
-
-    <Button
-        android:id="@+id/button_start"
-        style="@style/StartActivityButtons"
-        android:text="@string/btn_start_game" />
 
     <ProgressBar
         android:id="@+id/progress_spinner_start"
         style="?android:attr/progressBarStyleLarge"
-        android:visibility="invisible"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
+        android:visibility="invisible"
+        android:layout_above="@+id/button_start"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="31dp" />
 
-</LinearLayout>
+    <Button
+        android:id="@+id/button_start"
+        style="@style/StartActivityButtons"
+        android:background="@null"
+        android:text="@string/btn_start_game"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="400dp"
+        android:layout_height="400dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>
