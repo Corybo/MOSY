@@ -1,8 +1,10 @@
 package qqc.mosyits.haw.qqc;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -55,6 +57,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean firstTime = true;
     private int colorRes;
     private Button clickedButton;
+    private Vibrator vibrator;
 
 
     @Override
@@ -62,6 +65,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_game);
+
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         //add this class as observer
         ClientHandler.addMessageObserver(this);
@@ -115,6 +120,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void askNextQuestion() {
         Log.i(TAG, "askNextQuestion");
+        // Vibrate for 500 milliseconds
+        vibrator.vibrate(500);
         //TODO: Time delay 5s
         if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
             Log.i(TAG, "askNextQuestion: maxQuestions noch nicht erreicht, questionAsked = " + questionsAsked + ", maxQuestions: " + maxQuestionsToBeAnswered);
