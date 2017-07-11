@@ -15,8 +15,8 @@
     <string name="waiting_for_player_2">Bitte auf Spieler 2 warten</string>
     <string name="ready">Bereit, das Spiel zu starten</string>
     <string name="pub_waiting_start">pub_waiting</string>
-    <string name="pub_started_join">pub_started</string>
-    <string name="pub_end_game">pub_end_game</string>
+    <string name="pub_started_join">start</string>
+    <string name="pub_end_game">end</string>
     <string name="local_status_ready">Local Status Ready</string>
     <string name="local_status_waiting">Local Status Waiting</string>
     <string name="player_1">Player1</string>
@@ -25,4 +25,6 @@
     <string name="time">time</string>
     <string name="msg_tie">tie</string>
     <string name="txt_tie">Gleichstand</string>
+    <string name="server_password">schuh+-0</string>
+    <string name="server_username">haw</string>
 </resources>

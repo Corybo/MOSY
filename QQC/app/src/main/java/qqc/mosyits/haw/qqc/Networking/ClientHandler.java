@@ -36,7 +36,8 @@ public class ClientHandler implements MqttCallback {
 
     private MqttAndroidClient client;
     private Context context;
-    private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
+//    private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
+    private String brokerURL = "tcp://diginet.mt.haw-hamburg.de";
     private static StartActivity.GameStartStatus startStatus;
     public static int maxQuestionsToBeAnswered = 10;
     private ArrayList<Integer> questionSequence;
@@ -72,6 +73,8 @@ public class ClientHandler implements MqttCallback {
             MqttConnectOptions options = new MqttConnectOptions();
             options.setCleanSession(true);
             options.setMqttVersion(MqttConnectOptions.MQTT_VERSION_3_1);
+            options.setUserName(context.getString(R.string.server_username));
+            options.setPassword(context.getString(R.string.server_password).toCharArray());
             client.connect(options, null, new IMqttActionListener() {
                 @Override
                 public void onSuccess(IMqttToken asyncActionToken) {
@@ -157,7 +160,7 @@ public class ClientHandler implements MqttCallback {
         Log.i(TAG, "messageArrived");
         if (topic.equals(context.getString(R.string.topic))) {
             Log.i(TAG, "messageArrived: topic=" + topic);
-            String bodymessage = new String(message.getPayload()); //modymessage inhalt der gepublishten message kann weiterverarbeitetet werden
+            String bodymessage = new String(message.getPayload()); //bodymessage inhalt der gepublishten message kann weiterverarbeitetet werden
             Toast.makeText(context, "Handler arrived Message: " + bodymessage, Toast.LENGTH_SHORT).show();
             //STATUS: READY
             if (bodymessage.equals(context.getResources().getString(R.string.pub_waiting_start))) {
