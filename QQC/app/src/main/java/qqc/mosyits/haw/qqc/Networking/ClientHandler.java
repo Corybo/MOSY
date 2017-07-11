@@ -36,13 +36,14 @@ public class ClientHandler implements MqttCallback {
 
     private MqttAndroidClient client;
     private Context context;
-//    private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
+    //    private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
     private String brokerURL = "tcp://diginet.mt.haw-hamburg.de";
     private static StartActivity.GameStartStatus startStatus;
     public static int maxQuestionsToBeAnswered = 10;
     private ArrayList<Integer> questionSequence;
     private boolean isFirstQuestion = true;
     private int i = 0;
+    private boolean firstStart = true;
 
     public ClientHandler(Context c) {
         Log.i(TAG, "ClientHandler: constructor");
@@ -51,12 +52,12 @@ public class ClientHandler implements MqttCallback {
         startStatus = StartActivity.GameStartStatus.READY;
     }
 
-    public static ClientHandler getClientHandler(){
+    public static ClientHandler getClientHandler() {
         Log.i("ClientHandler", "getClientHandler: " + staticClientHandler.toString());
         return staticClientHandler;
     }
 
-    public static void setClientHandler(ClientHandler clientHandler){
+    public static void setClientHandler(ClientHandler clientHandler) {
         Log.i("ClientHandler", "setClientHandler: " + clientHandler.toString());
         staticClientHandler = clientHandler;
     }
@@ -81,6 +82,10 @@ public class ClientHandler implements MqttCallback {
                     Log.i(TAG, "connectWithServer: onSuccess");
                     // We are connected
                     Toast.makeText(context, "connected", Toast.LENGTH_SHORT).show();
+                    if (firstStart) {
+                        toPublish(null, context.getString(R.string.ask_for_start_status));
+                        firstStart = false;
+                    }
                     toSubscribe();
                 }
 
@@ -162,8 +167,38 @@ public class ClientHandler implements MqttCallback {
             Log.i(TAG, "messageArrived: topic=" + topic);
             String bodymessage = new String(message.getPayload()); //bodymessage inhalt der gepublishten message kann weiterverarbeitetet werden
             Toast.makeText(context, "Handler arrived Message: " + bodymessage, Toast.LENGTH_SHORT).show();
-            //STATUS: READY
-            if (bodymessage.equals(context.getResources().getString(R.string.pub_waiting_start))) {
+            //STATUS REQUEST
+            if (bodymessage.equals(context.getString(R.string.ask_for_start_status))) {
+                Log.i(TAG, "messageArrived: " + bodymessage);
+                if (StartActivity.player == StartActivity.Player.PLAYER_1) {
+                    String reply = "error";
+                    switch (getStartStatus()) {
+                        case READY:
+                            reply = context.getString(R.string.reply_ready_status);
+                            break;
+                        case WAITING:
+                            reply = context.getString(R.string.reply_waiting_status);
+                            break;
+                        case BLOCKED:
+                            reply = context.getString(R.string.reply_blocked_status);
+                            break;
+                    }
+                    toPublish(null, reply);
+                }
+                //Reply status request: READY
+            } else if (bodymessage.equals(context.getString(R.string.reply_ready_status))) {
+                Log.i(TAG, "messageArrived: " + bodymessage);
+                setStartStatus(StartActivity.GameStartStatus.READY);
+                //Reply status request: WAITING
+            } else if (bodymessage.equals(context.getString(R.string.reply_waiting_status))) {
+                Log.i(TAG, "messageArrived: " + bodymessage);
+                setStartStatus(StartActivity.GameStartStatus.WAITING);
+                //Reply status request: BLOCKED
+            } else if (bodymessage.equals(context.getString(R.string.reply_blocked_status))) {
+                Log.i(TAG, "messageArrived: " + bodymessage);
+                setStartStatus(StartActivity.GameStartStatus.BLOCKED);
+                //STATUS: READY
+            } else if (bodymessage.equals(context.getResources().getString(R.string.pub_waiting_start))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
                 setStartStatus(StartActivity.GameStartStatus.WAITING);
                 Toast.makeText(context, context.getString(R.string.local_status_waiting), Toast.LENGTH_SHORT).show();
@@ -199,15 +234,13 @@ public class ClientHandler implements MqttCallback {
             } else if (bodymessage.equals(context.getString(R.string.msg_tie))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
                 Toast.makeText(context, R.string.txt_tie, Toast.LENGTH_SHORT).show();
-                if(StartActivity.player == StartActivity.Player.PLAYER_1)sendQuestionNumber(++i);
-            }
-            else if(bodymessage.equals(context.getString(R.string.player_1))){
+                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
+            } else if (bodymessage.equals(context.getString(R.string.player_1))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                if(StartActivity.player == StartActivity.Player.PLAYER_1)sendQuestionNumber(++i);
-            }
-            else if(bodymessage.equals(context.getString(R.string.player_2))){
+                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
+            } else if (bodymessage.equals(context.getString(R.string.player_2))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                if(StartActivity.player == StartActivity.Player.PLAYER_1)sendQuestionNumber(++i);
+                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
             }
         }
     }
@@ -286,10 +319,11 @@ public class ClientHandler implements MqttCallback {
         Log.i("ClientHandler", "removeMessageObserver: observer=" + observer.toString());
         observerList.remove(observer);
     }
+
     /**
      * Notify all messageObservers when new message came in
      *
-     * @param msg new message
+     * @param msg           new message
      * @param clientHandler
      */
     public static void notifyMessageObserver(String msg, ClientHandler clientHandler) {
@@ -300,5 +334,4 @@ public class ClientHandler implements MqttCallback {
             observer.updateMessage(msg, clientHandler);
         }
     }
-
 }

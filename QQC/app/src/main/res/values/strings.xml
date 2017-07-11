@@ -27,4 +27,8 @@
     <string name="txt_tie">Gleichstand</string>
     <string name="server_password">schuh+-0</string>
     <string name="server_username">haw</string>
+    <string name="ask_for_start_status">ask_start_status</string>
+    <string name="reply_ready_status">repyl_ready</string>
+    <string name="reply_waiting_status">reply_waiting</string>
+    <string name="reply_blocked_status">reply_blocked</string>
 </resources>
