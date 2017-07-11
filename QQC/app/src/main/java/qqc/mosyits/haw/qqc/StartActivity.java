@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import qqc.mosyits.haw.qqc.Database.DatabaseHandler;
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
+import qqc.mosyits.haw.qqc.Networking.MessageObserver;
 import qqc.mosyits.haw.qqc.Networking.ProgressTask;
 import qqc.mosyits.haw.qqc.Networking.TimeHandler;
 import qqc.mosyits.haw.qqc.Questions.QuestionInserts;
@@ -27,13 +28,12 @@ import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
  * Player can start or join a game
  */
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-public class StartActivity extends AppCompatActivity implements View.OnClickListener {
+public class StartActivity extends AppCompatActivity implements View.OnClickListener{
     private final String TAG = getClass().getSimpleName();
     private final boolean DEBUG = true;
 
     private ClientHandler handler;
     public static Player player;
-    private TimeHandler.QQCCountDownTimer cdt;
 
     private ProgressBar progressSpinner;
     private ProgressTask progressTask;
@@ -45,7 +45,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_start);
@@ -63,6 +63,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             deleteDatabase(new DatabaseHandler(this).DATABASE_NAME);
         }
         new QuestionInserts(this);
+//        while(!handler.isConnected()){}
+//        handler.toPublish(null, getString(R.string.ask_for_start_status));
     }
 
     @Override

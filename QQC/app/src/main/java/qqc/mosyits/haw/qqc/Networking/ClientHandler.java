@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 import qqc.mosyits.haw.qqc.GameActivity;
 import qqc.mosyits.haw.qqc.R;
+import qqc.mosyits.haw.qqc.ResultActivity;
 import qqc.mosyits.haw.qqc.StartActivity;
 
 /**
@@ -36,8 +37,8 @@ public class ClientHandler implements MqttCallback {
 
     private MqttAndroidClient client;
     private Context context;
-    //    private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
-    private String brokerURL = "tcp://diginet.mt.haw-hamburg.de";
+        private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
+//    private String brokerURL = "tcp://diginet.mt.haw-hamburg.de";
     private static StartActivity.GameStartStatus startStatus;
     public static int maxQuestionsToBeAnswered = 10;
     private ArrayList<Integer> questionSequence;
@@ -211,6 +212,7 @@ public class ClientHandler implements MqttCallback {
             //STATUS: BLOCKED
             else if (bodymessage.equals(context.getResources().getString(R.string.pub_end_game))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
+                notifyMessageObserver(bodymessage, this);
                 setStartStatus(StartActivity.GameStartStatus.READY);
             }
             //QuestionArray

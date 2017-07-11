@@ -8,6 +8,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import qqc.mosyits.haw.qqc.Networking.ClientHandler;
+
 public class ResultActivity extends AppCompatActivity implements View.OnClickListener{
     private final String TAG = getClass().getSimpleName();
     private Button buttonRestart;
@@ -17,12 +19,11 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_result);
-        int amountCorrectAnswers = getIntent().getExtras().getInt("AMOUNT_OF_CORRECT_ANSWERS");
+        int amountCorrectAnswers = getIntent().getExtras().getInt(GameActivity.AMOUNT_OF_CORRECT_ANSWERS);
 
         TextView txtAmountCorrectAnswers = (TextView) findViewById(R.id.amount_correct_answers);
         txtAmountCorrectAnswers.setText(String.valueOf(amountCorrectAnswers) + " richtige Antworten");
         buttonRestart = (Button) findViewById(R.id.button_restart);
-
         buttonRestart.setOnClickListener(this);
     }
 
@@ -33,6 +34,9 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         switch (v.getId()) {
             case R.id.button_restart:
                 Log.i(TAG, "onClick: restart");
+                ClientHandler.setStartStatus(StartActivity.GameStartStatus.READY);
+                ClientHandler.getClientHandler().toClose();
+
                 Intent resultToStart = new Intent(this, StartActivity.class);
                 startActivity(resultToStart);
                 break;
