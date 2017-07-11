@@ -32,9 +32,11 @@ import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 
 import static qqc.mosyits.haw.qqc.Networking.ClientHandler.QUESTION_KEY;
 import static qqc.mosyits.haw.qqc.Networking.ClientHandler.maxQuestionsToBeAnswered;
+import static qqc.mosyits.haw.qqc.Networking.ClientHandler.removeMessageObserver;
 
 public class GameActivity extends AppCompatActivity implements View.OnClickListener, IMqttActionListener, MessageObserver {
 
+    public static final String AMOUNT_OF_CORRECT_ANSWERS = "amount_correct_answers";
     private final String TAG = getClass().getSimpleName();
     private TextView questionField;
     private Button answerA;
@@ -130,9 +132,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Log.i(TAG, "askNextQuestion: maxQuestions erreicht");
             handler.toClose();
-            Intent gameToResult = new Intent(this, ResultActivity.class);
-            gameToResult.putExtra("AMOUNT_OF_CORRECT_ANSWERS", correctAnswers);
-            startActivity(gameToResult);
+            handler.toPublish(null, getString(R.string.pub_end_game));
         }
     }
 
@@ -218,7 +218,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         setAllButtonsClickable(false);
 
 
-
         //TODO: FEHLERBEHEBUNG PROGRESS SPINNER
         //start Task to show progressSpinner
 //        if (progressTask.isCancelled()) {
@@ -270,24 +269,31 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         //if message is go, then the next question is displayed
         else if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
-            if(clickedButton !=null) {
+            if (clickedButton != null) {
                 clickedButton.setBackgroundResource(R.color.colorQuizButton);
             }
             setAllButtonsClickable(true);
             Log.i(TAG, "updateMessage, message=" + msg);
-            if(!firstTime) {
+            if (!firstTime) {
                 progressTask.setTaskProgress(false);
-            }else{
+            } else {
                 firstTime = false;
             }
             askNextQuestion();
+        } else if (msg.equals(getString(R.string.pub_end_game))) {
+            Log.i(TAG, "updateMessage: " + msg);
+            Intent gameToResult = new Intent(this, ResultActivity.class);
+            gameToResult.putExtra(AMOUNT_OF_CORRECT_ANSWERS, correctAnswers);
+            startActivity(gameToResult);
         }
     }
 
     @Override
-    protected void onDestroy() {
-        Log.i(TAG, "onDestroy");
-        super.onDestroy();
+    protected void onStop() {
+        Log.i(TAG, "onStop");
+        super.onStop();
         handler.toClose();
+        removeMessageObserver(this);
+        removeMessageObserver(timeHandler);
     }
 }

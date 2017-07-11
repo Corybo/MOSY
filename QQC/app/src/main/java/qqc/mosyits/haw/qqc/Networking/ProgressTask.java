@@ -52,10 +52,10 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
         Log.i(TAG, "doInBackground: progress = " + progress + ", Progresstask=" + this.toString());
         int i=0;
         while (progress) {
-            i++;
-            if(i%10000000==0) {
-                Log.i(TAG, "doInBackground: while true");
-            }
+//            i++;
+//            if(i%10000000==0) {
+//                Log.i(TAG, "doInBackground: while true");
+//            }
         }
         Log.i(TAG, "doInBackground: progress stopped");
         return "Progress beendet";
