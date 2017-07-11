@@ -42,6 +42,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="88dp"
         android:text="Restart"
-        android:clickable="true"/>
+        android:clickable="true"
+        android:background="@color/colorDefaultPlayer"
+        android:textColor="@color/colorWhite"/>
 
 </RelativeLayout>
