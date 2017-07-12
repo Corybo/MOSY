@@ -36,6 +36,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 Log.i(TAG, "onClick: restart");
                 ClientHandler.setStartStatus(StartActivity.GameStartStatus.READY);
                 ClientHandler.getClientHandler().toClose();
+                ClientHandler.getClientHandler().setI(0);
 
                 Intent resultToStart = new Intent(this, StartActivity.class);
                 startActivity(resultToStart);

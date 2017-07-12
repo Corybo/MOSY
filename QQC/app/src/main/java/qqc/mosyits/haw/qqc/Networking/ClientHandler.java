@@ -335,4 +335,12 @@ public class ClientHandler implements MqttCallback {
             observer.updateMessage(msg, clientHandler);
         }
     }
+
+    public void setIsFirstQuestion(boolean isFirstQuestion) {
+        this.isFirstQuestion = isFirstQuestion;
+    }
+
+    public void setI(int i) {
+        this.i = i;
+    }
 }

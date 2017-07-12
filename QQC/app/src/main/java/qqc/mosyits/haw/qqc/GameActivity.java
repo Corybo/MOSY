@@ -58,6 +58,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int colorRes;
     private Button clickedButton;
     private Vibrator vibrator;
+    private boolean sentGo;
+    private boolean sentId = true;
 
 
     @Override
@@ -273,20 +275,33 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         //if message starts with #, it is the number for the next question and saved as questionId
         if (msg.startsWith("#")) {
             Log.i(TAG, "updateMessage, message=" + msg);
+            sentId = true;
             String strId = msg.substring(1);
             questionId = Integer.valueOf(strId);
+            if (sentGo == true) {
+                askNextQuestion();
+                resetSent();
+            }
         }
         //if message is go, then the next question is displayed
         else if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
             Log.i(TAG, "updateMessage, message=" + msg);
+            sentGo = true;
+            if (sentId == true) {
+                askNextQuestion();
+                resetSent();
             }
-            askNextQuestion();
         } else if (msg.equals(getString(R.string.pub_end_game))) {
             Log.i(TAG, "updateMessage: " + msg);
             Intent gameToResult = new Intent(this, ResultActivity.class);
             gameToResult.putExtra(AMOUNT_OF_CORRECT_ANSWERS, correctAnswers);
             startActivity(gameToResult);
         }
+    }
+
+    private void resetSent() {
+        sentGo = false;
+        sentId = false;
     }
 
     @Override

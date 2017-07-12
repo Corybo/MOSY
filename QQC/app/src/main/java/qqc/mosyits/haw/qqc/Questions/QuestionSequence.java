@@ -58,4 +58,12 @@ public class QuestionSequence {
     public ArrayList<Integer> getArrayList() {
         return idList;
     }
+
+    public static int getId(){
+        return QuestionSequence.id;
+    }
+    public static void setId(int id) {
+        QuestionSequence.id = id;
+        maxQuestion = id + 10;
+    }
 }
