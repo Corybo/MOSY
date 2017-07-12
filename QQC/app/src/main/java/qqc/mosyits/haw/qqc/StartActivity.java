@@ -34,7 +34,6 @@ import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
-    private final boolean DEBUG = true;
 
     private ClientHandler handler;
     public static Player player;
@@ -56,10 +55,10 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_start);
 
-        imageView = (ImageView)findViewById(R.id.imageView);
-       // imageView.setMaxHeight(imageView.getWidth());
-      // imageView.setLayoutParams(new ViewGroup.MarginLayoutParams(imageView.getWidth(), ViewGroup.LayoutParams.MATCH_PARENT));
-        if(imageView == null) throw new AssertionError();
+        imageView = (ImageView) findViewById(R.id.imageView);
+        // imageView.setMaxHeight(imageView.getWidth());
+        // imageView.setLayoutParams(new ViewGroup.MarginLayoutParams(imageView.getWidth(), ViewGroup.LayoutParams.MATCH_PARENT));
+        if (imageView == null) throw new AssertionError();
         imageView.setBackgroundResource(R.drawable.propeller_01);
 
         buttonStart = (Button) findViewById(R.id.button_start);
@@ -78,12 +77,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
             handler.setIsFirstQuestion(true);
             handler.toPublish(null, getString(R.string.ask_for_start_status)); //TODO new Code
         }
-
-
-        if (DEBUG) {
-            deleteDatabase(new DatabaseHandler(this).DATABASE_NAME);
-        }
-        new QuestionInserts(this);
     }
 
     @Override
@@ -97,13 +90,16 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                     case READY:
                         Log.i(TAG, "onClick: button_start: READY");
                         setPlayer(Player.PLAYER_1, R.string.player_1, R.color.colorPlayer1, R.color.colorPlayer2);
+                        //generate questionSequence and set it in ClientHandler
+                        //TODO 1: done
+                        handler.toPublish(null, "#" + String.valueOf(handler.getRound()));
+//                        handler.toPublish(null, "#0"); //TODO TEST
                         //publish start
                         handler.toPublish(null, getString(R.string.pub_waiting_start));
-                        //generate questionSequence and set it in ClientHandler
-                        QuestionSequence questionSequence = new QuestionSequence(this);
-                        questionSequence.setId(QuestionSequence.getId() + 10);
-                        handler.setQuestionSequence(questionSequence.getArrayList());
-                        handler.sendQuestionNumber(0);
+//                        QuestionSequence questionSequence = new QuestionSequence(this);
+//                        questionSequence.setId(QuestionSequence.getId() + 10);
+//                        handler.setQuestionSequence(questionSequence.getArrayList());
+//                        handler.sendQuestionNumber(0);
                         break;
                     //WAITING = Spieler 1 hat Spiel gestartet, Spieler 2 kann joinen
                     case WAITING:
@@ -138,7 +134,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         getSupportActionBar().setTitle(playerStringRes);
         ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor(getString(colorPlayerRes)));
         getSupportActionBar().setBackgroundDrawable(colorDrawable);
-       // buttonStart.setBackgroundResource(colorPlayerRes);
+        // buttonStart.setBackgroundResource(colorPlayerRes);
         buttonStart.setClickable(false);
         progressSpinner.getIndeterminateDrawable()
                 .setColorFilter(ContextCompat.getColor(this, colorSpinnerRes), PorterDuff.Mode.SRC_IN);

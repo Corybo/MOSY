@@ -142,6 +142,14 @@ public class QuestionInserts {
     private static final String Q19A2 = "früher hell und früher dunkel";
     private static final String Q19A3 = "später hell und später dunkel";
 
+    //QUESTION 20
+    private static final String Q20 = "QUESTION 20";
+    private static final String Q20AR = "Q20";
+    private static final String Q20A1 = "Q20";
+    private static final String Q20A2 = "Q20";
+    private static final String Q20A3 = "Q20";
+
+
     //QUESTION 21
     private static final String Q21 = "Was bedeutet die Abkürzung EEK?";
     private static final String Q21AR = "Erneuerbare Energien Klasse";
@@ -213,49 +221,57 @@ public class QuestionInserts {
     private static final String Q36A3 = "Zu hohe Betriebskosten";
 
 
-    public QuestionInserts(Context context) {
-        if (!alreadyAddedToDatabase) {
-            new Question(context, Q1, Q1AR, Q1A1, Q1A2, Q1A3);
-            new Question(context, Q2, Q2AR, Q2A1, Q2A2, Q2A3);
-            new Question(context, Q3, Q3AR, Q3A1, Q3A2, Q3A3);
-            new Question(context, Q4, Q4AR, Q4A1, Q4A2, Q4A3);
-            new Question(context, Q5, Q5AR, Q5A1, Q5A2, Q5A3);
-            new Question(context, Q6, Q6AR, Q6A1, Q6A2, Q6A3);
-            new Question(context, Q7, Q7AR, Q7A1, Q7A2, Q7A3);
-            new Question(context, Q8, Q8AR, Q8A1, Q8A2, Q8A3);
-            new Question(context, Q9, Q9AR, Q9A1, Q9A2, Q9A3);
-            new Question(context, Q10, Q10AR, Q10A1, Q10A2, Q10A3);
-            new Question(context, Q11, Q11AR, Q11A1, Q11A2, Q11A3);
-            new Question(context, Q12, Q12AR, Q12A1, Q12A2, Q12A3);
-            new Question(context, Q13, Q13AR, Q13A1, Q13A2, Q13A3);
-            new Question(context, Q14, Q14AR, Q14A1, Q14A2, Q14A3);
-            new Question(context, Q15, Q15AR, Q15A1, Q15A2, Q15A3);
-            new Question(context, Q16, Q16AR, Q16A1, Q16A2, Q16A3);
-            new Question(context, Q17, Q17AR, Q17A1, Q17A2, Q17A3);
-            new Question(context, Q18, Q18AR, Q18A1, Q18A2, Q18A3);
-            new Question(context, Q19, Q19AR, Q19A1, Q19A2, Q19A3);
-//        new Question(context, Q20, Q20AR, Q20A1, Q20A2, Q20A3);
-            new Question(context, Q21, Q21AR, Q21A1, Q21A2, Q21A3);
-            new Question(context, Q22, Q22AR, Q22A1, Q22A2, Q22A3);
-            new Question(context, Q23, Q23AR, Q23A1, Q23A2, Q23A3);
-            new Question(context, Q24, Q24AR, Q24A1, Q24A2, Q24A3);
+    public QuestionInserts(Context context, int round) {
+//        if (!alreadyAddedToDatabase) {
+        switch (round) {
+            case 0:
+                new Question(context, Q1, Q1AR, Q1A1, Q1A2, Q1A3, 0);
+                new Question(context, Q2, Q2AR, Q2A1, Q2A2, Q2A3, 1);
+                new Question(context, Q3, Q3AR, Q3A1, Q3A2, Q3A3, 2);
+                new Question(context, Q4, Q4AR, Q4A1, Q4A2, Q4A3, 3);
+                new Question(context, Q5, Q5AR, Q5A1, Q5A2, Q5A3, 4);
+                new Question(context, Q6, Q6AR, Q6A1, Q6A2, Q6A3, 5);
+                new Question(context, Q7, Q7AR, Q7A1, Q7A2, Q7A3, 6);
+                new Question(context, Q8, Q8AR, Q8A1, Q8A2, Q8A3, 7);
+                new Question(context, Q9, Q9AR, Q9A1, Q9A2, Q9A3, 8);
+                new Question(context, Q10, Q10AR, Q10A1, Q10A2, Q10A3, 9);
+                break;
+            case 1:
+                new Question(context, Q11, Q11AR, Q11A1, Q11A2, Q11A3, 0);
+                new Question(context, Q12, Q12AR, Q12A1, Q12A2, Q12A3, 1);
+                new Question(context, Q13, Q13AR, Q13A1, Q13A2, Q13A3, 2);
+                new Question(context, Q14, Q14AR, Q14A1, Q14A2, Q14A3, 3);
+                new Question(context, Q15, Q15AR, Q15A1, Q15A2, Q15A3, 4);
+                new Question(context, Q16, Q16AR, Q16A1, Q16A2, Q16A3, 5);
+                new Question(context, Q17, Q17AR, Q17A1, Q17A2, Q17A3, 6);
+                new Question(context, Q18, Q18AR, Q18A1, Q18A2, Q18A3, 7);
+                new Question(context, Q19, Q19AR, Q19A1, Q19A2, Q19A3, 8);
+                new Question(context, Q20, Q20AR, Q20A1, Q20A2, Q20A3, 9);
+                break;
+            case 2:
+                new Question(context, Q21, Q21AR, Q21A1, Q21A2, Q21A3, -1);
+                new Question(context, Q22, Q22AR, Q22A1, Q22A2, Q22A3, -1);
+                new Question(context, Q23, Q23AR, Q23A1, Q23A2, Q23A3, -1);
+                new Question(context, Q24, Q24AR, Q24A1, Q24A2, Q24A3, -1);
 //        new Question(context, Q25, Q25AR, Q25A1, Q25A2, Q25A3);
 //        new Question(context, Q26, Q26AR, Q26A1, Q26A2, Q26A3);
 //        new Question(context, Q27, Q27AR, Q27A1, Q27A2, Q27A3);
 //        new Question(context, Q28, Q28AR, Q28A1, Q28A2, Q28A3);
 //        new Question(context, Q29, Q29AR, Q29A1, Q29A2, Q29A3);
 //        new Question(context, Q30, Q30AR, Q30A1, Q30A2, Q30A3);
-            new Question(context, Q31, Q31AR, Q31A1, Q31A2, Q31A3);
-            new Question(context, Q32, Q32AR, Q32A1, Q32A2, Q32A3);
-            new Question(context, Q33, Q33AR, Q33A1, Q33A2, Q33A3);
-            new Question(context, Q34, Q34AR, Q34A1, Q34A2, Q34A3);
-            new Question(context, Q35, Q35AR, Q35A1, Q35A2, Q35A3);
-            new Question(context, Q36, Q36AR, Q36A1, Q36A2, Q36A3);
+                break;
+            case 3:
+                new Question(context, Q31, Q31AR, Q31A1, Q31A2, Q31A3, -1);
+                new Question(context, Q32, Q32AR, Q32A1, Q32A2, Q32A3, -1);
+                new Question(context, Q33, Q33AR, Q33A1, Q33A2, Q33A3, -1);
+                new Question(context, Q34, Q34AR, Q34A1, Q34A2, Q34A3, -1);
+                new Question(context, Q35, Q35AR, Q35A1, Q35A2, Q35A3, -1);
+                new Question(context, Q36, Q36AR, Q36A1, Q36A2, Q36A3, -1);
 //        new Question(context, Q37, Q37AR, Q37A1, Q37A2, Q37A3);
 //        new Question(context, Q38, Q38AR, Q38A1, Q38A2, Q38A3);
 //        new Question(context, Q39, Q39AR, Q39A1, Q39A2, Q39A3);
 //        new Question(context, Q40, Q40AR, Q40A1, Q40A2, Q40A3);
-            alreadyAddedToDatabase = true;
+//            alreadyAddedToDatabase = true;
         }
     }
 }

@@ -87,7 +87,7 @@ public class QuizDataSource {
      */
     private Question setQuestionInformation(Cursor cursor) {
         Question question = new Question();
-        Question.setThisQuestionId(cursor.getLong(0));
+        question.setThisQuestionId(cursor.getLong(0));
         question.setQuestion(cursor.getString(1));
         question.setRightAnswer(cursor.getString(2));
         question.setAnswer1(cursor.getString(3));

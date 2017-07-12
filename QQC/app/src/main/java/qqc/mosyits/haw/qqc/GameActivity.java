@@ -29,6 +29,7 @@ import qqc.mosyits.haw.qqc.Networking.ProgressTask;
 import qqc.mosyits.haw.qqc.Networking.TimeHandler;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
+import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
 
 import static qqc.mosyits.haw.qqc.Networking.ClientHandler.QUESTION_KEY;
 import static qqc.mosyits.haw.qqc.Networking.ClientHandler.maxQuestionsToBeAnswered;
@@ -45,7 +46,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Button answerC;
     private Button answerD;
     private Question currentQuestion;
-    private int questionsAsked = 1;
+    private int questionsAsked = 0;
     private int correctAnswers = 0;
     private ClientHandler handler;
     private String player;
@@ -61,6 +62,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private Vibrator vibrator;
     private boolean sentGo;
     private boolean sentId = true;
+    //TODO 7: done
+    private int i=0;
 
 
     @Override
@@ -107,7 +110,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
 
         //TODO: TEST updateMessage
-        updateMessage(getIntent().getExtras().getString(QUESTION_KEY), handler);
+//        updateMessage(getIntent().getExtras().getString(QUESTION_KEY), handler);
         updateMessage(getString(R.string.msg_go), handler);
     }
 
@@ -132,12 +135,16 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             firstTime = false;
         }
-        // Vibrate for 500 milliseconds
+        // Vibrate for 300 milliseconds
         vibrator.vibrate(300);
         //TODO: Time delay 5s
         if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
             Log.i(TAG, "askNextQuestion: maxQuestions noch nicht erreicht, questionAsked = " + questionsAsked + ", maxQuestions: " + maxQuestionsToBeAnswered);
-            setQuestion(questionId);
+            //TODO 5: done
+//            int[] questionId = QuestionSequence.getIdArray(ClientHandler.questionIdString);
+            int[] questionId = QuestionSequence.getIdArray("#0"); //TODO TEST
+            //TODO 6: done
+            setQuestion(questionId[i++]);
             questionsAsked++;
             //Start timer
             cdt = timeHandler.startTimer((TextView) findViewById(R.id.tv_timer), handler);
@@ -277,25 +284,26 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void updateMessage(String msg, ClientHandler clientHandler) {
         Log.i(TAG, "updateMessage");
+       //TODO: DELETE not used
         //if message starts with #, it is the number for the next question and saved as questionId
-        if (msg.startsWith("#")) {
-            Log.i(TAG, "updateMessage, message=" + msg);
-            sentId = true;
-            String strId = msg.substring(1);
-            questionId = Integer.valueOf(strId);
-            if (sentGo == true) {
-                askNextQuestion();
-                resetSent();
-            }
-        }
+//        if (msg.startsWith("#")) {
+//            Log.i(TAG, "updateMessage, message=" + msg);
+//            sentId = true;
+//            String strId = msg.substring(1);
+//            questionId = Integer.valueOf(strId);
+//            if (sentGo == true) {
+//                askNextQuestion();
+//                resetSent();
+//            }
+//        }
         //if message is go, then the next question is displayed
-        else if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
+        if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
             Log.i(TAG, "updateMessage, message=" + msg);
             sentGo = true;
-            if (sentId == true) {
+//            if (sentId == true) {
                 askNextQuestion();
-                resetSent();
-            }
+//                resetSent();
+//            }
         } else if (msg.equals(getString(R.string.pub_end_game))) {
             Log.i(TAG, "updateMessage: " + msg);
             Intent gameToResult = new Intent(this, ResultActivity.class);
@@ -304,10 +312,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void resetSent() {
-        sentGo = false;
-        sentId = false;
-    }
+    //TODO: Delete not used
+//    private void resetSent() {
+//        sentGo = false;
+//        sentId = false;
+//    }
 
     @Override
     protected void onStop() {

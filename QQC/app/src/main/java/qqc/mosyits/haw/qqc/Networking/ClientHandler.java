@@ -18,7 +18,9 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 import java.util.ArrayList;
 
+import qqc.mosyits.haw.qqc.Database.DatabaseHandler;
 import qqc.mosyits.haw.qqc.GameActivity;
+import qqc.mosyits.haw.qqc.Questions.QuestionInserts;
 import qqc.mosyits.haw.qqc.R;
 import qqc.mosyits.haw.qqc.StartActivity;
 
@@ -32,7 +34,7 @@ public class ClientHandler implements MqttCallback {
     private final String TAG = getClass().getSimpleName();
 
     private static ArrayList<MessageObserver> observerList = new ArrayList<>();
-    private static String questionIdString;
+    public static String questionIdString;
 
     private MqttAndroidClient client;
     private Context context;
@@ -44,6 +46,7 @@ public class ClientHandler implements MqttCallback {
     private boolean isFirstQuestion = true;
     private int i = 0;
     private boolean firstStart = true;
+    private int round = 0;
 
     public ClientHandler(Context c) {
         Log.i(TAG, "ClientHandler: constructor");
@@ -217,8 +220,15 @@ public class ClientHandler implements MqttCallback {
             //QuestionArray
             else if (bodymessage.startsWith("#")) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                questionIdString = bodymessage;
-                notifyMessageObserver(bodymessage, this);
+                //TODO 2: done
+                context.deleteDatabase(new DatabaseHandler(context).DATABASE_NAME);
+                String s = bodymessage.substring(1);
+                int round = Integer.valueOf(s);
+                setRound(round);
+                new QuestionInserts(context, round);
+                Log.i(TAG, "onCreate: round=" + getRound());
+//                questionIdString = bodymessage;
+//                notifyMessageObserver(bodymessage, this);
             }
             //Start next question
             else if (bodymessage.equalsIgnoreCase(context.getResources().getString(R.string.msg_go))) {
@@ -236,13 +246,16 @@ public class ClientHandler implements MqttCallback {
             } else if (bodymessage.equals(context.getString(R.string.msg_tie))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
                 Toast.makeText(context, R.string.txt_tie, Toast.LENGTH_SHORT).show();
-                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
+                //TODO: new Code
+//                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
             } else if (bodymessage.equals(context.getString(R.string.player_1))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
+                //TODO: new Code
+//                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
             } else if (bodymessage.equals(context.getString(R.string.player_2))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
+                //TODO: new Code
+//                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
             }
             //set number of rated Answers for each player
             else if(bodymessage.startsWith(context.getString(R.string.rated_answers1))){
@@ -263,8 +276,8 @@ public class ClientHandler implements MqttCallback {
         Log.i(TAG, "startGame");
         setStartStatus(StartActivity.GameStartStatus.BLOCKED);
         Intent startToGame = new Intent(context, GameActivity.class);
+//        startToGame.putExtra(QUESTION_KEY, questionIdString); TODO: DELETE weil unnötig
         //TODO:Geht nur bei Nougat, Lösung finden für Marshmallow:
-        startToGame.putExtra(QUESTION_KEY, questionIdString);
         context.startActivity(startToGame);
     }
 
@@ -301,7 +314,7 @@ public class ClientHandler implements MqttCallback {
         this.questionSequence = questionSequence;
     }
 
-    //TODO: Methode aufrufen, wenn die nächste Nummer geschickt werden soll
+    //TODO: Delete Methode, wenn wir sie nicht mehr brauchen
 
     /**
      * send the QuestionNumber at time
@@ -351,5 +364,15 @@ public class ClientHandler implements MqttCallback {
 
     public void setI(int i) {
         this.i = i;
+    }
+
+    public int getRound() {
+        Log.i(TAG, "getRound: " + round);
+        return round;
+    }
+
+    public void setRound(int round) {
+        Log.i(TAG, "setRound: " + round);
+        this.round = round;
     }
 }

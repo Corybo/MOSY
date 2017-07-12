@@ -11,7 +11,7 @@ import android.widget.TextView;
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
 import qqc.mosyits.haw.qqc.Networking.MessageObserver;
 
-public class ResultActivity extends AppCompatActivity implements View.OnClickListener, MessageObserver{
+public class ResultActivity extends AppCompatActivity implements View.OnClickListener, MessageObserver {
     private final String TAG = getClass().getSimpleName();
     private Button buttonRestart;
     private int ratedNumberQuestions;
@@ -27,8 +27,8 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         ClientHandler.addMessageObserver(this);
 
         TextView txtAmountCorrectAnswers = (TextView) findViewById(R.id.amount_correct_answers);
-        TextView txtRatedAnswers = (TextView)findViewById(R.id.rated_answers);
-        txtAmountCorrectAnswers.setText(String.valueOf(amountCorrectAnswers)+ " von " + String.valueOf(totalNumberQuestions) + " richtige Antworten");
+        TextView txtRatedAnswers = (TextView) findViewById(R.id.rated_answers);
+        txtAmountCorrectAnswers.setText(String.valueOf(amountCorrectAnswers) + " von " + String.valueOf(totalNumberQuestions) + " richtige Antworten");
         txtRatedAnswers.setText(String.valueOf(ratedNumberQuestions) + " von " + String.valueOf(amountCorrectAnswers) + " wurden gewertet");
         buttonRestart = (Button) findViewById(R.id.button_restart);
         buttonRestart.setOnClickListener(this);
@@ -42,9 +42,15 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
             case R.id.button_restart:
                 Log.i(TAG, "onClick: restart");
                 ClientHandler.setStartStatus(StartActivity.GameStartStatus.READY);
-                ClientHandler.getClientHandler().toClose();
-                ClientHandler.getClientHandler().setI(0);
-
+                ClientHandler clientHandler = ClientHandler.getClientHandler();
+                clientHandler.toClose();
+                clientHandler.setI(0);
+                //TODO: Modulo funktioniert?
+                if (clientHandler.getRound() < 1) { //TODO: Anzahl ändern, je nachdem wie viele Fragen [Runden -1]
+                    clientHandler.setRound((clientHandler.getRound() + 1));
+                } else {
+                    clientHandler.setRound(0);
+                }
                 Intent resultToStart = new Intent(this, StartActivity.class);
                 startActivity(resultToStart);
                 break;
@@ -54,13 +60,13 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
 
     @Override
     public void updateMessage(String msg, ClientHandler clientHandler) {
-       //set number of rated Questions/Answers
-        if(msg.equals(getString(R.string.rated_answers1))){
-            if(StartActivity.player == StartActivity.Player.PLAYER_1){
+        //set number of rated Questions/Answers
+        if (msg.equals(getString(R.string.rated_answers1))) {
+            if (StartActivity.player == StartActivity.Player.PLAYER_1) {
                 ratedNumberQuestions = Integer.valueOf(msg.substring(6));
             }
-        }else if(msg.equals(getString(R.string.rated_answers2))){
-            if(StartActivity.player == StartActivity.Player.PLAYER_2){
+        } else if (msg.equals(getString(R.string.rated_answers2))) {
+            if (StartActivity.player == StartActivity.Player.PLAYER_2) {
                 ratedNumberQuestions = Integer.valueOf(msg.substring(6));
             }
         }
