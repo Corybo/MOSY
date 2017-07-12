@@ -14,7 +14,7 @@ import qqc.mosyits.haw.qqc.R;
  */
 
 public class QuestionSequence {
-    private static final int MAX_QUESTIONS = 10;
+    private static int maxQuestion = 10;
     private final Context context;
     private ArrayList<Integer> idList;
     private static int id = 0;
@@ -31,7 +31,7 @@ public class QuestionSequence {
      */
     private ArrayList<Integer> setUpIdList(int questionCount) {
         idList = new ArrayList<>();
-        for (int i = id; i < MAX_QUESTIONS; i++) {
+        for (int i = id; i < maxQuestion; i++) {
             idList.add(i);
         }
 //        Collections.shuffle(idList);

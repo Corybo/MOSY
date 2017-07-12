@@ -20,7 +20,6 @@ import java.util.ArrayList;
 
 import qqc.mosyits.haw.qqc.GameActivity;
 import qqc.mosyits.haw.qqc.R;
-import qqc.mosyits.haw.qqc.ResultActivity;
 import qqc.mosyits.haw.qqc.StartActivity;
 
 /**
@@ -29,7 +28,7 @@ import qqc.mosyits.haw.qqc.StartActivity;
 
 public class ClientHandler implements MqttCallback {
     public static final String QUESTION_KEY = "question_key";
-    private static ClientHandler staticClientHandler;
+    private static ClientHandler staticClientHandler = null;
     private final String TAG = getClass().getSimpleName();
 
     private static ArrayList<MessageObserver> observerList = new ArrayList<>();
@@ -37,8 +36,8 @@ public class ClientHandler implements MqttCallback {
 
     private MqttAndroidClient client;
     private Context context;
-        private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
-//    private String brokerURL = "tcp://diginet.mt.haw-hamburg.de";
+    private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
+    //    private String brokerURL = "tcp://diginet.mt.haw-hamburg.de";
     private static StartActivity.GameStartStatus startStatus;
     public static int maxQuestionsToBeAnswered = 10;
     private ArrayList<Integer> questionSequence;
@@ -54,7 +53,7 @@ public class ClientHandler implements MqttCallback {
     }
 
     public static ClientHandler getClientHandler() {
-        Log.i("ClientHandler", "getClientHandler: " + staticClientHandler.toString());
+        Log.i("ClientHandler", "getClientHandler");
         return staticClientHandler;
     }
 
@@ -218,6 +217,7 @@ public class ClientHandler implements MqttCallback {
             //QuestionArray
             else if (bodymessage.startsWith("#")) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
+                questionIdString = bodymessage;
                 notifyMessageObserver(bodymessage, this);
             }
             //Start next question
@@ -278,7 +278,7 @@ public class ClientHandler implements MqttCallback {
      * @param startStatus READY, WAITING, BLOCKED
      */
     public static void setStartStatus(StartActivity.GameStartStatus startStatus) {
-        Log.i("ClientHandler", "setStartStatus");
+        Log.i("ClientHandler", "setStartStatus:" + startStatus.toString());
         ClientHandler.startStatus = startStatus;
     }
 
@@ -330,7 +330,6 @@ public class ClientHandler implements MqttCallback {
      */
     public static void notifyMessageObserver(String msg, ClientHandler clientHandler) {
         Log.i("ClientHandler", "notifyMessageObserver");
-        questionIdString = msg;
         for (MessageObserver observer : observerList) {
             Log.i("ClientHandler", "notifyMessageObserver: observer=" + observer.toString() + ", clienthandler=" + clientHandler.toString());
             observer.updateMessage(msg, clientHandler);

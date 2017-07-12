@@ -120,6 +120,15 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void askNextQuestion() {
         Log.i(TAG, "askNextQuestion");
+        if (clickedButton != null) {
+            clickedButton.setBackgroundResource(R.color.colorQuizButton);
+        }
+        setAllButtonsClickable(true);
+        if (!firstTime) {
+            progressTask.setTaskProgress(false);
+        } else {
+            firstTime = false;
+        }
         // Vibrate for 500 milliseconds
         vibrator.vibrate(300);
         //TODO: Time delay 5s
@@ -269,15 +278,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         }
         //if message is go, then the next question is displayed
         else if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
-            if (clickedButton != null) {
-                clickedButton.setBackgroundResource(R.color.colorQuizButton);
-            }
-            setAllButtonsClickable(true);
             Log.i(TAG, "updateMessage, message=" + msg);
-            if (!firstTime) {
-                progressTask.setTaskProgress(false);
-            } else {
-                firstTime = false;
             }
             askNextQuestion();
         } else if (msg.equals(getString(R.string.pub_end_game))) {
