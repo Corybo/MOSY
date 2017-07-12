@@ -16,6 +16,69 @@ public class QuestionInserts {
     private static final String Q1A2 = "Sprite";
     private static final String Q1A3 = "Hella naturell";
 
+    //QUESTION 2
+    private static final String Q2 = "QUESTION 2";
+    private static final String Q2AR = "Q2";
+    private static final String Q2A1 = "Q2";
+    private static final String Q2A2 = "Q2";
+    private static final String Q2A3 = "Q2";
+
+    //QUESTION 3
+    private static final String Q3 = "QUESTION 3";
+    private static final String Q3AR = "Q3";
+    private static final String Q3A1 = "Q3";
+    private static final String Q3A2 = "Q3";
+    private static final String Q3A3 = "Q3";
+
+    //QUESTION 4
+    private static final String Q4 = "QUESTION 4";
+    private static final String Q4AR = "Q4";
+    private static final String Q4A1 = "Q4";
+    private static final String Q4A2 = "Q4";
+    private static final String Q4A3 = "Q4";
+
+    //QUESTION 5
+    private static final String Q5 = "QUESTION 5";
+    private static final String Q5AR = "Q5";
+    private static final String Q5A1 = "Q5";
+    private static final String Q5A2 = "Q5";
+    private static final String Q5A3 = "Q5";
+
+    //QUESTION 6
+    private static final String Q6 = "QUESTION 6";
+    private static final String Q6AR = "Q6";
+    private static final String Q6A1 = "Q6";
+    private static final String Q6A2 = "Q6";
+    private static final String Q6A3 = "Q6";
+
+    //QUESTION 7
+    private static final String Q7 = "QUESTION 7";
+    private static final String Q7AR = "Q7";
+    private static final String Q7A1 = "Q7";
+    private static final String Q7A2 = "Q7";
+    private static final String Q7A3 = "Q7";
+
+    //QUESTION 8
+    private static final String Q8 = "QUESTION 8";
+    private static final String Q8AR = "Q8";
+    private static final String Q8A1 = "Q8";
+    private static final String Q8A2 = "Q8";
+    private static final String Q8A3 = "Q8";
+
+    //QUESTION 9
+    private static final String Q9 = "QUESTION 9";
+    private static final String Q9AR = "Q9";
+    private static final String Q9A1 = "Q9";
+    private static final String Q9A2 = "Q9";
+    private static final String Q9A3 = "Q9";
+
+    //QUESTION 10
+    private static final String Q10 = "QUESTION 10";
+    private static final String Q10AR = "Q10";
+    private static final String Q10A1 = "Q10";
+    private static final String Q10A2 = "Q10";
+    private static final String Q10A3 = "Q10";
+
     //QUESTION 11
     private static final String Q11 = "Ergänze: Wo ein Wille ist, ist auch ...";
     private static final String Q11AR = "...ein Weg.";
@@ -151,17 +214,17 @@ public class QuestionInserts {
 
 
     public QuestionInserts(Context context) {
-        if(!alreadyAddedToDatabase) {
+        if (!alreadyAddedToDatabase) {
             new Question(context, Q1, Q1AR, Q1A1, Q1A2, Q1A3);
-//        new Question(context, Q2, Q2AR, Q2A1, Q2A2, Q2A3);
-//        new Question(context, Q3, Q3AR, Q3A1, Q3A2, Q3A3);
-//        new Question(context, Q4, Q4AR, Q4A1, Q4A2, Q4A3);
-//        new Question(context, Q5, Q5AR, Q5A1, Q5A2, Q5A3);
-//        new Question(context, Q6, Q6AR, Q6A1, Q6A2, Q6A3);
-//        new Question(context, Q7, Q7AR, Q7A1, Q7A2, Q7A3);
-//        new Question(context, Q8, Q8AR, Q8A1, Q8A2, Q8A3);
-//        new Question(context, Q9, Q9AR, Q9A1, Q9A2, Q9A3);
-//        new Question(context, Q10, Q10AR, Q10A1, Q10A2, Q10A3);
+            new Question(context, Q2, Q2AR, Q2A1, Q2A2, Q2A3);
+            new Question(context, Q3, Q3AR, Q3A1, Q3A2, Q3A3);
+            new Question(context, Q4, Q4AR, Q4A1, Q4A2, Q4A3);
+            new Question(context, Q5, Q5AR, Q5A1, Q5A2, Q5A3);
+            new Question(context, Q6, Q6AR, Q6A1, Q6A2, Q6A3);
+            new Question(context, Q7, Q7AR, Q7A1, Q7A2, Q7A3);
+            new Question(context, Q8, Q8AR, Q8A1, Q8A2, Q8A3);
+            new Question(context, Q9, Q9AR, Q9A1, Q9A2, Q9A3);
+            new Question(context, Q10, Q10AR, Q10A1, Q10A2, Q10A3);
             new Question(context, Q11, Q11AR, Q11A1, Q11A2, Q11A3);
             new Question(context, Q12, Q12AR, Q12A1, Q12A2, Q12A3);
             new Question(context, Q13, Q13AR, Q13A1, Q13A2, Q13A3);
