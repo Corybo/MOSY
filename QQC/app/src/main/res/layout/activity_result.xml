@@ -50,6 +50,8 @@
 
     <TextView
         android:id="@+id/rated_answers"
+        android:layout_below="@id/amount_correct_answers"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"

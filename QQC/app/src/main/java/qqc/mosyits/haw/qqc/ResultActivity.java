@@ -14,7 +14,7 @@ import android.widget.TextView;
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
 import qqc.mosyits.haw.qqc.Networking.MessageObserver;
 
-public class ResultActivity extends AppCompatActivity implements View.OnClickListener, MessageObserver {
+public class ResultActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
     private Button buttonRestart;
     private int ratedNumberQuestions;
@@ -32,11 +32,31 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         int amountCorrectAnswers = getIntent().getExtras().getInt(GameActivity.AMOUNT_OF_CORRECT_ANSWERS);
         int totalNumberQuestions = ClientHandler.maxQuestionsToBeAnswered;
 
-        ClientHandler.addMessageObserver(this);
+        if (getIntent().getExtras().getString(GameActivity.WINNER_PLAYER_1) != null) {
+            setWinnerValues(getIntent().getExtras().getString(GameActivity.WINNER_PLAYER_1));
+
+        }
+        if (getIntent().getExtras().getString(GameActivity.WINNER_PLAYER_2) != null) {
+
+            setWinnerValues(getIntent().getExtras().getString(GameActivity.WINNER_PLAYER_2));
+        }
+        if (getIntent().getExtras().getString(GameActivity.WINNER_PLAYER_TIE) != null) {
+
+            setWinnerValues(getIntent().getExtras().getString(GameActivity.WINNER_PLAYER_TIE));
+        }
+        if (getIntent().getExtras().getString(GameActivity.RATED_1) != null) {
+            setWinnerValues(getIntent().getExtras().getString(GameActivity.RATED_1));
+
+        }
+        if (getIntent().getExtras().getString(GameActivity.RATED_2) != null) {
+            setWinnerValues(getIntent().getExtras().getString(GameActivity.RATED_2));
+
+        }
+
 
         // für raw auf res new resource dictionary type : raw
         //https://www.youtube.com/watch?v=RSi959Xyw-Q
-        mediaPlayer = MediaPlayer.create(this, R.raw.cheersApplause);
+        mediaPlayer = MediaPlayer.create(this, R.raw.cheers_applause);
         mediaPlayer.start();
 
         TextView txtAmountCorrectAnswers = (TextView) findViewById(R.id.amount_correct_answers);
@@ -67,7 +87,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
     private void setPlayerColor(int colorRes) {
         ColorDrawable colDraw = new ColorDrawable(Color.parseColor(getString(colorRes)));
         getSupportActionBar().setBackgroundDrawable(colDraw);
-        buttonRestart.setBackgroundColor(colorRes);
+        buttonRestart.setBackgroundResource(colorRes);
     }
 
     @Override
@@ -80,7 +100,6 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 ClientHandler clientHandler = ClientHandler.getClientHandler();
                 clientHandler.toClose();
                 clientHandler.setI(0);
-                //TODO: Modulo funktioniert?
                 if (clientHandler.getRound() < 1) { //TODO: Anzahl ändern, je nachdem wie viele Fragen [Runden -1]
                     clientHandler.setRound((clientHandler.getRound() + 1));
                 } else {
@@ -88,13 +107,13 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 }
                 Intent resultToStart = new Intent(this, StartActivity.class);
                 startActivity(resultToStart);
+                finish();
                 break;
 
         }
     }
 
-    @Override
-    public void updateMessage(String msg, ClientHandler clientHandler) {
+    public void setWinnerValues(String msg) {
         //set number of rated Questions/Answers
         if (msg.equals(getString(R.string.rated_answers1))) {
             if (StartActivity.player == StartActivity.Player.PLAYER_1) {
@@ -108,24 +127,22 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
         //show if player won or lost
-        else if(msg.equals(getString(R.string.winner_tie))){
+        else if (msg.equals(getString(R.string.winner_tie))) {
             winOrLose = "Gleichstand!";
             Log.i(TAG, "updateMessage: who Won " + msg.substring(3));
-        }
-        else if(msg.equals(getString(R.string.winner_player1))){
-            if(StartActivity.player == StartActivity.Player.PLAYER_1){
+        } else if (msg.equals(getString(R.string.winner_player1))) {
+            if (StartActivity.player == StartActivity.Player.PLAYER_1) {
                 winOrLose = "Gewonnen!";
                 Log.i(TAG, "updateMessage: who Won " + msg.substring(3));
-            } else if(StartActivity.player == StartActivity.Player.PLAYER_2){
+            } else if (StartActivity.player == StartActivity.Player.PLAYER_2) {
                 winOrLose = "Verloren!";
                 Log.i(TAG, "updateMessage: who Won " + msg.substring(3));
             }
-        }
-        else if(msg.equals(getString(R.string.winner_player2))){
-            if(StartActivity.player == StartActivity.Player.PLAYER_2){
+        } else if (msg.equals(getString(R.string.winner_player2))) {
+            if (StartActivity.player == StartActivity.Player.PLAYER_2) {
                 winOrLose = "Gewonnen!";
                 Log.i(TAG, "updateMessage: who Won " + msg.substring(3));
-            } else if(StartActivity.player == StartActivity.Player.PLAYER_1){
+            } else if (StartActivity.player == StartActivity.Player.PLAYER_1) {
                 winOrLose = "Verloren!";
                 Log.i(TAG, "updateMessage: who Won " + msg.substring(3));
             }

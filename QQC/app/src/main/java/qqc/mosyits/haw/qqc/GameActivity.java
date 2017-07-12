@@ -63,7 +63,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private boolean sentGo;
     private boolean sentId = true;
     //TODO 7: done
-    private int i=0;
+    private int i = 0;
+    public static final String WINNER_PLAYER_1 = "WINNER_PLAYER_1";
+    public static final String WINNER_PLAYER_2 = "WINNER_PLAYER_2";
+    public static final String WINNER_PLAYER_TIE = "WINNER_PLAYER_TIE";
+    public static final String RATED_1 = "RATED_1";
+    public static final String RATED_2 = "RATED_2";
 
 
     @Override
@@ -159,7 +164,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
                 handler.toPublish(null, returnWinner(player1Rated, player2Rated));
                 handler.toPublish(null, getString(R.string.rated_answers1) + player1Rated);
                 handler.toPublish(null, getString(R.string.rated_answers2) + player2Rated);
-                //TODO publishen wer gewonnen hat
+
                 handler.toPublish(null, getString(R.string.pub_end_game));
             }
 
@@ -169,21 +174,22 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     /**
      * compare values, who answered the most questions right and fast
+     *
      * @param player1Rated
      * @param player2Rated
      * @return
      */
     private String returnWinner(int player1Rated, int player2Rated) {
         //Player 2 won
-        if(player1Rated < player2Rated){
+        if (player1Rated < player2Rated) {
             return getString(R.string.winner_player2);
         }
         //Player 1 won
-        else if(player1Rated > player2Rated){
+        else if (player1Rated > player2Rated) {
             return getString(R.string.winner_player1);
         }
         //tie
-        else{
+        else {
             return getString(R.string.winner_tie);
         }
     }
@@ -234,7 +240,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         //ANSWER FALSE
         else {
             //Wrong answer = Badest Time
-            Log.i(TAG, "checkAnswer; wrongAnswer");
+            Log.i(TAG, "checkAnswer: wrongAnswer");
             requiredTime = 0;
         }
         //publish message with required time
@@ -313,7 +319,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void updateMessage(String msg, ClientHandler clientHandler) {
         Log.i(TAG, "updateMessage");
-       //TODO: DELETE not used
+        Intent gameToResult = new Intent(this, ResultActivity.class);
+        //TODO: DELETE not used
         //if message starts with #, it is the number for the next question and saved as questionId
 //        if (msg.startsWith("#")) {
 //            Log.i(TAG, "updateMessage, message=" + msg);
@@ -330,14 +337,23 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             Log.i(TAG, "updateMessage, message=" + msg);
             sentGo = true;
 //            if (sentId == true) {
-                askNextQuestion();
+            askNextQuestion();
 //                resetSent();
 //            }
         } else if (msg.equals(getString(R.string.pub_end_game))) {
             Log.i(TAG, "updateMessage: " + msg);
-            Intent gameToResult = new Intent(this, ResultActivity.class);
             gameToResult.putExtra(AMOUNT_OF_CORRECT_ANSWERS, correctAnswers);
             startActivity(gameToResult);
+        } else if (msg.equals(getString(R.string.winner_player1))) {
+            gameToResult.putExtra(WINNER_PLAYER_1, msg);
+        } else if (msg.equals(getString(R.string.winner_player2))) {
+            gameToResult.putExtra(WINNER_PLAYER_2, msg);
+        } else if (msg.equals(getString(R.string.winner_tie))) {
+            gameToResult.putExtra(WINNER_PLAYER_TIE, msg);
+        } else if (msg.equals(getString(R.string.rated_answers1))) {
+            gameToResult.putExtra(RATED_1, msg);
+        } else if (msg.equals(getString(R.string.rated_answers2))) {
+            gameToResult.putExtra(RATED_2, msg);
         }
     }
 
