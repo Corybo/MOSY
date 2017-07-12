@@ -31,7 +31,7 @@ import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
  * Player can start or join a game
  */
 @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
-public class StartActivity extends AppCompatActivity implements View.OnClickListener{
+public class StartActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
     private final boolean DEBUG = true;
 
@@ -51,7 +51,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)  {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_start);
@@ -68,15 +68,22 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner_start);
         progressTask = new ProgressTask(this, progressSpinner, imageView);
 
-        handler = new ClientHandler(this);
-        ClientHandler.setClientHandler(handler);
+        if (ClientHandler.getClientHandler() == null) {
+            Log.i(TAG, "onCreate: clientHandler == null");
+            handler = new ClientHandler(this);
+            ClientHandler.setClientHandler(handler);
+        } else {
+            Log.i(TAG, "onCreate: clientHandler != null");
+            handler = ClientHandler.getClientHandler();
+            handler.setIsFirstQuestion(true);
+            handler.toPublish(null, getString(R.string.ask_for_start_status)); //TODO new Code
+        }
+
 
         if (DEBUG) {
             deleteDatabase(new DatabaseHandler(this).DATABASE_NAME);
         }
         new QuestionInserts(this);
-//        while(!handler.isConnected()){}
-//        handler.toPublish(null, getString(R.string.ask_for_start_status));
     }
 
     @Override
@@ -94,6 +101,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                         handler.toPublish(null, getString(R.string.pub_waiting_start));
                         //generate questionSequence and set it in ClientHandler
                         QuestionSequence questionSequence = new QuestionSequence(this);
+                        questionSequence.setId(QuestionSequence.getId() + 10);
                         handler.setQuestionSequence(questionSequence.getArrayList());
                         handler.sendQuestionNumber(0);
                         break;
@@ -117,7 +125,8 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
 
     /**
      * sets player attributes
-     * @param player Player_1 or Player_2
+     *
+     * @param player          Player_1 or Player_2
      * @param playerStringRes stringResource for each player
      * @param colorPlayerRes
      * @param colorSpinnerRes
@@ -129,7 +138,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
        // buttonStart.setBackgroundResource(colorPlayerRes);
         buttonStart.setClickable(false);
         progressSpinner.getIndeterminateDrawable()
-                .setColorFilter(ContextCompat.getColor(this, colorSpinnerRes), PorterDuff.Mode.SRC_IN );
+                .setColorFilter(ContextCompat.getColor(this, colorSpinnerRes), PorterDuff.Mode.SRC_IN);
         progressTask.execute();
         this.player = player;
     }
