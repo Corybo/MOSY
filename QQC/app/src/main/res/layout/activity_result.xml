@@ -46,4 +46,12 @@
         android:background="@color/colorDefaultPlayer"
         android:textColor="@color/colorWhite"/>
 
+    <TextView
+        android:id="@+id/rated_answers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:text="TextView" />
+
 </RelativeLayout>

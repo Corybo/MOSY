@@ -1,6 +1,7 @@
 package qqc.mosyits.haw.qqc;
 
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.AnimationDrawable;
@@ -47,7 +48,6 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
     public enum Player {PLAYER_1, PLAYER_2}
 
     private ImageView imageView;
-
 
 
     @Override
@@ -112,8 +112,11 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
                         break;
                 }
                 break;
+
+
         }
     }
+
 
     /**
      * sets player attributes

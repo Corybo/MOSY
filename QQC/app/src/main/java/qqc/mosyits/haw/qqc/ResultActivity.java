@@ -9,10 +9,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
+import qqc.mosyits.haw.qqc.Networking.MessageObserver;
 
-public class ResultActivity extends AppCompatActivity implements View.OnClickListener{
+public class ResultActivity extends AppCompatActivity implements View.OnClickListener, MessageObserver{
     private final String TAG = getClass().getSimpleName();
     private Button buttonRestart;
+    private int ratedNumberQuestions;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,9 +22,14 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_result);
         int amountCorrectAnswers = getIntent().getExtras().getInt(GameActivity.AMOUNT_OF_CORRECT_ANSWERS);
+        int totalNumberQuestions = ClientHandler.maxQuestionsToBeAnswered;
+
+        ClientHandler.addMessageObserver(this);
 
         TextView txtAmountCorrectAnswers = (TextView) findViewById(R.id.amount_correct_answers);
-        txtAmountCorrectAnswers.setText(String.valueOf(amountCorrectAnswers) + " richtige Antworten");
+        TextView txtRatedAnswers = (TextView)findViewById(R.id.rated_answers);
+        txtAmountCorrectAnswers.setText(String.valueOf(amountCorrectAnswers)+ " von " + String.valueOf(totalNumberQuestions) + " richtige Antworten");
+        txtRatedAnswers.setText(String.valueOf(ratedNumberQuestions) + " von " + String.valueOf(amountCorrectAnswers) + " wurden gewertet");
         buttonRestart = (Button) findViewById(R.id.button_restart);
         buttonRestart.setOnClickListener(this);
     }
@@ -41,6 +48,20 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 startActivity(resultToStart);
                 break;
 
+        }
+    }
+
+    @Override
+    public void updateMessage(String msg, ClientHandler clientHandler) {
+       //set number of rated Questions/Answers
+        if(msg.equals(getString(R.string.rated_answers1))){
+            if(StartActivity.player == StartActivity.Player.PLAYER_1){
+                ratedNumberQuestions = Integer.valueOf(msg.substring(6));
+            }
+        }else if(msg.equals(getString(R.string.rated_answers2))){
+            if(StartActivity.player == StartActivity.Player.PLAYER_2){
+                ratedNumberQuestions = Integer.valueOf(msg.substring(6));
+            }
         }
     }
 }

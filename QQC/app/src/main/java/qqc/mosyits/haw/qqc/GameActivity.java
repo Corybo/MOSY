@@ -37,6 +37,7 @@ import static qqc.mosyits.haw.qqc.Networking.ClientHandler.removeMessageObserver
 public class GameActivity extends AppCompatActivity implements View.OnClickListener, IMqttActionListener, MessageObserver {
 
     public static final String AMOUNT_OF_CORRECT_ANSWERS = "amount_correct_answers";
+    public static final String NUMBER_OF_RATED_ANSWERS = "number_of_rated_answers";
     private final String TAG = getClass().getSimpleName();
     private TextView questionField;
     private Button answerA;
@@ -66,7 +67,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_game);
 
-        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         //add this class as observer
         ClientHandler.addMessageObserver(this);
@@ -131,6 +132,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             cdt = timeHandler.startTimer((TextView) findViewById(R.id.tv_timer), handler);
         } else {
             Log.i(TAG, "askNextQuestion: maxQuestions erreicht");
+            int player1Rated = timeHandler.getPlayer1Rated();
+            int player2Rated = timeHandler.getPlayer2Rated();
+            handler.toPublish(null, getString(R.string.rated_answers1)+player1Rated);
+            handler.toPublish(null, getString(R.string.rated_answers2)+player2Rated);
             handler.toClose();
             handler.toPublish(null, getString(R.string.pub_end_game));
         }
