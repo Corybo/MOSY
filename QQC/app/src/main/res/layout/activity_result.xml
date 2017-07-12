@@ -14,7 +14,9 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="43dp"
-        android:text="Gewonnen/Verloren" />
+        android:text="Gewonnen/Verloren"
+        android:textStyle="bold"
+        android:textSize="35sp"/>
 
     <TextView
         android:id="@+id/time"

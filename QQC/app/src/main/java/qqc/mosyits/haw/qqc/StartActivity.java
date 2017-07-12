@@ -135,7 +135,7 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
      * @param colorSpinnerRes
      */
     private void setPlayer(Player player, int playerStringRes, int colorPlayerRes, int colorSpinnerRes) {
-        getSupportActionBar().setTitle(playerStringRes);
+        getSupportActionBar().setTitle("QQC - " + playerStringRes);
         ColorDrawable colorDrawable = new ColorDrawable(Color.parseColor(getString(colorPlayerRes)));
         getSupportActionBar().setBackgroundDrawable(colorDrawable);
        // buttonStart.setBackgroundResource(colorPlayerRes);

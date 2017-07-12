@@ -25,6 +25,9 @@
     <string name="player_1">Player1</string>
     <string name="player_2">Player2</string>
     <string name="msg_tie">tie</string>
+    <string name="winner_tie">winTie</string>
+    <string name="winner_player1">winPlayer1</string>
+    <string name="winner_player2">winPlayer2</string>
 
     <!--START STATUS-->
     <string name="game_blocked">Neues Spiel momentan nicht verfügbar.</string>

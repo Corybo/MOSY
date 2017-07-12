@@ -185,11 +185,11 @@ public class QuestionInserts {
     private static final String Q32A3 = "Das Gebäude wurde in dieser Zeit gebaut.";
 
     //QUESTION 33
-    private static final String Q33 = "Wer ist geschäftsführender Präsident der HAW?";
-    private static final String Q33AR = "Claus-Dieter Wacker";
-    private static final String Q33A1 = "Jacqueline Otten";
-    private static final String Q33A2 = "Bernd Klöver";
-    private static final String Q33A3 = "Bernd Höcke";
+    private static final String Q33 = "Question 33";
+    private static final String Q33AR = "Q33";
+    private static final String Q33A1 = "Q33";
+    private static final String Q33A2 = "Q33";
+    private static final String Q33A3 = "Q33";
 
     //QUESTION 34
     private static final String Q34 = "Welche Schriftart wird im HAW Logo genutzt?";
