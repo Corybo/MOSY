@@ -3,6 +3,7 @@ package qqc.mosyits.haw.qqc;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -20,6 +21,8 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
     private String winOrLose;
     private String player;
     private int colorRes;
+    MediaPlayer mediaPlayer = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +33,11 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         int totalNumberQuestions = ClientHandler.maxQuestionsToBeAnswered;
 
         ClientHandler.addMessageObserver(this);
+
+        // für raw auf res new resource dictionary type : raw
+        //https://www.youtube.com/watch?v=RSi959Xyw-Q
+        mediaPlayer = MediaPlayer.create(this, R.raw.cheersApplause);
+        mediaPlayer.start();
 
         TextView txtAmountCorrectAnswers = (TextView) findViewById(R.id.amount_correct_answers);
         TextView txtRatedAnswers = (TextView)findViewById(R.id.rated_answers);
