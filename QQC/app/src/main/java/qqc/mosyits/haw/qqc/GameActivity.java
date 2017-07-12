@@ -66,7 +66,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Log.i(TAG, "onCreate");
         setContentView(R.layout.activity_game);
 
-        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         //add this class as observer
         ClientHandler.addMessageObserver(this);
@@ -121,7 +121,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private void askNextQuestion() {
         Log.i(TAG, "askNextQuestion");
         // Vibrate for 500 milliseconds
-        vibrator.vibrate(500);
+        vibrator.vibrate(300);
         //TODO: Time delay 5s
         if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
             Log.i(TAG, "askNextQuestion: maxQuestions noch nicht erreicht, questionAsked = " + questionsAsked + ", maxQuestions: " + maxQuestionsToBeAnswered);
