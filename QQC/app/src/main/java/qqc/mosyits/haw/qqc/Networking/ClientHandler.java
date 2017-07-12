@@ -244,6 +244,15 @@ public class ClientHandler implements MqttCallback {
                 Log.i(TAG, "messageArrived: " + bodymessage);
                 if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
             }
+            //set number of rated Answers for each player
+            else if(bodymessage.startsWith(context.getString(R.string.rated_answers1))){
+                notifyMessageObserver(bodymessage, this);
+            }else if(bodymessage.startsWith(context.getString(R.string.rated_answers2))){
+                notifyMessageObserver(bodymessage, this);
+            }
+            else if(bodymessage.equals(context.getString(R.string.emergency_stop))){
+                System.exit(0);
+            }
         }
     }
 

@@ -37,4 +37,7 @@
     <string name="reply_ready_status">reply_ready</string>
     <string name="reply_waiting_status">reply_waiting</string>
     <string name="reply_blocked_status">reply_blocked</string>
+    <string name="rated_answers1">rated1</string>
+    <string name="rated_answers2">rated2</string>
+    <string name="emergency_stop">emergency stop</string>
 </resources>

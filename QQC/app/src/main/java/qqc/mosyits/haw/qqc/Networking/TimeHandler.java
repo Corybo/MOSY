@@ -18,6 +18,8 @@ public class TimeHandler implements MessageObserver {
     private Context context;
     private int timePlayer1 = -1;
     private int timePlayer2 = -1;
+    private int player1Rated;
+    private int player2Rated;
 
     public TimeHandler(Context context) {
         Log.i(TAG, "TimeHandler: constructor");
@@ -65,9 +67,11 @@ public class TimeHandler implements MessageObserver {
                 if (fasterPlayer == StartActivity.Player.PLAYER_1) {
                     Log.i(TAG, "sendMessageFasterPlayer: publish Player1");
                     clientHandler.toPublish(null, context.getString(R.string.player_1));
+                    player1Rated++;
                 } else {
                     Log.i(TAG, "sendMessageFasterPlayer: publish Player2");
                     clientHandler.toPublish(null, context.getString(R.string.player_2));
+                    player2Rated++;
                 }
             } else {
                 Log.i(TAG, "sendMessageFasterPlayer: publish Gleichstand gleiche Punkte");
@@ -201,4 +205,11 @@ public class TimeHandler implements MessageObserver {
         }
     }
 
+    public int getPlayer1Rated() {
+        return player1Rated;
+    }
+
+    public int getPlayer2Rated() {
+        return player2Rated;
+    }
 }
