@@ -193,11 +193,11 @@ public class QuestionInserts {
     private static final String Q32A3 = "Das Gebäude wurde in dieser Zeit gebaut.";
 
     //QUESTION 33
-    private static final String Q33 = "Wer ist geschäftsführender Präsident der HAW?";
-    private static final String Q33AR = "Claus-Dieter Wacker";
-    private static final String Q33A1 = "Jacqueline Otten";
-    private static final String Q33A2 = "Bernd Klöver";
-    private static final String Q33A3 = "Bernd Höcke";
+    private static final String Q33 = "Question 33";
+    private static final String Q33AR = "Q33";
+    private static final String Q33A1 = "Q33";
+    private static final String Q33A2 = "Q33";
+    private static final String Q33A3 = "Q33";
 
     //QUESTION 34
     private static final String Q34 = "Welche Schriftart wird im HAW Logo genutzt?";
@@ -222,7 +222,6 @@ public class QuestionInserts {
 
 
     public QuestionInserts(Context context, int round) {
-//        if (!alreadyAddedToDatabase) {
         switch (round) {
             case 0:
                 new Question(context, Q1, Q1AR, Q1A1, Q1A2, Q1A3, 0);
@@ -249,29 +248,28 @@ public class QuestionInserts {
                 new Question(context, Q20, Q20AR, Q20A1, Q20A2, Q20A3, 9);
                 break;
             case 2:
-                new Question(context, Q21, Q21AR, Q21A1, Q21A2, Q21A3, -1);
-                new Question(context, Q22, Q22AR, Q22A1, Q22A2, Q22A3, -1);
-                new Question(context, Q23, Q23AR, Q23A1, Q23A2, Q23A3, -1);
-                new Question(context, Q24, Q24AR, Q24A1, Q24A2, Q24A3, -1);
-//        new Question(context, Q25, Q25AR, Q25A1, Q25A2, Q25A3);
-//        new Question(context, Q26, Q26AR, Q26A1, Q26A2, Q26A3);
-//        new Question(context, Q27, Q27AR, Q27A1, Q27A2, Q27A3);
-//        new Question(context, Q28, Q28AR, Q28A1, Q28A2, Q28A3);
-//        new Question(context, Q29, Q29AR, Q29A1, Q29A2, Q29A3);
-//        new Question(context, Q30, Q30AR, Q30A1, Q30A2, Q30A3);
-                break;
+                new Question(context, Q21, Q21AR, Q21A1, Q21A2, Q21A3, 0);
+                new Question(context, Q22, Q22AR, Q22A1, Q22A2, Q22A3, 1);
+                new Question(context, Q23, Q23AR, Q23A1, Q23A2, Q23A3, 2);
+                new Question(context, Q24, Q24AR, Q24A1, Q24A2, Q24A3, 3);
+//        new Question(context, Q25, Q25AR, Q25A1, Q25A2, Q25A3, 4);
+//        new Question(context, Q26, Q26AR, Q26A1, Q26A2, Q26A3, 5);
+//        new Question(context, Q27, Q27AR, Q27A1, Q27A2, Q27A3, 6);
+//        new Question(context, Q28, Q28AR, Q28A1, Q28A2, Q28A3, 7);
+//        new Question(context, Q29, Q29AR, Q29A1, Q29A2, Q29A3, 8);
+//        new Question(context, Q30, Q30AR, Q30A1, Q30A2, Q30A3, 9);
             case 3:
-                new Question(context, Q31, Q31AR, Q31A1, Q31A2, Q31A3, -1);
-                new Question(context, Q32, Q32AR, Q32A1, Q32A2, Q32A3, -1);
-                new Question(context, Q33, Q33AR, Q33A1, Q33A2, Q33A3, -1);
-                new Question(context, Q34, Q34AR, Q34A1, Q34A2, Q34A3, -1);
-                new Question(context, Q35, Q35AR, Q35A1, Q35A2, Q35A3, -1);
-                new Question(context, Q36, Q36AR, Q36A1, Q36A2, Q36A3, -1);
-//        new Question(context, Q37, Q37AR, Q37A1, Q37A2, Q37A3);
-//        new Question(context, Q38, Q38AR, Q38A1, Q38A2, Q38A3);
-//        new Question(context, Q39, Q39AR, Q39A1, Q39A2, Q39A3);
-//        new Question(context, Q40, Q40AR, Q40A1, Q40A2, Q40A3);
-//            alreadyAddedToDatabase = true;
+                new Question(context, Q31, Q31AR, Q31A1, Q31A2, Q31A3, 0);
+                new Question(context, Q32, Q32AR, Q32A1, Q32A2, Q32A3, 1);
+                new Question(context, Q33, Q33AR, Q33A1, Q33A2, Q33A3, 2);
+                new Question(context, Q34, Q34AR, Q34A1, Q34A2, Q34A3, 3);
+                new Question(context, Q35, Q35AR, Q35A1, Q35A2, Q35A3, 4);
+                new Question(context, Q36, Q36AR, Q36A1, Q36A2, Q36A3, 5);
+//        new Question(context, Q37, Q37AR, Q37A1, Q37A2, Q37A3, 6);
+//        new Question(context, Q38, Q38AR, Q38A1, Q38A2, Q38A3, 7);
+//        new Question(context, Q39, Q39AR, Q39A1, Q39A2, Q39A3, 8);
+//        new Question(context, Q40, Q40AR, Q40A1, Q40A2, Q40A3, 9);
+                alreadyAddedToDatabase = true;
         }
     }
 }

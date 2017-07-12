@@ -263,8 +263,13 @@ public class ClientHandler implements MqttCallback {
             }else if(bodymessage.startsWith(context.getString(R.string.rated_answers2))){
                 notifyMessageObserver(bodymessage, this);
             }
+            //stop appliction
             else if(bodymessage.equals(context.getString(R.string.emergency_stop))){
                 System.exit(0);
+            }
+           // check who won the game
+            else if(bodymessage.startsWith("win")){
+                notifyMessageObserver(bodymessage, this);
             }
         }
     }

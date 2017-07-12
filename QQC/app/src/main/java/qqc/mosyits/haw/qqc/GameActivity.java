@@ -102,9 +102,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         if (StartActivity.player.equals(StartActivity.Player.PLAYER_1)) {
             player = getString(R.string.player_1);
             colorRes = R.color.colorPlayer1;
+            getSupportActionBar().setTitle("QQC - " + player);
             setPlayerColor(colorRes);
         } else if (StartActivity.player.equals(StartActivity.Player.PLAYER_2)) {
             player = getString(R.string.player_2);
+            getSupportActionBar().setTitle("QQC - " + player);
             colorRes = R.color.colorPlayer2;
             setPlayerColor(colorRes);
         }
@@ -150,12 +152,39 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             cdt = timeHandler.startTimer((TextView) findViewById(R.id.tv_timer), handler);
         } else {
             Log.i(TAG, "askNextQuestion: maxQuestions erreicht");
-            int player1Rated = timeHandler.getPlayer1Rated();
-            int player2Rated = timeHandler.getPlayer2Rated();
-            handler.toPublish(null, getString(R.string.rated_answers1)+player1Rated);
-            handler.toPublish(null, getString(R.string.rated_answers2)+player2Rated);
+
+            if (StartActivity.player == StartActivity.Player.PLAYER_1) {
+                int player1Rated = timeHandler.getPlayer1Rated();
+                int player2Rated = timeHandler.getPlayer2Rated();
+                handler.toPublish(null, returnWinner(player1Rated, player2Rated));
+                handler.toPublish(null, getString(R.string.rated_answers1) + player1Rated);
+                handler.toPublish(null, getString(R.string.rated_answers2) + player2Rated);
+                //TODO publishen wer gewonnen hat
+                handler.toPublish(null, getString(R.string.pub_end_game));
+            }
+
             handler.toClose();
-            handler.toPublish(null, getString(R.string.pub_end_game));
+        }
+    }
+
+    /**
+     * compare values, who answered the most questions right and fast
+     * @param player1Rated
+     * @param player2Rated
+     * @return
+     */
+    private String returnWinner(int player1Rated, int player2Rated) {
+        //Player 2 won
+        if(player1Rated < player2Rated){
+            return getString(R.string.winner_player2);
+        }
+        //Player 1 won
+        else if(player1Rated > player2Rated){
+            return getString(R.string.winner_player1);
+        }
+        //tie
+        else{
+            return getString(R.string.winner_tie);
         }
     }
 

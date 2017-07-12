@@ -28,6 +28,9 @@
     <string name="rated_answers1">rated1</string>
     <string name="rated_answers2">rated2</string>
     <string name="emergency_stop">emergency stop</string>
+    <string name="winner_tie">winTie</string>
+    <string name="winner_player1">winPlayer1</string>
+    <string name="winner_player2">winPlayer2</string>
 
     <!--START STATUS-->
     <string name="game_blocked">Neues Spiel momentan nicht verfügbar.</string>
