@@ -27,7 +27,7 @@ public class QuestionInserts {
     private static final String Q3 = "Knapp daneben...";
     private static final String Q3AR = "ist auch vorbei";
     private static final String Q3A1 = "ist nicht schlimm";
-    private static final String Q3A2 = "passiert jedem";
+    private static final String Q3A2 = "passiert jedem mal";
     private static final String Q3A3 = "ist halt daneben";
 
     //QUESTION 4
@@ -80,25 +80,25 @@ public class QuestionInserts {
     private static final String Q10A3 = "auf einem fliegenden Teppich";
 
     //QUESTION 11
-    private static final String Q11 = "Ergänze: Wo ein Wille ist, ist auch ...";
-    private static final String Q11AR = "...ein Weg.";
-    private static final String Q11A1 = "...ein Pfad.";
-    private static final String Q11A2 = "...eine Straße.";
-    private static final String Q11A3 = "...eine Autobahn.";
+    private static final String Q11 = "Wo ein Wille ist, ist auch...";
+    private static final String Q11AR = "ein Weg.";
+    private static final String Q11A1 = "ein Pfad.";
+    private static final String Q11A2 = "eine Straße.";
+    private static final String Q11A3 = "eine Autobahn.";
 
     //QUESTION 12
-    private static final String Q12 = "Ergänze: Was du heute kannst besorgen, das verschiebe nicht auf ...";
-    private static final String Q12AR = "...morgen";
-    private static final String Q12A1 = "...Dienstag";
-    private static final String Q12A2 = "...übermorgen";
-    private static final String Q12A3 = "...Montag";
+    private static final String Q12 = "Was du heute kannst besorgen, das verschiebe nicht auf...";
+    private static final String Q12AR = "morgen";
+    private static final String Q12A1 = "Dienstag";
+    private static final String Q12A2 = "übermorgen";
+    private static final String Q12A3 = "Montag";
 
     //QUESTION 13
-    private static final String Q13 = "Ergänze: Wer nicht hören will, muss ...";
-    private static final String Q13AR = "…fühlen";
-    private static final String Q13A1 = "…riechen";
-    private static final String Q13A2 = "…schmecken";
-    private static final String Q13A3 = "…sehen";
+    private static final String Q13 = "Wer nicht hören will, muss...";
+    private static final String Q13AR = "fühlen";
+    private static final String Q13A1 = "riechen";
+    private static final String Q13A2 = "schmecken";
+    private static final String Q13A3 = "sehen";
 
     //QUESTION 14
     private static final String Q14 = "Wo wohnt der Hamburger Musiker Udo Lindenberg?";
@@ -122,7 +122,7 @@ public class QuestionInserts {
     private static final String Q16A3 = "500 Millionen";
 
     //QUESTION 17
-    private static final String Q17 = "Ergänze: Auf der Reeperbahn nachts um halb ...";
+    private static final String Q17 = "Auf der Reeperbahn nachts um halb...";
     private static final String Q17AR = "1";
     private static final String Q17A1 = "2";
     private static final String Q17A2 = "3";
@@ -362,7 +362,7 @@ public class QuestionInserts {
     private static final String Q50A3 = "Robert";
 
     //QUESTION 51
-    private static final String Q51 = "Welche Haarfarbe hat das Biest aus \"Die Schöne und das Biest\" nachdem es sich in einen wundervollen Prinzen verwandelt hat?";
+    private static final String Q51 = "Welche Haarfarbe hat das Biest aus dem Zeichentrickfilm \"Die Schöne und das Biest\" nachdem es sich in einen wundervollen Prinzen verwandelt hat?";
     private static final String Q51AR = "rothaarig";
     private static final String Q51A1 = "schwarz";
     private static final String Q51A2 = "blond";
