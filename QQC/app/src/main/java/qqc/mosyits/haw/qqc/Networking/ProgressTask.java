@@ -41,8 +41,7 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
         Log.i(TAG, "ProgressTask: constructor" + ", Progresstask=" + this.toString());
         this.context = context;
         this.progressSpinner = progressSpinner;
-        this.playAnimation = false;
-        this.playMusic = false;
+
     }
 
 
