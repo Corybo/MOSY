@@ -58,7 +58,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
 
         // für raw auf res new resource dictionary type : raw
         //https://www.youtube.com/watch?v=RSi959Xyw-Q
-        mediaPlayer = MediaPlayer.create(this, R.raw.cheers_applause);
+        mediaPlayer = MediaPlayer.create(this, R.raw.cheere_applause2);
         mediaPlayer.start();
 
 
