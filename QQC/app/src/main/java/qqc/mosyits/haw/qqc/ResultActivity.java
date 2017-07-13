@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
 import qqc.mosyits.haw.qqc.Networking.MessageObserver;
+import qqc.mosyits.haw.qqc.Networking.ProgressTask;
 
 public class ResultActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
@@ -22,6 +23,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
     private String player;
     private int colorRes;
     MediaPlayer mediaPlayer = null;
+    private ProgressTask progressTask;
 
 
     @Override
@@ -57,7 +59,8 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         // für raw auf res new resource dictionary type : raw
         //https://www.youtube.com/watch?v=RSi959Xyw-Q
         mediaPlayer = MediaPlayer.create(this, R.raw.cheers_applause);
-        mediaPlayer.start();
+        progressTask = new ProgressTask(this, mediaPlayer);
+
 
         TextView txtAmountCorrectAnswers = (TextView) findViewById(R.id.amount_correct_answers);
         TextView txtRatedAnswers = (TextView) findViewById(R.id.rated_answers);

@@ -94,8 +94,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         timer = (TextView) findViewById(R.id.tv_timer);
 
-        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner_game);
-        progressTask = new ProgressTask(this, progressSpinner);
+//        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner_game);
+//        progressTask = new ProgressTask(this, progressSpinner);
 
         answerA.setOnClickListener(this);
         answerB.setOnClickListener(this);
