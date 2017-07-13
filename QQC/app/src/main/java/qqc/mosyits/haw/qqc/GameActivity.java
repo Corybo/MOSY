@@ -4,21 +4,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Vibrator;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
-import org.w3c.dom.Text;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -31,7 +28,6 @@ import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
 import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
 
-import static qqc.mosyits.haw.qqc.Networking.ClientHandler.QUESTION_KEY;
 import static qqc.mosyits.haw.qqc.Networking.ClientHandler.maxQuestionsToBeAnswered;
 import static qqc.mosyits.haw.qqc.Networking.ClientHandler.removeMessageObserver;
 
@@ -94,8 +90,8 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         timer = (TextView) findViewById(R.id.tv_timer);
 
-//        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner_game);
-//        progressTask = new ProgressTask(this, progressSpinner);
+        progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner_game);
+        progressTask = new ProgressTask(this, progressSpinner);
 
         answerA.setOnClickListener(this);
         answerB.setOnClickListener(this);
@@ -137,11 +133,11 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             clickedButton.setBackgroundResource(R.color.colorQuizButton);
         }
         setAllButtonsClickable(true);
-        if (!firstTime) {
-            progressTask.setTaskProgress(false);
-        } else {
-            firstTime = false;
-        }
+//        if (!firstTime) {
+//            progressTask.setTaskProgress(false);
+//        } else {
+//            firstTime = false;
+//        }
         // Vibrate for 300 milliseconds
         vibrator.vibrate(300);
         //TODO: Time delay 5s
@@ -216,7 +212,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         } else {
             Log.i(TAG, "setQuestion: currentQuestion = null");
             //TODO: Fehler beheben, wenn currentQuestion = null
-            Toast.makeText(this, "currentQuestion = null", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -235,12 +230,17 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Log.i(TAG, "checkAnswer");
         if (answer.getText().equals(currentQuestion.getRightAnswer())) {
             Log.i(TAG, "checkAnswer: correctAnswer");
+            Toast toast = Toast.makeText(this, getString(R.string.correct_answer), Toast.LENGTH_SHORT);
+            toast.show();
+
             correctAnswers++;
         }
         //ANSWER FALSE
         else {
             //Wrong answer = Badest Time
             Log.i(TAG, "checkAnswer: wrongAnswer");
+            Toast toast = Toast.makeText(this, getString(R.string.correct_answer) + ": " + currentQuestion.getRightAnswer(), Toast.LENGTH_LONG);
+            toast.show();
             requiredTime = 0;
         }
         //publish message with required time
@@ -252,7 +252,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         Log.i(TAG, "onClick");
         //stop timer and get required Time
         long requiredTime = cdt.stop();
-        Toast.makeText(this, String.valueOf(requiredTime), Toast.LENGTH_SHORT).show();
+        Log.i(TAG, "onClick: requiredTime = " + requiredTime);
         switch (v.getId()) {
             case R.id.answer_a:
                 Log.i(TAG, "onClick: answer_a");
@@ -299,7 +299,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         //TODO: Brauchen wir das?
         Log.i(TAG, "onSuccess - brauchen wir?");
         // We are connected
-//        Toast.makeText(GameActivity.this, "connected", Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -307,7 +306,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         //TODO: Brauchen wir das?
         Log.i(TAG, "onFailure - brauchen wir?");
         // Something went wrong e.g. connection timeout or firewall problems
-//        Toast.makeText(GameActivity.this, "connection failed, Exception: " + exception.toString(), Toast.LENGTH_LONG).show();
     }
 
     /**

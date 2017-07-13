@@ -7,10 +7,9 @@ import android.content.Context;
  */
 
 public class QuestionInserts {
-    private boolean alreadyAddedToDatabase = false;
 
     //QUESTION 1
-    private static final String Q1 = "Welches Getränkemarke hat die Farbe rot";
+    private static final String Q1 = "Welche Getränkemarke hat die Farbe rot";
     private static final String Q1AR = "CocaCola";
     private static final String Q1A1 = "Fanta";
     private static final String Q1A2 = "Sprite";
@@ -81,10 +80,10 @@ public class QuestionInserts {
 
     //QUESTION 11
     private static final String Q11 = "Wo ein Wille ist, ist auch...";
-    private static final String Q11AR = "ein Weg.";
-    private static final String Q11A1 = "ein Pfad.";
-    private static final String Q11A2 = "eine Straße.";
-    private static final String Q11A3 = "eine Autobahn.";
+    private static final String Q11AR = "ein Weg";
+    private static final String Q11A1 = "ein Pfad";
+    private static final String Q11A2 = "eine Straße";
+    private static final String Q11A3 = "eine Autobahn";
 
     //QUESTION 12
     private static final String Q12 = "Was du heute kannst besorgen, das verschiebe nicht auf...";
@@ -561,7 +560,7 @@ public class QuestionInserts {
     private static final String Q79 = "Wie heißt in Harry Potter der Bösewicht ohne Nase?";
     private static final String Q79AR = "Lord Voldemort";
     private static final String Q79A1 = "Der Joker";
-    private static final String Q79A2 = "Saroman";
+    private static final String Q79A2 = "Saruman";
     private static final String Q79A3 = "Cruella de Vil";
 
     //QUESTION 80
@@ -673,7 +672,6 @@ public class QuestionInserts {
                 new Question(context, Q78, Q78AR, Q78A1, Q78A2, Q78A3, i++);    //Disney
                 new Question(context, Q44, Q44AR, Q44A1, Q44A2, Q44A3, i++);    //Deutschland
                 new Question(context, Q80, Q80AR, Q80A1, Q80A2, Q80A3, i++);    //Film
-                alreadyAddedToDatabase = true;
         }
     }
 }

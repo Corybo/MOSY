@@ -117,7 +117,7 @@ public class ClientHandler implements MqttCallback {
         try {
             if (!client.isConnected()) {
                 Log.i(TAG, "toPublish: not connected");
-                Toast.makeText(context, "not connected", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "not connected", Toast.LENGTH_SHORT).show();
             }
             if (client.isConnected()) {
                 Log.i(TAG, "toPublish: connected");
@@ -140,7 +140,6 @@ public class ClientHandler implements MqttCallback {
             client.subscribe(topic, 0);
         } catch (MqttException e) {
             e.printStackTrace();
-            Toast.makeText(context, "Subscribe lässt App abstürzen", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -153,7 +152,6 @@ public class ClientHandler implements MqttCallback {
     @Override
     public void connectionLost(Throwable cause) {
         Log.i(TAG, "connectionLost");
-        Toast.makeText(context, "ConnectionLost Handler", Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -169,7 +167,6 @@ public class ClientHandler implements MqttCallback {
         if (topic.equals(context.getString(R.string.topic))) {
             Log.i(TAG, "messageArrived: topic=" + topic);
             String bodymessage = new String(message.getPayload()); //bodymessage inhalt der gepublishten message kann weiterverarbeitetet werden
-            Toast.makeText(context, "Handler arrived Message: " + bodymessage, Toast.LENGTH_SHORT).show();
             //STATUS REQUEST
             if (bodymessage.equals(context.getString(R.string.ask_for_start_status))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
@@ -204,7 +201,6 @@ public class ClientHandler implements MqttCallback {
             } else if (bodymessage.equals(context.getResources().getString(R.string.pub_waiting_start))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
                 setStartStatus(StartActivity.GameStartStatus.WAITING);
-                Toast.makeText(context, context.getString(R.string.local_status_waiting), Toast.LENGTH_SHORT).show();
             }
             //STATUS: WAITING
             else if (bodymessage.equals(context.getResources().getString(R.string.pub_started_join))) {
