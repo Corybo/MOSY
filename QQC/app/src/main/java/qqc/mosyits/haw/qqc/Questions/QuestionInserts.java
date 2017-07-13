@@ -17,60 +17,60 @@ public class QuestionInserts {
     private static final String Q1A3 = "Hella naturell";
 
     //QUESTION 2
-    private static final String Q2 = "QUESTION 2";
-    private static final String Q2AR = "Q2";
-    private static final String Q2A1 = "Q2";
-    private static final String Q2A2 = "Q2";
-    private static final String Q2A3 = "Q2";
+    private static final String Q2 = "Jeder ist seines Glückes...";
+    private static final String Q2AR = "Schmied";
+    private static final String Q2A1 = "Bäcker";
+    private static final String Q2A2 = "Bauer";
+    private static final String Q2A3 = "Maler";
 
     //QUESTION 3
-    private static final String Q3 = "QUESTION 3";
-    private static final String Q3AR = "Q3";
-    private static final String Q3A1 = "Q3";
-    private static final String Q3A2 = "Q3";
-    private static final String Q3A3 = "Q3";
+    private static final String Q3 = "Knapp daneben...";
+    private static final String Q3AR = "ist auch vorbei";
+    private static final String Q3A1 = "ist nicht schlimm";
+    private static final String Q3A2 = "passiert jedem";
+    private static final String Q3A3 = "ist halt daneben";
 
     //QUESTION 4
-    private static final String Q4 = "QUESTION 4";
-    private static final String Q4AR = "Q4";
-    private static final String Q4A1 = "Q4";
-    private static final String Q4A2 = "Q4";
-    private static final String Q4A3 = "Q4";
+    private static final String Q4 = "Aller guten Dinge sind...";
+    private static final String Q4AR = "3";
+    private static final String Q4A1 = "1";
+    private static final String Q4A2 = "2";
+    private static final String Q4A3 = "4";
 
     //QUESTION 5
-    private static final String Q5 = "QUESTION 5";
-    private static final String Q5AR = "Q5";
-    private static final String Q5A1 = "Q5";
-    private static final String Q5A2 = "Q5";
-    private static final String Q5A3 = "Q5";
+    private static final String Q5 = "Auch ein blindes Huhn findet mal...";
+    private static final String Q5AR = "ein Korn";
+    private static final String Q5A1 = "einen Nagel";
+    private static final String Q5A2 = "eine Nadel";
+    private static final String Q5A3 = "eine Reiszwecke";
 
     //QUESTION 6
-    private static final String Q6 = "QUESTION 6";
-    private static final String Q6AR = "Q6";
-    private static final String Q6A1 = "Q6";
-    private static final String Q6A2 = "Q6";
-    private static final String Q6A3 = "Q6";
+    private static final String Q6 = "Da wird doch der ... in der Pfanne verrückt";
+    private static final String Q6AR = "Hund";
+    private static final String Q6A1 = "Hahn";
+    private static final String Q6A2 = "Esel";
+    private static final String Q6A3 = "Hase";
 
     //QUESTION 7
-    private static final String Q7 = "QUESTION 7";
-    private static final String Q7AR = "Q7";
-    private static final String Q7A1 = "Q7";
-    private static final String Q7A2 = "Q7";
-    private static final String Q7A3 = "Q7";
+    private static final String Q7 = "In der Not frisst der Teufel...";
+    private static final String Q7AR = "Fliegen";
+    private static final String Q7A1 = "Bienen";
+    private static final String Q7A2 = "Einhörner";
+    private static final String Q7A3 = "Frösche";
 
     //QUESTION 8
-    private static final String Q8 = "QUESTION 8";
-    private static final String Q8AR = "Q8";
-    private static final String Q8A1 = "Q8";
-    private static final String Q8A2 = "Q8";
-    private static final String Q8A3 = "Q8";
+    private static final String Q8 = "Lügen haben...";
+    private static final String Q8AR = "kurze Beine";
+    private static final String Q8A1 = "lange Beine";
+    private static final String Q8A2 = "keine Beine";
+    private static final String Q8A3 = "unterschiedlich lange Beine";
 
     //QUESTION 9
-    private static final String Q9 = "QUESTION 9";
-    private static final String Q9AR = "Q9";
-    private static final String Q9A1 = "Q9";
-    private static final String Q9A2 = "Q9";
-    private static final String Q9A3 = "Q9";
+    private static final String Q9 = "Der Apfel fällt nicht weit vom...";
+    private static final String Q9AR = "Stamm";
+    private static final String Q9A1 = "Baum";
+    private static final String Q9A2 = "Ast";
+    private static final String Q9A3 = "Zweig";
 
     //QUESTION 10
     private static final String Q10 = "QUESTION 10";
@@ -219,6 +219,69 @@ public class QuestionInserts {
     private static final String Q36A1 = "Zu geringe Nutzung";
     private static final String Q36A2 = "Virenbefall";
     private static final String Q36A3 = "Zu hohe Betriebskosten";
+
+    //QUESTION 41
+    private static final String Q41 = "Wenn zwei sich streiten,...";
+    private static final String Q41AR = "freut sich der Dritte";
+    private static final String Q41A1 = "freue ich mich";
+    private static final String Q41A2 = "freuen sich die anderen";
+    private static final String Q41A3 = "freut sich keiner";
+
+    //QUESTION 42
+    private static final String Q42 = "Wie viele Bundesländer hat Deutschland?";
+    private static final String Q42AR = "16";
+    private static final String Q42A1 = "17";
+    private static final String Q42A2 = "14";
+    private static final String Q42A3 = "21";
+
+    //QUESTION 43
+    private static final String Q43 = "Wie heißt die einzige deutsche Hochseeinsel?";
+    private static final String Q43AR = "Helgoland";
+    private static final String Q43A1 = "Sylt";
+    private static final String Q43A2 = "Rügen";
+    private static final String Q43A3 = "Föhr";
+
+    //QUESTION 44
+    private static final String Q44 = "Welche Stadt ist die nördlichste in Deutschland?";
+    private static final String Q44AR = "Flensburg";
+    private static final String Q44A1 = "Kiel";
+    private static final String Q44A2 = "Husum";
+    private static final String Q44A3 = "Cuxhaven";
+
+    //QUESTION 45
+    private static final String Q45 = "Welches ist das größte Bundesland?";
+    private static final String Q45AR = "Bayern";
+    private static final String Q45A1 = "Niedersachsen";
+    private static final String Q45A2 = "Baden-Würtemberg";
+    private static final String Q45A3 = "Sachsen";
+
+    //QUESTION 46
+    private static final String Q46 = "Wie viele deutsche Städte sind offiziell Hansestädte?";
+    private static final String Q46AR = "25";
+    private static final String Q46A1 = "3";
+    private static final String Q46A2 = "5";
+    private static final String Q46A3 = "12";
+
+    //QUESTION 47
+    private static final String Q47 = "Welches Tier wird Reinecke in Fabeln genannt";
+    private static final String Q47AR = "Fuchs";
+    private static final String Q47A1 = "Hahn";
+    private static final String Q47A2 = "Biber";
+    private static final String Q47A3 = "Dachs";
+
+    //QUESTION 48
+    private static final String Q48 = "Welches Tier gilt in Fabeln als störrisch und faul";
+    private static final String Q48AR = "Esel";
+    private static final String Q48A1 = "Ente";
+    private static final String Q48A2 = "Bär";
+    private static final String Q48A3 = "Lamm";
+
+    //QUESTION 49
+    private static final String Q49 = "Wie nennt man den Hasen in Fabeln";
+    private static final String Q49AR = "Meister Lampe";
+    private static final String Q49A1 = "Isegrim";
+    private static final String Q49A2 = "Meister Petz";
+    private static final String Q49A3 = "Henning";
 
 
     public QuestionInserts(Context context, int round) {
