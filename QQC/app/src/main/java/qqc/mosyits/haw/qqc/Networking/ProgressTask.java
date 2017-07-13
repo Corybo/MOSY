@@ -2,7 +2,9 @@ package qqc.mosyits.haw.qqc.Networking;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
@@ -23,6 +25,9 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
     private boolean progress = true;
     private ImageView imageView;
     private AnimationDrawable animation;
+    private MediaPlayer mediaPlayer;
+    private boolean playAnimation;
+    private boolean playMusic;
 
 
     public ProgressTask(Context context, ProgressBar progressSpinner, ImageView imageView) {
@@ -30,12 +35,23 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
         this.context = context;
         this.progressSpinner = progressSpinner;
         this.imageView = imageView;
+        this.playAnimation = true;
+        this.playMusic = false;
     }
 
-    public ProgressTask(Context context, ProgressBar progressSpinner) {
-        Log.i(TAG, "ProgressTask: constructor" + ", Progresstask=" + this.toString());
+//    public ProgressTask(Context context, ProgressBar progressSpinner) {
+//        Log.i(TAG, "ProgressTask: constructor" + ", Progresstask=" + this.toString());
+//        this.context = context;
+//        this.progressSpinner = progressSpinner;
+//        this.playAnimation = false;
+//        this.playMusic = false;
+//    }
+
+    public ProgressTask(Context context, MediaPlayer mediaPlayer) {
         this.context = context;
-        this.progressSpinner = progressSpinner;
+        this.mediaPlayer = mediaPlayer;
+        this.playAnimation = false;
+        this.playMusic = true;
     }
 
     @Override
@@ -43,14 +59,19 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
         Log.i(TAG, "onPreExecute" + ", Progresstask=" + this.toString());
         super.onPreExecute();
         progress = true;
-        playAnimation();
-       // progressSpinner.setVisibility(View.VISIBLE);
+
+        if (playAnimation == true) {
+            playAnimation();
+        }else if(playMusic == true){
+            playMusic();
+        }
+        // progressSpinner.setVisibility(View.VISIBLE);
     }
 
     @Override
     protected String doInBackground(Void... params) {
         Log.i(TAG, "doInBackground: progress = " + progress + ", Progresstask=" + this.toString());
-        int i=0;
+        int i = 0;
         while (progress) {
 //            i++;
 //            if(i%10000000==0) {
@@ -79,10 +100,18 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
         this.progress = progress;
     }
 
-    public void playAnimation(){
+    public void playAnimation() {
         imageView.setBackgroundResource(R.drawable.animation_propeller);
         animation = (AnimationDrawable) imageView.getBackground();
         animation.start();
+    }
+
+    public void playMusic(){
+        mediaPlayer.start();
+        while(mediaPlayer.getCurrentPosition() <= 30){
+            //play sound 30 seconds??
+        }
+        mediaPlayer.stop();
     }
 }
 

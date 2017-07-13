@@ -479,6 +479,27 @@ public class QuestionInserts {
     private static final String Q77A2 = "1 mal";
     private static final String Q77A3 = "2 mal";
 
+    //QUESTION 78
+    private static final String Q78 = "?";
+    private static final String Q78AR = "";
+    private static final String Q78A1 = "";
+    private static final String Q78A2 = "";
+    private static final String Q78A3 = "";
+
+    //QUESTION 79
+    private static final String Q79 = "?";
+    private static final String Q79AR = "";
+    private static final String Q79A1 = "";
+    private static final String Q79A2 = "";
+    private static final String Q79A3 = "";
+
+    //QUESTION 80
+    private static final String Q80 = "?";
+    private static final String Q80AR = "";
+    private static final String Q80A1 = "";
+    private static final String Q80A2 = "";
+    private static final String Q80A3 = "";
+
 
     public QuestionInserts(Context context, int round) {
         int i;
