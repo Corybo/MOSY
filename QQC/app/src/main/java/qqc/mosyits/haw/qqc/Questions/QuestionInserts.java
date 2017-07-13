@@ -73,7 +73,7 @@ public class QuestionInserts {
     private static final String Q9A3 = "Zweig";
 
     //QUESTION 10
-    private static final String Q10 = "Wie schafft die Hauptperson Karlsson in \"Karlsson vom Dach\" zu fliegen?";
+    private static final String Q10 = "Wie schafft es die Hauptperson Karlsson in \"Karlsson vom Dach\" zu fliegen?";
     private static final String Q10AR = "er hat einen Propeller auf dem Rücken";
     private static final String Q10A1 = "mit einem Flugzeug";
     private static final String Q10A2 = "er hat Flügel";
@@ -143,7 +143,7 @@ public class QuestionInserts {
     private static final String Q19A3 = "später hell und später dunkel";
 
     //QUESTION 20
-    private static final String Q20 = "In welcher Stadt spielt der Disneyfilm Glöckner von Notre-Dame?";
+    private static final String Q20 = "In welcher Stadt spielt der Disneyfilm Der Glöckner von Notre-Dame?";
     private static final String Q20AR = "Paris";
     private static final String Q20A1 = "Lyon";
     private static final String Q20A2 = "Marseille";
@@ -155,7 +155,7 @@ public class QuestionInserts {
     private static final String Q21AR = "Erneuerbare Energien Klasse";
     private static final String Q21A1 = "Elbe-Einkaufszentrum";
     private static final String Q21A2 = "Elektrische Eisenkonstruktion";
-    private static final String Q21A3 = "Energieeffizienzklasse";
+    private static final String Q21A3 = "Energieeffizienz-Klasse";
 
     //QUESTION 22
     private static final String Q22 = "Wie viele Bachelor-Studiengänge bietet die HAW?";
@@ -196,7 +196,7 @@ public class QuestionInserts {
     private static final String Q27 = "Wo findet der Hamburger Dom statt?";
     private static final String Q27AR = "Heiligengeistfeld";
     private static final String Q27A1 = "St. Petri Kirche";
-    private static final String Q27A2 = "Hans Albert Platz";
+    private static final String Q27A2 = "Hans-Albers-Platz";
     private static final String Q27A3 = "Michel";
 
     //QUESTION 28
@@ -228,7 +228,7 @@ public class QuestionInserts {
     private static final String Q31A3 = "2";
 
     //QUESTION 32
-    private static final String Q32 = "Weshalb war das Gebäude Berliner Tor 5 von 2001 bis 2009 mit einem Gerüst umbaut?";
+    private static final String Q32 = "Weshalb fanden von 2001 bis 2009 am Gebäude Berliner Tor 5 Restaurierungsarbeiten statt?";
     private static final String Q32AR = "Glasplatten fielen aus der Fassade.";
     private static final String Q32A1 = "Der Bauträger ging pleite.";
     private static final String Q32A2 = "Die Wände waren undicht.";
@@ -244,12 +244,12 @@ public class QuestionInserts {
     //QUESTION 34
     private static final String Q34 = "Welche Schriftart wird im HAW Logo genutzt?";
     private static final String Q34AR = "Frutiger NEXT";
-    private static final String Q34A1 = "ComicSans";
+    private static final String Q34A1 = "Comic Sans";
     private static final String Q34A2 = "Helvetica Neue";
     private static final String Q34A3 = "Gill Sans";
 
     //QUESTION 35
-    private static final String Q35 = "Wann wurde das HAW Logo zuletzt angepasst??";
+    private static final String Q35 = "Wann wurde das HAW Logo zuletzt angepasst?";
     private static final String Q35AR = "2017";
     private static final String Q35A1 = "1970";
     private static final String Q35A2 = "2002";
@@ -257,7 +257,7 @@ public class QuestionInserts {
 
     //QUESTION 36
     private static final String Q36 = "Wieso wäre die E-Learning Plattform 'EMIL' Ende 2016 beinahe abgeschaltet worden?";
-    private static final String Q36AR = "Vertragsanpassung durch VG Wort";
+    private static final String Q36AR = "Vertrags-anpassung durch VG Wort";
     private static final String Q36A1 = "Zu geringe Nutzung";
     private static final String Q36A2 = "Virenbefall";
     private static final String Q36A3 = "Zu hohe Betriebskosten";
@@ -278,14 +278,14 @@ public class QuestionInserts {
     private static final String Q38A3 = "1993";
 
     //QUESTION 39
-    private static final String Q39 = "Welcher neuer Master-Studiengang soll 2018 in DMI angeboten werden?";
+    private static final String Q39 = "Welcher neue Master-Studiengang soll 2018 in DMI angeboten werden?";
     private static final String Q39AR = "Virtual Reality";
     private static final String Q39A1 = "Sound Vision";
     private static final String Q39A2 = "Keiner";
     private static final String Q39A3 = "Cyber Warfare";
 
     //QUESTION 40
-    private static final String Q40 = "Wie viele Schulen haben einen festen Sitz am Campus FInkenau 35?";
+    private static final String Q40 = "Wie viele Schulen haben einen festen Sitz am Campus Finkenau 35?";
     private static final String Q40AR = "4";
     private static final String Q40A1 = "2";
     private static final String Q40A2 = "1";
@@ -428,7 +428,7 @@ public class QuestionInserts {
     private static final String Q60 = "Wie heißen die drei Kinder von Gru aus \"Ich einfach unverbesserlich\"?";
     private static final String Q60AR = "Margo, Edith, Agnes";
     private static final String Q60A1 = "Julia, Hannah, Edith";
-    private static final String Q60A2 = "Margo, Julia Anna";
+    private static final String Q60A2 = "Margo, Julia, Anna";
     private static final String Q60A3 = "Maria, Anni, Eli";
 
     //QUESTION 61
@@ -470,7 +470,7 @@ public class QuestionInserts {
     private static final String Q66 = "Wo befand sich die Mensa Finkenau vor Eröffnung des Neubaus?";
     private static final String Q66AR = "In einem Zelt";
     private static final String Q66A1 = "Es gab keine Mensa";
-    private static final String Q66A2 = "Untergeschoss Altbau";
+    private static final String Q66A2 = "Altbau (Untergeschoss)";
     private static final String Q66A3 = "In Räumen der HFBK";
 
     //QUESTION 67
@@ -537,11 +537,11 @@ public class QuestionInserts {
     private static final String Q75A3 = "Bäcker";
 
     //QUESTION 76
-    private static final String Q76 = "Die wievieldgrößte Stadt Deutschlands ist Hamburg?";
-    private static final String Q76AR = "Zweite";
-    private static final String Q76A1 = "Erste";
-    private static final String Q76A2 = "Dritte";
-    private static final String Q76A3 = "Sechste";
+    private static final String Q76 = "Hamburg ist die ... Stadt Deutschlands!";
+    private static final String Q76AR = "Zweitgrößte";
+    private static final String Q76A1 = "größte";
+    private static final String Q76A2 = "Drittgrößte";
+    private static final String Q76A3 = "Sechstgrößte";
 
     //QUESTION 77
     private static final String Q77 = "Wie oft war der HSV Deutscher Meister seit Einführung der Bundesliga?";
@@ -579,99 +579,99 @@ public class QuestionInserts {
                 i = 0;
                 new Question(context, Q1, Q1AR, Q1A1, Q1A2, Q1A3, i++); //sonstiges
                 new Question(context, Q2, Q2AR, Q2A1, Q2A2, Q2A3, i++); //Sprichwort
-                new Question(context, Q3, Q3AR, Q3A1, Q3A2, Q3A3, i++); //sprichwort
-                new Question(context, Q4, Q4AR, Q4A1, Q4A2, Q4A3, i++); //sprichwort
-                new Question(context, Q5, Q5AR, Q5A1, Q5A2, Q5A3, i++); //sprichwort
-                new Question(context, Q6, Q6AR, Q6A1, Q6A2, Q6A3, i++); //sprichwort
-                new Question(context, Q7, Q7AR, Q7A1, Q7A2, Q7A3, i++); //sprichwort
-                new Question(context, Q8, Q8AR, Q8A1, Q8A2, Q8A3, i++); //sprichwort
+                new Question(context, Q38, Q38AR, Q38A1, Q38A2, Q38A3, i++);    //HAW
+                new Question(context, Q26, Q26AR, Q26A1, Q26A2, Q26A3, i++);    //Hamburg
+                new Question(context, Q59, Q59AR, Q59A1, Q59A2, Q59A3, i++);    //Märchen
+                new Question(context, Q39, Q39AR, Q39A1, Q39A2, Q39A3, i++);    //HAW
+                new Question(context, Q60, Q60AR, Q60A1, Q60A2, Q60A3, i++);    //Film
                 new Question(context, Q9, Q9AR, Q9A1, Q9A2, Q9A3, i++); //sprichwort
                 new Question(context, Q10, Q10AR, Q10A1, Q10A2, Q10A3, i++);    //Film Märchen
+                new Question(context, Q14, Q14AR, Q14A1, Q14A2, Q14A3, i++);    //Hamburg
                 break;
             case 1:
                 i = 0;
                 new Question(context, Q11, Q11AR, Q11A1, Q11A2, Q11A3, i++);    //sprichwort
-                new Question(context, Q12, Q12AR, Q12A1, Q12A2, Q12A3, i++);    //sprichwort
-                new Question(context, Q13, Q13AR, Q13A1, Q13A2, Q13A3, i++);    //sprichwort
-                new Question(context, Q14, Q14AR, Q14A1, Q14A2, Q14A3, i++);    //Hamburg
-                new Question(context, Q15, Q15AR, Q15A1, Q15A2, Q15A3, i++);    //Hamburg
-                new Question(context, Q16, Q16AR, Q16A1, Q16A2, Q16A3, i++);    //Hamburg
-                new Question(context, Q17, Q17AR, Q17A1, Q17A2, Q17A3, i++);    //Hamburg
-                new Question(context, Q18, Q18AR, Q18A1, Q18A2, Q18A3, i++);    //Disney
                 new Question(context, Q19, Q19AR, Q19A1, Q19A2, Q19A3, i++);    //Sonstiges
                 new Question(context, Q20, Q20AR, Q20A1, Q20A2, Q20A3, i++);    //Disney
+                new Question(context, Q13, Q13AR, Q13A1, Q13A2, Q13A3, i++);    //sprichwort
+                new Question(context, Q15, Q15AR, Q15A1, Q15A2, Q15A3, i++);    //Hamburg
+                new Question(context, Q12, Q12AR, Q12A1, Q12A2, Q12A3, i++);    //sprichwort
+                new Question(context, Q23, Q23AR, Q23A1, Q23A2, Q23A3, i++);    //HAW
+                new Question(context, Q17, Q17AR, Q17A1, Q17A2, Q17A3, i++);    //Hamburg
+                new Question(context, Q18, Q18AR, Q18A1, Q18A2, Q18A3, i++);    //Disney
+                new Question(context, Q16, Q16AR, Q16A1, Q16A2, Q16A3, i++);    //Hamburg
                 break;
             case 2:
                 i = 0;
                 new Question(context, Q21, Q21AR, Q21A1, Q21A2, Q21A3, i++);    //SOnstiges
                 new Question(context, Q22, Q22AR, Q22A1, Q22A2, Q22A3, i++);    //HAW
-                new Question(context, Q23, Q23AR, Q23A1, Q23A2, Q23A3, i++);    //HAW
+                new Question(context, Q54, Q54AR, Q54A1, Q54A2, Q54A3, i++);    //Märchen
                 new Question(context, Q24, Q24AR, Q24A1, Q24A2, Q24A3, i++);    //HAW
                 new Question(context, Q25, Q25AR, Q25A1, Q25A2, Q25A3, i++);    //Hamburg
-                new Question(context, Q26, Q26AR, Q26A1, Q26A2, Q26A3, i++);    //Hamburg
-                new Question(context, Q27, Q27AR, Q27A1, Q27A2, Q27A3, i++);    //Hamburg
-                new Question(context, Q28, Q28AR, Q28A1, Q28A2, Q28A3, i++);    //Hamburg
-                new Question(context, Q29, Q29AR, Q29A1, Q29A2, Q29A3, i++);    //Hamburg
+                new Question(context, Q5, Q5AR, Q5A1, Q5A2, Q5A3, i++); //sprichwort
                 new Question(context, Q30, Q30AR, Q30A1, Q30A2, Q30A3, i++);    //Hamburg
+                new Question(context, Q3, Q3AR, Q3A1, Q3A2, Q3A3, i++); //sprichwort
+                new Question(context, Q29, Q29AR, Q29A1, Q29A2, Q29A3, i++);    //Hamburg
+                new Question(context, Q4, Q4AR, Q4A1, Q4A2, Q4A3, i++); //sprichwort
             case 3:
                 i = 0;
                 new Question(context, Q31, Q31AR, Q31A1, Q31A2, Q31A3, i++);    //HAW
+                new Question(context, Q43, Q43AR, Q43A1, Q43A2, Q43A3, i++);    //Deutschland
                 new Question(context, Q32, Q32AR, Q32A1, Q32A2, Q32A3, i++);    //HAW
+                new Question(context, Q27, Q27AR, Q27A1, Q27A2, Q27A3, i++);    //Hamburg
+                new Question(context, Q48, Q48AR, Q48A1, Q48A2, Q48A3, i++);    //Fabel
+                new Question(context, Q66, Q66AR, Q66A1, Q66A2, Q66A3, i++);    //HAW
+                new Question(context, Q28, Q28AR, Q28A1, Q28A2, Q28A3, i++);    //Hamburg
                 new Question(context, Q33, Q33AR, Q33A1, Q33A2, Q33A3, i++);    //HAW
-                new Question(context, Q34, Q34AR, Q34A1, Q34A2, Q34A3, i++);    //HAW
+                new Question(context, Q58, Q58AR, Q58A1, Q58A2, Q58A3, i++);    //Film Märchen
                 new Question(context, Q35, Q35AR, Q35A1, Q35A2, Q35A3, i++);    //HAW
-                new Question(context, Q36, Q36AR, Q36A1, Q36A2, Q36A3, i++);    //HAW
-                new Question(context, Q37, Q37AR, Q37A1, Q37A2, Q37A3, i++);    //HAW
-                new Question(context, Q38, Q38AR, Q38A1, Q38A2, Q38A3, i++);    //HAW
-                new Question(context, Q39, Q39AR, Q39A1, Q39A2, Q39A3, i++);    //HAW
-                new Question(context, Q40, Q40AR, Q40A1, Q40A2, Q40A3, i++);    //HAW
             case 4:
                 i = 0;
                 new Question(context, Q41, Q41AR, Q41A1, Q41A2, Q41A3, i++);    //Sprichwort
-                new Question(context, Q42, Q42AR, Q42A1, Q42A2, Q42A3, i++);    //Deutschland
-                new Question(context, Q43, Q43AR, Q43A1, Q43A2, Q43A3, i++);    //Deutschland
-                new Question(context, Q44, Q44AR, Q44A1, Q44A2, Q44A3, i++);    //Deutschland
-                new Question(context, Q45, Q45AR, Q45A1, Q45A2, Q45A3, i++);    //Deutschland
+                new Question(context, Q40, Q40AR, Q40A1, Q40A2, Q40A3, i++);    //HAW
                 new Question(context, Q46, Q46AR, Q46A1, Q46A2, Q46A3, i++);    //Deutschland
+                new Question(context, Q36, Q36AR, Q36A1, Q36A2, Q36A3, i++);    //HAW
                 new Question(context, Q47, Q47AR, Q47A1, Q47A2, Q47A3, i++);    //Fabel
-                new Question(context, Q48, Q48AR, Q48A1, Q48A2, Q48A3, i++);    //Fabel
-                new Question(context, Q49, Q49AR, Q49A1, Q49A2, Q49A3, i++);    //Fabel
+                new Question(context, Q37, Q37AR, Q37A1, Q37A2, Q37A3, i++);    //HAW
+                new Question(context, Q8, Q8AR, Q8A1, Q8A2, Q8A3, i++); //sprichwort
+                new Question(context, Q71, Q71AR, Q71A1, Q71A2, Q71A3, i++);    //Hamburg
+                new Question(context, Q53, Q53AR, Q53A1, Q53A2, Q53A3, i++);    //Märchen
                 new Question(context, Q50, Q50AR, Q50A1, Q50A2, Q50A3, i++);    //Film Märchen
             case 5:
                 i = 0;
                 new Question(context, Q51, Q51AR, Q51A1, Q51A2, Q51A3, i++);    //Disney
+                new Question(context, Q76, Q76AR, Q76A1, Q76A2, Q76A3, i++);    //Hamburg
+                new Question(context, Q49, Q49AR, Q49A1, Q49A2, Q49A3, i++);    //Fabel
+                new Question(context, Q77, Q77AR, Q77A1, Q77A2, Q77A3, i++);    //Hamburg
+                new Question(context, Q62, Q62AR, Q62A1, Q62A2, Q62A3, i++);    //HAW
+                new Question(context, Q42, Q42AR, Q42A1, Q42A2, Q42A3, i++);    //Deutschland
                 new Question(context, Q52, Q52AR, Q52A1, Q52A2, Q52A3, i++);    //Disney
-                new Question(context, Q53, Q53AR, Q53A1, Q53A2, Q53A3, i++);    //Märchen
-                new Question(context, Q54, Q54AR, Q54A1, Q54A2, Q54A3, i++);    //Märchen
+                new Question(context, Q65, Q65AR, Q65A1, Q65A2, Q65A3, i++);    //HAW
                 new Question(context, Q55, Q55AR, Q55A1, Q55A2, Q55A3, i++);    //Märchen
-                new Question(context, Q56, Q56AR, Q56A1, Q56A2, Q56A3, i++);    //Märchen
-                new Question(context, Q57, Q57AR, Q57A1, Q57A2, Q57A3, i++);    //Märchen
-                new Question(context, Q58, Q58AR, Q58A1, Q58A2, Q58A3, i++);    //Film Märchen
-                new Question(context, Q59, Q59AR, Q59A1, Q59A2, Q59A3, i++);    //Märchen
-                new Question(context, Q60, Q60AR, Q60A1, Q60A2, Q60A3, i++);    //Film
+                new Question(context, Q61, Q61AR, Q61A1, Q61A2, Q61A3, i++);    //HAW
             case 6:
                 i = 0;
-                new Question(context, Q61, Q61AR, Q61A1, Q61A2, Q61A3, i++);    //HAW
-                new Question(context, Q62, Q62AR, Q62A1, Q62A2, Q62A3, i++);    //HAW
-                new Question(context, Q63, Q63AR, Q63A1, Q63A2, Q63A3, i++);    //HAW
-                new Question(context, Q64, Q64AR, Q64A1, Q64A2, Q64A3, i++);    //HAW
-                new Question(context, Q65, Q65AR, Q65A1, Q65A2, Q65A3, i++);    //HAW
-                new Question(context, Q66, Q66AR, Q66A1, Q66A2, Q66A3, i++);    //HAW
+                new Question(context, Q72, Q72AR, Q72A1, Q72A2, Q72A3, i++);    //Hamburg
+                new Question(context, Q57, Q57AR, Q57A1, Q57A2, Q57A3, i++);    //Märchen
                 new Question(context, Q67, Q67AR, Q67A1, Q67A2, Q67A3, i++);    //HAW
-                new Question(context, Q68, Q68AR, Q68A1, Q68A2, Q68A3, i++);    //HAW
+                new Question(context, Q56, Q56AR, Q56A1, Q56A2, Q56A3, i++);    //Märchen
                 new Question(context, Q69, Q69AR, Q69A1, Q69A2, Q69A3, i++);    //HAW
+                new Question(context, Q79, Q79AR, Q79A1, Q79A2, Q79A3, i++);    //Film
+                new Question(context, Q45, Q45AR, Q45A1, Q45A2, Q45A3, i++);    //Deutschland
+                new Question(context, Q68, Q68AR, Q68A1, Q68A2, Q68A3, i++);    //HAW
+                new Question(context, Q74, Q74AR, Q74A1, Q74A2, Q74A3, i++);    //Hamburg
                 new Question(context, Q70, Q70AR, Q70A1, Q70A2, Q70A3, i++);    //HAW
             case 7:
                 i = 0;
-                new Question(context, Q71, Q71AR, Q71A1, Q71A2, Q71A3, i++);    //Hamburg
-                new Question(context, Q72, Q72AR, Q72A1, Q72A2, Q72A3, i++);    //Hamburg
                 new Question(context, Q73, Q73AR, Q73A1, Q73A2, Q73A3, i++);    //Hamburg
-                new Question(context, Q74, Q74AR, Q74A1, Q74A2, Q74A3, i++);    //Hamburg
+                new Question(context, Q63, Q63AR, Q63A1, Q63A2, Q63A3, i++);    //HAW
                 new Question(context, Q75, Q75AR, Q75A1, Q75A2, Q75A3, i++);    //Hamburg
-                new Question(context, Q76, Q76AR, Q76A1, Q76A2, Q76A3, i++);    //Hamburg
-                new Question(context, Q77, Q77AR, Q77A1, Q77A2, Q77A3, i++);    //Hamburg
+                new Question(context, Q6, Q6AR, Q6A1, Q6A2, Q6A3, i++); //sprichwort
+                new Question(context, Q64, Q64AR, Q64A1, Q64A2, Q64A3, i++);    //HAW
+                new Question(context, Q34, Q34AR, Q34A1, Q34A2, Q34A3, i++);    //HAW
+                new Question(context, Q7, Q7AR, Q7A1, Q7A2, Q7A3, i++); //sprichwort
                 new Question(context, Q78, Q78AR, Q78A1, Q78A2, Q78A3, i++);    //Disney
-                new Question(context, Q79, Q79AR, Q79A1, Q79A2, Q79A3, i++);    //Film
+                new Question(context, Q44, Q44AR, Q44A1, Q44A2, Q44A3, i++);    //Deutschland
                 new Question(context, Q80, Q80AR, Q80A1, Q80A2, Q80A3, i++);    //Film
                 alreadyAddedToDatabase = true;
         }
