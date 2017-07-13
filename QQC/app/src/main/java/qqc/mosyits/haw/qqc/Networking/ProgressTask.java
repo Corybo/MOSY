@@ -26,8 +26,7 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
     private ImageView imageView;
     private AnimationDrawable animation;
     private MediaPlayer mediaPlayer;
-    private boolean playAnimation;
-    private boolean playMusic;
+
 
 
     public ProgressTask(Context context, ProgressBar progressSpinner, ImageView imageView) {
@@ -35,8 +34,7 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
         this.context = context;
         this.progressSpinner = progressSpinner;
         this.imageView = imageView;
-        this.playAnimation = true;
-        this.playMusic = false;
+
     }
 
 //    public ProgressTask(Context context, ProgressBar progressSpinner) {
@@ -47,12 +45,6 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
 //        this.playMusic = false;
 //    }
 
-    public ProgressTask(Context context, MediaPlayer mediaPlayer) {
-        this.context = context;
-        this.mediaPlayer = mediaPlayer;
-        this.playAnimation = false;
-        this.playMusic = true;
-    }
 
     @Override
     protected void onPreExecute() {
@@ -60,11 +52,9 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
         super.onPreExecute();
         progress = true;
 
-        if (playAnimation == true) {
+
             playAnimation();
-        }else if(playMusic == true){
-            playMusic();
-        }
+
         // progressSpinner.setVisibility(View.VISIBLE);
     }
 
@@ -106,12 +96,6 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
         animation.start();
     }
 
-    public void playMusic(){
-        mediaPlayer.start();
-        while(mediaPlayer.getCurrentPosition() <= 30){
-            //play sound 30 seconds??
-        }
-        mediaPlayer.stop();
-    }
+   
 }
 

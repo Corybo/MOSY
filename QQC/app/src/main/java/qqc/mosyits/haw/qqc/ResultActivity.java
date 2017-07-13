@@ -23,7 +23,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
     private String player;
     private int colorRes;
     MediaPlayer mediaPlayer = null;
-    private ProgressTask progressTask;
+
 
 
     @Override
@@ -59,7 +59,8 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         // für raw auf res new resource dictionary type : raw
         //https://www.youtube.com/watch?v=RSi959Xyw-Q
         mediaPlayer = MediaPlayer.create(this, R.raw.cheers_applause);
-        progressTask = new ProgressTask(this, mediaPlayer);
+        mediaPlayer.start();
+
 
 
         TextView txtAmountCorrectAnswers = (TextView) findViewById(R.id.amount_correct_answers);
