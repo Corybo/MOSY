@@ -39,13 +39,13 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
         this.playMusic = false;
     }
 
-//    public ProgressTask(Context context, ProgressBar progressSpinner) {
-//        Log.i(TAG, "ProgressTask: constructor" + ", Progresstask=" + this.toString());
-//        this.context = context;
-//        this.progressSpinner = progressSpinner;
-//        this.playAnimation = false;
-//        this.playMusic = false;
-//    }
+    public ProgressTask(Context context, ProgressBar progressSpinner) {
+        Log.i(TAG, "ProgressTask: constructor" + ", Progresstask=" + this.toString());
+        this.context = context;
+        this.progressSpinner = progressSpinner;
+        this.playAnimation = false;
+        this.playMusic = false;
+    }
 
     public ProgressTask(Context context, MediaPlayer mediaPlayer) {
         this.context = context;
@@ -85,7 +85,7 @@ public class ProgressTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         Log.i(TAG, "onPostExecute: String s=" + s + ", Progresstask=" + this.toString());
-        Toast.makeText(context, "Task Post", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(context, "Task Post", Toast.LENGTH_SHORT).show();
         super.onPostExecute(s);
         progressSpinner.setVisibility(View.INVISIBLE);
         cancel(true);

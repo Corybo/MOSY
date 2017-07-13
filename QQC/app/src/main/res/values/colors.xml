@@ -9,5 +9,6 @@
     <color name="colorText">#A3A3A3</color>
     <color name="colorBackground">#F7F7F7</color>
     <color name="colorWhite">#FFFFFF</color>
+    <color name="toast_green">#8fbc8f</color>
 
 </resources>

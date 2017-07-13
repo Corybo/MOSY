@@ -103,7 +103,7 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 ClientHandler clientHandler = ClientHandler.getClientHandler();
                 clientHandler.toClose();
                 clientHandler.setI(0);
-                if (clientHandler.getRound() < 1) { //TODO: Anzahl ändern, je nachdem wie viele Fragen [Runden -1]
+                if (clientHandler.getRound() < 7) { //TODO: Anzahl ändern, je nachdem wie viele Fragen [Runden -1]
                     clientHandler.setRound((clientHandler.getRound() + 1));
                 } else {
                     clientHandler.setRound(0);

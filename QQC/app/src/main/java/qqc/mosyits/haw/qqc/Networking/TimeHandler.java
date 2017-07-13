@@ -163,7 +163,7 @@ public class TimeHandler implements MessageObserver {
 
         public void onTick(long millisUntilFinished) {
             this.millisUntilFinished = millisUntilFinished;
-            timerTextView.setText("seconds remaining: " + millisUntilFinished / 1000);
+            timerTextView.setText("" + millisUntilFinished / 1000);
         }
 
         /**
@@ -180,7 +180,7 @@ public class TimeHandler implements MessageObserver {
 
 
         public void onFinish() {
-            timerTextView.setText("done!");
+            timerTextView.setText("0");
             millisUntilFinished = 0;
             publishRequiredTime(millisUntilFinished, context, clientHandler);
         }

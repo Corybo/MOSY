@@ -10,7 +10,7 @@
     <string name="txt_tie">Gleichstand</string>
 
     <!--SERVER -->
-    <string name="topic">haw/dmi/mt/its/ss17/qqc/apptest</string>
+    <string name="topic">haw/dmi/mt/its/ss17/qqc/</string>
     <string name="server_password">schuh+-0</string>
     <string name="server_username">haw</string>
 
@@ -27,7 +27,7 @@
     <string name="msg_tie">tie</string>
     <string name="rated_answers1">rated1</string>
     <string name="rated_answers2">rated2</string>
-    <string name="emergency_stop">emergency stop</string>
+    <string name="emergency_stop">exit</string>
     <string name="winner_tie">winTie</string>
     <string name="winner_player1">winPlayer1</string>
     <string name="winner_player2">winPlayer2</string>

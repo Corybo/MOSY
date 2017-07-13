@@ -1,10 +1,8 @@
 package qqc.mosyits.haw.qqc;
 
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,19 +11,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
-import qqc.mosyits.haw.qqc.Database.DatabaseHandler;
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
-import qqc.mosyits.haw.qqc.Networking.MessageObserver;
 import qqc.mosyits.haw.qqc.Networking.ProgressTask;
-import qqc.mosyits.haw.qqc.Networking.TimeHandler;
-import qqc.mosyits.haw.qqc.Questions.QuestionInserts;
-import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
 
 /**
  * StartActivity before the Games starts
