@@ -178,7 +178,9 @@ public class TimeHandler implements MessageObserver {
             return stoppedMillis;
         }
 
-
+        /**
+         * when timer finished
+         */
         public void onFinish() {
             timerTextView.setText("0");
             millisUntilFinished = 0;

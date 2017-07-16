@@ -26,7 +26,6 @@ import qqc.mosyits.haw.qqc.Networking.ProgressTask;
 import qqc.mosyits.haw.qqc.Networking.TimeHandler;
 import qqc.mosyits.haw.qqc.Questions.Question;
 import qqc.mosyits.haw.qqc.Questions.QuestionHandler;
-import qqc.mosyits.haw.qqc.Questions.QuestionSequence;
 
 import static qqc.mosyits.haw.qqc.Networking.ClientHandler.maxQuestionsToBeAnswered;
 import static qqc.mosyits.haw.qqc.Networking.ClientHandler.removeMessageObserver;
@@ -34,7 +33,6 @@ import static qqc.mosyits.haw.qqc.Networking.ClientHandler.removeMessageObserver
 public class GameActivity extends AppCompatActivity implements View.OnClickListener, IMqttActionListener, MessageObserver {
 
     public static final String AMOUNT_OF_CORRECT_ANSWERS = "amount_correct_answers";
-    public static final String NUMBER_OF_RATED_ANSWERS = "number_of_rated_answers";
     private final String TAG = getClass().getSimpleName();
     private TextView questionField;
     private Button answerA;
@@ -46,19 +44,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     private int correctAnswers = 0;
     private ClientHandler handler;
     private String player;
-    private int questionId;
     private TimeHandler timeHandler;
     private TextView timer;
     private TimeHandler.QQCCountDownTimer cdt;
     private ProgressBar progressSpinner;
-    private ProgressTask progressTask;
-    private boolean firstTime = true;
     private int colorRes;
     private Button clickedButton;
     private Vibrator vibrator;
-    private boolean sentGo;
-    private boolean sentId = true;
-    //TODO 7: done
     private int i = 0;
     public static final String WINNER_PLAYER_1 = "WINNER_PLAYER_1";
     public static final String WINNER_PLAYER_2 = "WINNER_PLAYER_2";
@@ -77,8 +69,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         //add this class as observer
         ClientHandler.addMessageObserver(this);
-
-//        handler = new ClientHandler(this.getApplicationContext());
         handler = ClientHandler.getClientHandler();
         timeHandler = new TimeHandler(this);
 
@@ -91,7 +81,7 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
         timer = (TextView) findViewById(R.id.tv_timer);
 
         progressSpinner = (ProgressBar) findViewById(R.id.progress_spinner_game);
-        progressTask = new ProgressTask(this, progressSpinner);
+        new ProgressTask(this, progressSpinner);
 
         answerA.setOnClickListener(this);
         answerB.setOnClickListener(this);
@@ -112,8 +102,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             setPlayerColor(colorRes);
         }
 
-        //TODO: TEST updateMessage
-//        updateMessage(getIntent().getExtras().getString(QUESTION_KEY), handler);
         updateMessage(getString(R.string.msg_go), handler);
     }
 
@@ -133,21 +121,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             clickedButton.setBackgroundResource(R.color.colorQuizButton);
         }
         setAllButtonsClickable(true);
-//        if (!firstTime) {
-//            progressTask.setTaskProgress(false);
-//        } else {
-//            firstTime = false;
-//        }
+
         // Vibrate for 300 milliseconds
         vibrator.vibrate(300);
         //TODO: Time delay 5s
         if (questionsAsked < ClientHandler.maxQuestionsToBeAnswered) {
             Log.i(TAG, "askNextQuestion: maxQuestions noch nicht erreicht, questionAsked = " + questionsAsked + ", maxQuestions: " + maxQuestionsToBeAnswered);
-            //TODO 5: done
-//            int[] questionId = QuestionSequence.getIdArray(ClientHandler.questionIdString);
-            int[] questionId = QuestionSequence.getIdArray("#0"); //TODO TEST
-            //TODO 6: done
-            setQuestion(questionId[i++]);
+            setQuestion(i++);
             questionsAsked++;
             //Start timer
             cdt = timeHandler.startTimer((TextView) findViewById(R.id.tv_timer), handler);
@@ -274,19 +254,13 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
         //buttons unclickable
         setAllButtonsClickable(false);
-
-
-        //TODO: FEHLERBEHEBUNG PROGRESS SPINNER
-        //start Task to show progressSpinner
-//        if (progressTask.isCancelled()) {
-//            Log.i(TAG, "onClick: Progresstask cancelled");
-//            progressTask.execute();
-//        }else{
-//            Log.i(TAG, "onClick: Progresstask not cancelled");
-//            progressTask.setTaskProgress(true);
-//        }
     }
 
+    /**
+     * set QuizButttons clickable or not
+     *
+     * @param b true: clickable, false: unclickable
+     */
     private void setAllButtonsClickable(boolean b) {
         answerA.setClickable(b);
         answerB.setClickable(b);
@@ -296,14 +270,12 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onSuccess(IMqttToken asyncActionToken) {
-        //TODO: Brauchen wir das?
         Log.i(TAG, "onSuccess - brauchen wir?");
         // We are connected
     }
 
     @Override
     public void onFailure(IMqttToken asyncActionToken, Throwable exception) {
-        //TODO: Brauchen wir das?
         Log.i(TAG, "onFailure - brauchen wir?");
         // Something went wrong e.g. connection timeout or firewall problems
     }
@@ -318,26 +290,10 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
     public void updateMessage(String msg, ClientHandler clientHandler) {
         Log.i(TAG, "updateMessage");
         Intent gameToResult = new Intent(this, ResultActivity.class);
-        //TODO: DELETE not used
-        //if message starts with #, it is the number for the next question and saved as questionId
-//        if (msg.startsWith("#")) {
-//            Log.i(TAG, "updateMessage, message=" + msg);
-//            sentId = true;
-//            String strId = msg.substring(1);
-//            questionId = Integer.valueOf(strId);
-//            if (sentGo == true) {
-//                askNextQuestion();
-//                resetSent();
-//            }
-//        }
         //if message is go, then the next question is displayed
         if (msg.equalsIgnoreCase(getString(R.string.msg_go))) {
             Log.i(TAG, "updateMessage, message=" + msg);
-            sentGo = true;
-//            if (sentId == true) {
             askNextQuestion();
-//                resetSent();
-//            }
         } else if (msg.equals(getString(R.string.pub_end_game))) {
             Log.i(TAG, "updateMessage: " + msg);
             gameToResult.putExtra(AMOUNT_OF_CORRECT_ANSWERS, correctAnswers);
@@ -354,12 +310,6 @@ public class GameActivity extends AppCompatActivity implements View.OnClickListe
             gameToResult.putExtra(RATED_2, msg);
         }
     }
-
-    //TODO: Delete not used
-//    private void resetSent() {
-//        sentGo = false;
-//        sentId = false;
-//    }
 
     @Override
     protected void onStop() {

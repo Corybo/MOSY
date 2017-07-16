@@ -12,8 +12,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import qqc.mosyits.haw.qqc.Networking.ClientHandler;
-import qqc.mosyits.haw.qqc.Networking.MessageObserver;
-import qqc.mosyits.haw.qqc.Networking.ProgressTask;
 
 public class ResultActivity extends AppCompatActivity implements View.OnClickListener {
     private final String TAG = getClass().getSimpleName();
@@ -23,7 +21,6 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
     private String player;
     private int colorRes;
     MediaPlayer mediaPlayer = null;
-
 
 
     @Override
@@ -62,13 +59,12 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         mediaPlayer.start();
 
 
-
         TextView txtAmountCorrectAnswers = (TextView) findViewById(R.id.amount_correct_answers);
-        TextView txtRatedAnswers = (TextView) findViewById(R.id.rated_answers);
+//        TextView txtRatedAnswers = (TextView) findViewById(R.id.rated_answers);
         txtAmountCorrectAnswers.setText(String.valueOf(amountCorrectAnswers) + " von " + String.valueOf(totalNumberQuestions) + " richtige Antworten");
-        TextView txtWinOrLoose = (TextView) findViewById(R.id.status);
-        txtWinOrLoose.setText(winOrLose);
-        txtRatedAnswers.setText(String.valueOf(ratedNumberQuestions) + " von " + String.valueOf(amountCorrectAnswers) + " wurden gewertet");
+//        TextView txtWinOrLoose = (TextView) findViewById(R.id.status);
+//        txtWinOrLoose.setText(winOrLose);
+//        txtRatedAnswers.setText(String.valueOf(ratedNumberQuestions) + " von " + String.valueOf(amountCorrectAnswers) + " wurden gewertet");
         buttonRestart = (Button) findViewById(R.id.button_restart);
         buttonRestart.setOnClickListener(this);
 
@@ -103,7 +99,6 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
                 ClientHandler.setStartStatus(StartActivity.GameStartStatus.READY);
                 ClientHandler clientHandler = ClientHandler.getClientHandler();
                 clientHandler.toClose();
-                clientHandler.setI(0);
                 if (clientHandler.getRound() < 7) { //TODO: Anzahl ändern, je nachdem wie viele Fragen [Runden -1]
                     clientHandler.setRound((clientHandler.getRound() + 1));
                 } else {
@@ -117,6 +112,11 @@ public class ResultActivity extends AppCompatActivity implements View.OnClickLis
         }
     }
 
+    /**
+     * Messages who won
+     *
+     * @param msg
+     */
     public void setWinnerValues(String msg) {
         //set number of rated Questions/Answers
         if (msg.equals(getString(R.string.rated_answers1))) {

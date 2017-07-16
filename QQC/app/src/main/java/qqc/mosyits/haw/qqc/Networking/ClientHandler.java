@@ -29,22 +29,17 @@ import qqc.mosyits.haw.qqc.StartActivity;
  */
 
 public class ClientHandler implements MqttCallback {
-    public static final String QUESTION_KEY = "question_key";
     private static ClientHandler staticClientHandler = null;
     private final String TAG = getClass().getSimpleName();
 
     private static ArrayList<MessageObserver> observerList = new ArrayList<>();
-    public static String questionIdString;
 
     private MqttAndroidClient client;
     private Context context;
     private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
-    //    private String brokerURL = "tcp://diginet.mt.haw-hamburg.de";
     private static StartActivity.GameStartStatus startStatus;
     public static int maxQuestionsToBeAnswered = 10;
-    private ArrayList<Integer> questionSequence;
     private boolean isFirstQuestion = true;
-    private int i = 0;
     private boolean firstStart = true;
     private int round = 0;
 
@@ -55,11 +50,21 @@ public class ClientHandler implements MqttCallback {
         startStatus = StartActivity.GameStartStatus.READY;
     }
 
+    /**
+     * importent that only one ClientHandler object exists
+     *
+     * @return the saved static ClientHandler object
+     */
     public static ClientHandler getClientHandler() {
         Log.i("ClientHandler", "getClientHandler");
         return staticClientHandler;
     }
 
+    /**
+     * saves the clientHandler object as static variable
+     *
+     * @param clientHandler
+     */
     public static void setClientHandler(ClientHandler clientHandler) {
         Log.i("ClientHandler", "setClientHandler: " + clientHandler.toString());
         staticClientHandler = clientHandler;
@@ -117,7 +122,6 @@ public class ClientHandler implements MqttCallback {
         try {
             if (!client.isConnected()) {
                 Log.i(TAG, "toPublish: not connected");
-//                Toast.makeText(context, "not connected", Toast.LENGTH_SHORT).show();
             }
             if (client.isConnected()) {
                 Log.i(TAG, "toPublish: connected");
@@ -132,8 +136,6 @@ public class ClientHandler implements MqttCallback {
      * method to subscribe a topic
      */
     public void toSubscribe() {
-        //TODO: App stürzt ab Lösung: https://stackoverflow.com/questions/43038597/android-studio-mqtt-not-connecting
-        //TODO: andere verwendung von IMqttActionListener
         try {
             Log.i(TAG, "toSubscribe");
             String topic = context.getString(R.string.topic);
@@ -143,7 +145,6 @@ public class ClientHandler implements MqttCallback {
         }
     }
 
-    //TODO: client schließen nach jedem Spiel
     public void toClose() {
         Log.i(TAG, "toClose");
         client.close();
@@ -166,7 +167,7 @@ public class ClientHandler implements MqttCallback {
         Log.i(TAG, "messageArrived");
         if (topic.equals(context.getString(R.string.topic))) {
             Log.i(TAG, "messageArrived: topic=" + topic);
-            String bodymessage = new String(message.getPayload()); //bodymessage inhalt der gepublishten message kann weiterverarbeitetet werden
+            String bodymessage = new String(message.getPayload());
             //STATUS REQUEST
             if (bodymessage.equals(context.getString(R.string.ask_for_start_status))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
@@ -216,15 +217,12 @@ public class ClientHandler implements MqttCallback {
             //QuestionArray
             else if (bodymessage.startsWith("#")) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                //TODO 2: done
                 context.deleteDatabase(new DatabaseHandler(context).DATABASE_NAME);
                 String s = bodymessage.substring(1);
                 int round = Integer.valueOf(s);
                 setRound(round);
                 new QuestionInserts(context, round);
                 Log.i(TAG, "onCreate: round=" + getRound());
-//                questionIdString = bodymessage;
-//                notifyMessageObserver(bodymessage, this);
             }
             //Start next question
             else if (bodymessage.equalsIgnoreCase(context.getResources().getString(R.string.msg_go))) {
@@ -242,29 +240,23 @@ public class ClientHandler implements MqttCallback {
             } else if (bodymessage.equals(context.getString(R.string.msg_tie))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
                 Toast.makeText(context, R.string.txt_tie, Toast.LENGTH_SHORT).show();
-                //TODO: new Code
-//                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
             } else if (bodymessage.equals(context.getString(R.string.player_1))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                //TODO: new Code
-//                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
             } else if (bodymessage.equals(context.getString(R.string.player_2))) {
                 Log.i(TAG, "messageArrived: " + bodymessage);
-                //TODO: new Code
-//                if (StartActivity.player == StartActivity.Player.PLAYER_1) sendQuestionNumber(++i);
             }
             //set number of rated Answers for each player
-            else if(bodymessage.startsWith(context.getString(R.string.rated_answers1))){
+            else if (bodymessage.startsWith(context.getString(R.string.rated_answers1))) {
                 notifyMessageObserver(bodymessage, this);
-            }else if(bodymessage.startsWith(context.getString(R.string.rated_answers2))){
+            } else if (bodymessage.startsWith(context.getString(R.string.rated_answers2))) {
                 notifyMessageObserver(bodymessage, this);
             }
             //stop appliction
-            else if(bodymessage.equals(context.getString(R.string.emergency_stop))){
+            else if (bodymessage.equals(context.getString(R.string.emergency_stop))) {
                 System.exit(0);
             }
-           // check who won the game
-            else if(bodymessage.startsWith("win")){
+            // check who won the game
+            else if (bodymessage.startsWith("win")) {
                 notifyMessageObserver(bodymessage, this);
             }
         }
@@ -277,8 +269,6 @@ public class ClientHandler implements MqttCallback {
         Log.i(TAG, "startGame");
         setStartStatus(StartActivity.GameStartStatus.BLOCKED);
         Intent startToGame = new Intent(context, GameActivity.class);
-//        startToGame.putExtra(QUESTION_KEY, questionIdString); TODO: DELETE weil unnötig
-        //TODO:Geht nur bei Nougat, Lösung finden für Marshmallow:
         context.startActivity(startToGame);
     }
 
@@ -305,30 +295,6 @@ public class ClientHandler implements MqttCallback {
         ClientHandler.startStatus = startStatus;
     }
 
-    /**
-     * sets the questionSequence
-     *
-     * @param questionSequence generated sequence with which question order is determinated
-     */
-    public void setQuestionSequence(ArrayList<Integer> questionSequence) {
-        Log.i(TAG, "setQuestionSequence: questionSequence = " + questionSequence.toString());
-        this.questionSequence = questionSequence;
-    }
-
-    //TODO: Delete Methode, wenn wir sie nicht mehr brauchen
-
-    /**
-     * send the QuestionNumber at time
-     *
-     * @param id
-     */
-    public void sendQuestionNumber(int id) {
-        Log.i(TAG, "sendQuestionNumber: " + id);
-        //Question value as String
-        String s = "#" + String.valueOf(questionSequence.get(id));
-        toPublish(null, s);
-    }
-
     /*** OBSERVER **********************************************************************************/
     /**
      * Add new observer to list
@@ -340,6 +306,11 @@ public class ClientHandler implements MqttCallback {
         observerList.add(observer);
     }
 
+    /**
+     * Remove observer from List
+     *
+     * @param observer which will be removed
+     */
     public static void removeMessageObserver(MessageObserver observer) {
         Log.i("ClientHandler", "removeMessageObserver: observer=" + observer.toString());
         observerList.remove(observer);
@@ -359,19 +330,30 @@ public class ClientHandler implements MqttCallback {
         }
     }
 
+    /**
+     * when a new round is started set true
+     *
+     * @param isFirstQuestion true: when a new round is started
+     */
     public void setIsFirstQuestion(boolean isFirstQuestion) {
         this.isFirstQuestion = isFirstQuestion;
     }
 
-    public void setI(int i) {
-        this.i = i;
-    }
-
+    /**
+     * Gets the number of current round
+     *
+     * @return round (0 to 7)
+     */
     public int getRound() {
         Log.i(TAG, "getRound: " + round);
         return round;
     }
 
+    /**
+     * sets the current round
+     *
+     * @param round (0 to 7)
+     */
     public void setRound(int round) {
         Log.i(TAG, "setRound: " + round);
         this.round = round;
