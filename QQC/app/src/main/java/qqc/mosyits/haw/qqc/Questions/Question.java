@@ -19,9 +19,10 @@ public class Question {
     private String answer2;
     private String answer3;
 
-    public Question(){
+    public Question() {
 
     }
+
     public Question(Context context, String question, String rightAnswer, String answer1, String answer2, String answer3, int id) {
         QuizDataSource dataSource = new QuizDataSource(context);
         thisQuestionId = id;

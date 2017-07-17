@@ -103,7 +103,6 @@ public class QuizDataSource {
      */
     public int getQuestionCount() {
         Cursor cursor = database.query(DatabaseConstants.QUESTION_TABLE, DatabaseConstants.QUESTION_COLUMNS, null, null, null, null, null);
-//        Toast.makeText(context, "QuestionCount: " + cursor.getCount(), Toast.LENGTH_SHORT).show();
         return cursor.getCount();
     }
 }
