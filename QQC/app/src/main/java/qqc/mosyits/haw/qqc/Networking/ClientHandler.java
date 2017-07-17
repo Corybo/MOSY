@@ -108,7 +108,7 @@ public class ClientHandler implements MqttCallback {
     }
 
     /**
-     * method to publish a topic (if the correct answer is selected)
+     * method to publish a message under a topic (if the correct answer is selected)
      */
     //TODO: view am Ende rausnehmen
     public void toPublish(View v, String pubMessage) {
