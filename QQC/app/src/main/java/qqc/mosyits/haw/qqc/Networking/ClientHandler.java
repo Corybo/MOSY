@@ -36,7 +36,7 @@ public class ClientHandler implements MqttCallback {
 
     private MqttAndroidClient client;
     private Context context;
-    private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de";
+    private String brokerURL = "tcp://kassiopeia.mt.haw-hamburg.de"; //für Testa "tcp://broker.mqttdashboard.com";
     private static StartActivity.GameStartStatus startStatus;
     public static int maxQuestionsToBeAnswered = 10;
     private boolean isFirstQuestion = true;
